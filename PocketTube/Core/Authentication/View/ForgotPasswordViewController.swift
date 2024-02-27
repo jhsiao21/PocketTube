@@ -115,15 +115,15 @@ class ForgotPasswordViewController: UIViewController {
             self.showUIAlert(message: "Invalid email address")
             return
         }
-        viewModel.sendPasswordResetEmail(toEmail: email) { [weak self] result in
+        viewModel.sendPasswordResetEmail(toEmail: email) { [unowned self] result in
             DispatchQueue.main.async {
-                self?.spinner.dismiss()
+                self.spinner.dismiss()
             }
             switch result {
             case .success(_):
-                self?.showUIHint(message: "已經發送重置密碼至：\(email)")
+                self.showUIHint(message: "已經發送重置密碼至：\(email)")
             case .failure(let failure):
-                self?.showUIAlert(message: failure.localizedDescription)
+                self.showUIAlert(message: failure.localizedDescription)
             }
         }
     }

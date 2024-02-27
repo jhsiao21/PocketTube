@@ -185,20 +185,19 @@ class SignUpViewController: UIViewController {
             let password = passwordTextField.text,
            let userName = nameTextField.text,
            let phone = phoneNumberTextField.text {
-            AuthService.shared.createUser(withEmail: email, password: password, userName: userName, phone: phone ) { [weak self] result in
+            AuthService.shared.createUser(withEmail: email, password: password, userName: userName, phone: phone ) { [unowned self] result in
                 var message: String = ""
                 DispatchQueue.main.async {
-                    self?.spinner.dismiss()
+                    self.spinner.dismiss()
                 }
                 switch result {
                 case .success(_):
                     message = "User was sucessfully created."
-                    self?.showUIHint(message: message)
+                    self.showUIHint(message: message)
                 case .failure(let failure):
                     message = failure.localizedDescription
-                    self?.showUIAlert(message: message)
+                    self.showUIAlert(message: message)
                 }
-                
             }
         }
     }

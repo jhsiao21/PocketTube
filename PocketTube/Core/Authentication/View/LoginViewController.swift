@@ -12,8 +12,6 @@ import FirebaseAuth
 import GoogleSignIn
 import FirebaseCore
 import JGProgressHUD
-import AuthenticationServices
-import CryptoKit
 
 class LoginViewController: UIViewController {
     
@@ -129,15 +127,6 @@ class LoginViewController: UIViewController {
         return button
     }()
     
-    private let appleButton: ASAuthorizationAppleIDButton = {
-        let button = ASAuthorizationAppleIDButton(authorizationButtonType: .signUp,
-                                                  authorizationButtonStyle: .whiteOutline)
-        button.addTarget(self, action: #selector(didTapAppleButton), for: .touchUpInside)
-        button.cornerRadius = 55 / 2
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = LoginViewController.backgroundColor
@@ -156,7 +145,6 @@ class LoginViewController: UIViewController {
         view.addSubview(separatorLabel)
         view.addSubview(facebookButton)
         view.addSubview(googleButton)
-        view.addSubview(appleButton)
         
         NSLayoutConstraint.activate([
             backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
@@ -198,11 +186,6 @@ class LoginViewController: UIViewController {
             googleButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
             googleButton.topAnchor.constraint(equalTo: facebookButton.bottomAnchor, constant: 10),
             googleButton.heightAnchor.constraint(equalToConstant: 55),
-            
-            view.trailingAnchor.constraint(equalTo: appleButton.trailingAnchor, constant: 50),
-            appleButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
-            appleButton.topAnchor.constraint(equalTo: googleButton.bottomAnchor, constant: 10),
-            appleButton.heightAnchor.constraint(equalToConstant: 55),
         ])
         
     }
@@ -215,7 +198,7 @@ class LoginViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
-        
+    
     @objc func didTapBackButton() {
         self.navigationController?.popViewController(animated: true)
     }
@@ -229,13 +212,13 @@ class LoginViewController: UIViewController {
         spinner.show(in: view)
         
         guard let email = emailTextField.text, let password = passwordTextField.text else { return }
-        AuthService.shared.login(email: email, password: password) { [weak self] result in
+        AuthService.shared.login(email: email, password: password) { [unowned self] result in
             switch result {
             case .success(let success):
                 
-                UserService.shared.fetchCurrentUser { [weak self] result in
+                UserService.shared.fetchCurrentUser { [unowned self] result in
                     DispatchQueue.main.async {
-                        self?.spinner.dismiss()
+                        self.spinner.dismiss()
                     }
                     switch result {
                     case .success(let user):
@@ -243,31 +226,41 @@ class LoginViewController: UIViewController {
                         
                         UserDefaults.standard.set(user.email, forKey: "email")
                         UserDefaults.standard.set(user.userName, forKey: "name")
-                        self?.loginSuccess()
+                        self.loginSuccess()
                         
                     case .failure(let error):
-                        self?.showUIAlert(message: error.localizedDescription)
+                        self.showUIAlert(message: error.localizedDescription)
                     }
                 }
                 
                 
             case .failure(let error):
-                self?.showUIAlert(message: error.localizedDescription)
+                DispatchQueue.main.async {
+                    self.spinner.dismiss()
+                }
+                self.showUIAlert(message: error.localizedDescription)
             }
         }
     }
     
     @objc func didTapFacebookButton() {
+        spinner.show(in: view)
         let loginManager = LoginManager()
         // 添加 public_profile 到請求的權限中，以便獲取姓名和頭像
-        loginManager.logIn(permissions: ["email", "public_profile"], from: self) { (result, error) in
-            if error != nil {
-                self.showPopup(isSuccess: false)
+        loginManager.logIn(permissions: ["email", "public_profile"], from: self) { [unowned self] (result, error) in
+            if let error = error {
+                DispatchQueue.main.async {
+                    self.spinner.dismiss()
+                }
+                self.showUIAlert(message: error.localizedDescription)
                 return
             }
             guard let token = AccessToken.current else {
                 print("Failed to get access token")
-                self.showPopup(isSuccess: false)
+                DispatchQueue.main.async {
+                    self.spinner.dismiss()
+                }
+                self.showUIAlert(message: "Failed to get access token")
                 return
             }
             
@@ -309,31 +302,38 @@ class LoginViewController: UIViewController {
                 UserDefaults.standard.set(email, forKey: "email")
                 UserDefaults.standard.set("\(firstName)", forKey: "name")
                 
-                AuthService.shared.login(credential: FacebookAuthProvider.credential(withAccessToken: token.tokenString)) { [weak self] result in
+                AuthService.shared.login(credential: FacebookAuthProvider.credential(withAccessToken: token.tokenString)) { [unowned self] result in
                     switch result {
                     case .success(_):
                         
                         guard let uid = Auth.auth().currentUser?.uid else { return }
-                        UserService.fetchUser(withUid: uid) { user, error in
+                        UserService.fetchUser(withUid: uid) { [unowned self] user, error in
+                            DispatchQueue.main.async {
+                                self.spinner.dismiss()
+                            }
+                            
                             if let user = user, error == nil {
                                 // user exists
                                 print("user data: \(user)")
-                                self?.loginSuccess()
+                                self.loginSuccess()
                             }
                             else { // user does not exists
-                                AuthService.shared.uploadUserData(email: email, userName: "\(firstName)", phone: "N/A", id: uid) { [weak self] result in
+                                AuthService.shared.uploadUserData(email: email, userName: "\(firstName)", phone: "N/A", id: uid) { [unowned self] result in
                                     switch result {
                                     case .success(_):
                                         print("upload user data to firestore database success")
-                                        self?.loginSuccess()
+                                        self.loginSuccess()
                                     case .failure(let failure):
-                                        self?.showUIAlert(message: failure.localizedDescription)
+                                        self.showUIAlert(message: failure.localizedDescription)
                                     }
                                 }
                             }
                         }
                     case .failure(let error):
-                        self?.showUIAlert(message: error.localizedDescription)
+                        DispatchQueue.main.async {
+                            self.spinner.dismiss()
+                        }
+                        self.showUIAlert(message: error.localizedDescription)
                     }
                 }
             }
@@ -341,6 +341,7 @@ class LoginViewController: UIViewController {
     }
     
     @objc private func didTapGoogleButton() {
+        spinner.show(in: view)
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
         
         // Create Google Sign In configuration object.
@@ -349,8 +350,11 @@ class LoginViewController: UIViewController {
         
         // Start the sign in flow!
         GIDSignIn.sharedInstance.signIn(withPresenting: self) { [unowned self] result, error in
-            guard error == nil else {
-                print(error?.localizedDescription)
+            if let error = error {
+                DispatchQueue.main.async {
+                    self.spinner.dismiss()
+                }
+                self.showUIAlert(message: error.localizedDescription)
                 return
             }
             
@@ -370,216 +374,54 @@ class LoginViewController: UIViewController {
             
             UserDefaults.standard.set(email, forKey: "email")
             UserDefaults.standard.set("\(firstName)", forKey: "name")
-                        
+            
             AuthService.shared.login(credential: GoogleAuthProvider.credential(withIDToken: idToken,
-                                                                               accessToken: user.accessToken.tokenString)) { [weak self] result in
+                                                                               accessToken: user.accessToken.tokenString)) { [unowned self] result in
                 switch result {
                 case .success(_):
                     
                     guard let uid = Auth.auth().currentUser?.uid else { return }
                     UserService.fetchUser(withUid: uid) { user, error in
+                        DispatchQueue.main.async {
+                            self.spinner.dismiss()
+                        }
+                        
                         if let user = user, error == nil {
                             // user exists
                             print("user data: \(user)")
-                            self?.loginSuccess()
+                            self.loginSuccess()
                         }
                         else { // user does not exists
-                            AuthService.shared.uploadUserData(email: email, userName: "\(firstName)", phone: "N/A", id: uid) { [weak self] result in
+                            AuthService.shared.uploadUserData(email: email, userName: "\(firstName)", phone: "N/A", id: uid) { [unowned self] result in
                                 switch result {
                                 case .success(_):
                                     print("upload user data to firestore database success")
-                                    self?.loginSuccess()
+                                    self.loginSuccess()
                                 case .failure(let failure):
-                                    self?.showUIAlert(message: failure.localizedDescription)
+                                    self.showUIAlert(message: failure.localizedDescription)
                                 }
                             }
                         }
                     }
                 case .failure(let error):
-                    self?.showUIAlert(message: error.localizedDescription)
-                }
-            }
-            
-//            //利用credential登入Firebase
-//            FirebaseAuth.Auth.auth().signIn(with: credential) { [weak self] authResult, error in
-//                guard let strongSelf = self else { return }
-//                guard authResult != nil, error == nil else {
-//                    if let error = error {
-//                        print("Google credential login failed - \(error)")
-//                    }
-//                    return
-//                }
-//                
-//                print("Successfully logged user in")
-//                
-//                guard let uid = AuthService.shared.userSession?.uid else { return }
-//                UserService.fetchUser(withUid: uid) { user, error in
-//                    if let user = user, error == nil {
-//                        // user exists
-//                        print("user data exists")
-//                    }
-//                    else { // user does not exists
-//                        AuthService.shared.uploadUserData(email: email, fullname: "\(firstName) \(lastName)", username: "\(firstName) \(lastName)", id: uid) { [weak self] result in
-//                            switch result {
-//                            case .success(_):
-//                                print("upload user data success")
-//                            case .failure(let failure):
-//                                self?.showUIAlert(message: failure.localizedDescription)
-//                            }
-//                        }
-//                    }
-//                }
-//                
-//                //                NotificationCenter.default.post(name: .didLogInNotification, object: nil) //Add to validateAuth() else block
-//                strongSelf.navigationController?.dismiss(animated: true, completion: nil)
-//            }
-        }
-    }
-    
-    func display(alertController: UIAlertController) {
-        self.present(alertController, animated: true, completion: nil)
-    }
-    
-    // MARK: - Sign in with Apple 登入
-    fileprivate var currentNonce: String?
-    
-    @objc private func didTapAppleButton() {
-        let request = creatAppleIdRequest()
-        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-        authorizationController.delegate = self
-        authorizationController.presentationContextProvider = self
-        authorizationController.performRequests()
-    }
-    
-    func creatAppleIdRequest() -> ASAuthorizationAppleIDRequest {
-        let appleIDProvider = ASAuthorizationAppleIDProvider()
-        let request = appleIDProvider.createRequest()
-        request.requestedScopes = [.fullName, .email]
-        let nonce = randomNonceString()
-        request.nonce = sha256(nonce)
-        currentNonce = nonce
-        return request
-    }
-}
-
-// MARK: Apple Authorization Delegate
-extension LoginViewController: ASAuthorizationControllerDelegate{
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-            
-            // ask apple server for token
-            
-            guard let nonce = currentNonce else {
-                fatalError("Invalid state: A login callback was received, but no login")
-            }
-            guard let appleIDToken = appleIDCredential.identityToken else {
-                print("Unalbe to fetch identity token  ")
-                return
-            }
-            guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
-                print("Unable to seriaiez tokeb string from data: \(appleIDToken.debugDescription)")
-                return
-            }
-            
-            guard let email = appleIDCredential.email,
-                  let givenName = appleIDCredential.fullName?.givenName else { return }
-            
-            UserDefaults.standard.set(email, forKey: "email")
-            UserDefaults.standard.set(givenName, forKey: "name")
-            
-            AuthService.shared.login(credential: OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: currentNonce)) { [weak self] result in
-                switch result {
-                case .success(_):
-                    
-                    guard let uid = Auth.auth().currentUser?.uid else { return }
-                    UserService.fetchUser(withUid: uid) { user, error in
-                        if let user = user, error == nil {
-                            // user exists
-                            print("user data: \(user)")
-                            self?.loginSuccess()
-                        }
-                        else { // user does not exists
-                            AuthService.shared.uploadUserData(email: email, userName: "\(givenName)", phone: "N/A", id: uid) { [weak self] result in
-                                switch result {
-                                case .success(_):
-                                    print("upload user data to firestore database success")
-                                    self?.loginSuccess()
-                                case .failure(let failure):
-                                    self?.showUIAlert(message: failure.localizedDescription)
-                                }
-                            }
-                        }
+                    DispatchQueue.main.async {
+                        self.spinner.dismiss()
                     }
-                case .failure(let error):
-                    self?.showUIAlert(message: error.localizedDescription)
+                    self.showUIAlert(message: error.localizedDescription)
                 }
             }
         }
     }
 }
-
-// MARK: - ASAuthorizationControllerPresentationContextProviding
-// 在畫面上顯示授權畫面
-extension LoginViewController: ASAuthorizationControllerPresentationContextProviding{
-    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        return self.view.window!
-    }
-    
-    // Adapted from https://auth0.com/docs/api-auth/tutorials/nonce#generate-a-cryptographically-random-nonce
-    private func randomNonceString(length: Int = 32) -> String {
-        precondition(length > 0)
-        let charset: [Character] =
-        Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
-        var result = ""
-        var remainingLength = length
-        
-        while remainingLength > 0 {
-            let randoms: [UInt8] = (0 ..< 16).map { _ in
-                var random: UInt8 = 0
-                let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
-                if errorCode != errSecSuccess {
-                    fatalError(
-                        "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
-                    )
-                }
-                return random
-            }
-            
-            randoms.forEach { random in
-                if remainingLength == 0 {
-                    return
-                }
-                
-                if random < charset.count {
-                    result.append(charset[Int(random)])
-                    remainingLength -= 1
-                }
-            }
-        }
-        
-        return result
-    }
-    
-    private func sha256(_ input: String) -> String {
-        let inputData = Data(input.utf8)
-        let hashedData = SHA256.hash(data: inputData)
-        let hashString = hashedData.compactMap {
-            String(format: "%02x", $0)
-        }.joined()
-        
-        return hashString
-    }
-}
-
 extension LoginViewController {
     
     func showPopup(isSuccess: Bool) {
         let successMessage = "User was sucessfully logged in."
         let errorMessage = "Something went wrong. Please try again"
         let alert = UIAlertController(title: isSuccess ? "Success": "Error", message: isSuccess ? successMessage: errorMessage, preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: "Done", style: UIAlertAction.Style.default, handler: { [weak self] action in
+        alert.addAction(UIAlertAction(title: "Done", style: UIAlertAction.Style.default, handler: { [unowned self] action in
             NotificationCenter.default.post(name: .didRefresh, object: nil)
-            self?.navigationController?.dismiss(animated: true, completion: nil)
+            self.navigationController?.dismiss(animated: true, completion: nil)
         }))
         self.present(alert, animated: true, completion: nil)
     }
