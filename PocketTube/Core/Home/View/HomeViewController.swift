@@ -79,7 +79,7 @@ class HomeViewController: UIViewController {
         navigationItem.titleView = naviBarConfigView
                 
         //表格視圖頭部設置AdHeaderUIView
-        advertisingView = AdHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 590))
+        advertisingView = AdHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 500))
         advertisingView?.showAlertDelegate = self
         advertisingView?.contentActionButtonDelegate = self
         homeFeedTable.tableHeaderView = advertisingView

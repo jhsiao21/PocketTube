@@ -11,7 +11,7 @@ class LandingScreenViewController: UIViewController {
     
     var logoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "Logo")
+        imageView.image = UIImage(named: "AppIcon")
         imageView.tintColor = LandingScreenViewController.tintColor
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -21,7 +21,7 @@ class LandingScreenViewController: UIViewController {
     var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.font = titleFont
-        titleLabel.text = "Welcome to your app"
+        titleLabel.text = "PocketTube"
         titleLabel.textColor = UIColor.mainTextColor
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         return titleLabel
@@ -30,7 +30,7 @@ class LandingScreenViewController: UIViewController {
     var subtitleLabel: UILabel = {
         let label = UILabel()
         label.font = subtitleFont
-        label.text = "Start your iOS app with this Firebase Swift Starter Kit."
+        label.text = "Save your favorite media in Pocket."
         label.textColor = UIColor.mainTextColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -82,8 +82,8 @@ class LandingScreenViewController: UIViewController {
         NSLayoutConstraint.activate([
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoImageView.topAnchor.constraint(equalToSystemSpacingBelow: view.topAnchor, multiplier: 12),
-            logoImageView.widthAnchor.constraint(equalToConstant: 300),
-            logoImageView.heightAnchor.constraint(equalToConstant: 300),
+            logoImageView.widthAnchor.constraint(equalToConstant: 200),
+            logoImageView.heightAnchor.constraint(equalToConstant: 200),
             
             titleLabel.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 40),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),

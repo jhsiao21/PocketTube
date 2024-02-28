@@ -42,7 +42,7 @@ extension UIViewController {
     func previewMedia(mediaName: String, mediaOverview: String?) {
         let spinner = JGProgressHUD(style: .dark)
         spinner.show(in: view)
-        APIManager.shared.getYouTubeMedia(with: "\(mediaName) trailer") { [weak self] result in
+        APIManager.shared.fetchYouTubeMedia(with: "\(mediaName) trailer") { [weak self] result in
             DispatchQueue.main.async {
                 spinner.dismiss()
             }

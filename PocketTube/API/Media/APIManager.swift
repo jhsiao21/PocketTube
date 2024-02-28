@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class APIManager: APIManagerProtocol {
+final class APIManager {
     
     func fetchMedia(completion: @escaping (Result<[Media], Error>) -> Void) {
         completion(.failure(NSError(domain: "", code: 0)))
@@ -15,11 +15,14 @@ final class APIManager: APIManagerProtocol {
     
     static let shared: APIManager = APIManager()
     
-    private init(){
+    init(){
         print("APICaller init()")
-    }
+    }    
+}
+
+extension APIManager : APIManagerProtocol {
     
-    func getMandarinMedia(completion: @escaping (Result<[Media], Error>) -> Void) {
+    func fetchMandarinMedia(completion: @escaping (Result<[Media], Error>) -> Void) {
         let dispatchGroup = DispatchGroup()
         var combinedMedia: [Media] = []
         
@@ -51,15 +54,15 @@ final class APIManager: APIManagerProtocol {
     }
 
     func getMandarinMovies(completion: @escaping (Result<[Media], Error>) -> Void) {
-        getMediaFromUrl(Constants.MandarinMoviesURL, completion: completion)
+        fetchMediaFromUrl(Constants.MandarinMoviesURL, completion: completion)
     }
 
     func getMandarinTVs(completion: @escaping (Result<[Media], Error>) -> Void) {
-        getMediaFromUrl(Constants.MandarinTVsURL, completion: completion)
+        fetchMediaFromUrl(Constants.MandarinTVsURL, completion: completion)
     }
     
     /// 取得熱播的電影跟節目
-    func getPlayingMedia(completion: @escaping (Result<[Media], Error>) -> Void) {
+    func fetchPlayingMedia(completion: @escaping (Result<[Media], Error>) -> Void) {
         let dispatchGroup = DispatchGroup()
         var combinedMedia: [Media] = []
         
@@ -96,14 +99,14 @@ final class APIManager: APIManagerProtocol {
     }
     
     func getNowPlayingMovies(completion: @escaping (Result<[Media], Error>) -> Void) {
-        getMediaFromUrl(Constants.NowPlayingMoviesUrl, completion: completion)
+        fetchMediaFromUrl(Constants.NowPlayingMoviesUrl, completion: completion)
     }
 
     func getOnTheAirTVs(completion: @escaping (Result<[Media], Error>) -> Void) {
-        getMediaFromUrl(Constants.OnTheAirTVsURL, completion: completion)
+        fetchMediaFromUrl(Constants.OnTheAirTVsURL, completion: completion)
     }
 
-    func getMediaFromUrl(_ url: String, completion: @escaping (Result<[Media], Error>) -> Void) {
+    func fetchMediaFromUrl(_ url: String, completion: @escaping (Result<[Media], Error>) -> Void) {
         guard let url = URL(string: url) else {
             completion(.failure(APIError.invalidURL))
             return
@@ -127,7 +130,7 @@ final class APIManager: APIManagerProtocol {
     }
     
         //getTrendingMoveis函數接受一個逃逸閉包作為參數，該閉包在異步操作完成後被呼叫，並傳遞數據給閉包，以供後續使用．使用escaping屬性可以確保閉包在異步操作完成後仍然有效
-    func getTrendingMovies(completion: @escaping (Result<[Media], Error>) -> Void) {
+    func fetchTrendingMovies(completion: @escaping (Result<[Media], Error>) -> Void) {
             guard let url = URL(string: "\(Constants.TmdbBaseURL)/3/trending/movie/day?api_key=\(Constants.TmdbAPI_KEY)&language=zh-TW&page=1") else {return}
             let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
                 guard let data = data, error == nil else {
@@ -147,7 +150,7 @@ final class APIManager: APIManagerProtocol {
         }
             
     
-    func getTrendingTvs(completion: @escaping (Result<[Media], Error>) -> Void) {
+    func fetchTrendingTvs(completion: @escaping (Result<[Media], Error>) -> Void) {
         guard let url = URL(string: "\(Constants.TmdbBaseURL)/3/trending/tv/day?api_key=\(Constants.TmdbAPI_KEY)&language=zh-TW&page=1") else {return}
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard let data = data, error == nil else {
@@ -167,7 +170,7 @@ final class APIManager: APIManagerProtocol {
     }
     
     
-    func getUpcomingMovies(completion: @escaping (Result<[Media], Error>) -> Void) {
+    func fetchUpcomingMovies(completion: @escaping (Result<[Media], Error>) -> Void) {
         guard let url = URL(string: "\(Constants.TmdbBaseURL)/3/movie/upcoming?api_key=\(Constants.TmdbAPI_KEY)&language=zh-TW&page=1") else {return}
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard let data = data, error == nil else {
@@ -186,7 +189,7 @@ final class APIManager: APIManagerProtocol {
         task.resume()
     }
     
-    func getPopularMovies(completion: @escaping (Result<[Media], Error>) -> Void) {
+    func fetchPopularMovies(completion: @escaping (Result<[Media], Error>) -> Void) {
         guard let url = URL(string: "\(Constants.TmdbBaseURL)/3/movie/popular?api_key=\(Constants.TmdbAPI_KEY)&language=zh-TW&page=1") else {return}
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard let data = data, error == nil else {
@@ -204,7 +207,7 @@ final class APIManager: APIManagerProtocol {
         task.resume()
     }
     
-    func getTop10Movies(completion: @escaping (Result<[Media], Error>) -> Void) {
+    func fetchTop10Movies(completion: @escaping (Result<[Media], Error>) -> Void) {
         guard let url = URL(string: "\(Constants.TmdbBaseURL)/3/movie/top_rated?api_key=\(Constants.TmdbAPI_KEY)&language=zh-TW&page=1") else {return }
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard let data = data, error == nil else {
@@ -223,7 +226,7 @@ final class APIManager: APIManagerProtocol {
         task.resume()
     }
     
-    func getTop10TVs(completion: @escaping (Result<[Media], Error>) -> Void) {
+    func fetchTop10TVs(completion: @escaping (Result<[Media], Error>) -> Void) {
         guard let url = URL(string: "\(Constants.TmdbBaseURL)/3/tv/top_rated?api_key=\(Constants.TmdbAPI_KEY)&language=zh-TW&page=1") else {return }
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard let data = data, error == nil else {
@@ -243,7 +246,7 @@ final class APIManager: APIManagerProtocol {
     }
     
     
-    func getDiscoverMovies(completion: @escaping (Result<[Media], Error>) -> Void) {
+    func fetchDiscoverMovies(completion: @escaping (Result<[Media], Error>) -> Void) {
         guard let url = URL(string: "\(Constants.TmdbBaseURL)/3/discover/movie?api_key=\(Constants.TmdbAPI_KEY)&language=zh-TW&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate") else {return }
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard let data = data, error == nil else {
@@ -263,7 +266,7 @@ final class APIManager: APIManagerProtocol {
     }
     
     
-    func search(with query: String, completion: @escaping (Result<[Media], Error>) -> Void) {
+    func searchMedia(with query: String, completion: @escaping (Result<[Media], Error>) -> Void) {
         
         guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {return}
         guard let url = URL(string: "\(Constants.TmdbBaseURL)/3/search/movie?api_key=\(Constants.TmdbAPI_KEY)&query=\(query)") else {
@@ -288,7 +291,7 @@ final class APIManager: APIManagerProtocol {
     }
     
     
-    func getYouTubeMedia(with query: String, completion: @escaping (Result<VideoElement, Error>) -> Void) {
+    func fetchYouTubeMedia(with query: String, completion: @escaping (Result<VideoElement, Error>) -> Void) {
         
         guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {return}
         guard let url = URL(string: "\(Constants.YoutubeBaseURL)q=\(query)&key=\(Constants.YoutubeAPI_KEY)") else {return}

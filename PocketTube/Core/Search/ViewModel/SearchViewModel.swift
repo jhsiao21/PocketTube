@@ -31,7 +31,7 @@ class SearchViewModel : NSObject {
     
     // MARK: - API request
     func fetchDiscoverMovies(completion: @escaping (Result<Bool, Error>) -> Void) {
-        APIManager.shared.getDiscoverMovies { [weak self] result in
+        APIManager.shared.fetchDiscoverMovies { [weak self] result in
             switch result {
             case .success(let media):
                 let mediaItem = MoviesAndTVsItem(medias: media) //這裡決定預設要顯示什麼內容
@@ -45,7 +45,7 @@ class SearchViewModel : NSObject {
     }
     
     func search(with query: String, completion: @escaping (Result<Bool, Error>) -> Void) {
-        APIManager.shared.search(with: query) { [weak self] result in
+        APIManager.shared.searchMedia(with: query) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let media):

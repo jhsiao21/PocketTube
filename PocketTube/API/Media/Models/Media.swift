@@ -51,21 +51,5 @@ struct Media: Codable {
     let vote_count: Int
     let release_date: String?
     let vote_average: Double
-    let source: SectionType? // 添加 source 屬性
-    
-    // 自定義初始化方法，初始化時同時設置 source 屬性
-    init(id: Int, genre_ids:[Int]?, media_type: String?, original_name: String?, original_title: String?, poster_path: String?, overview: String?, vote_count: Int, release_date: String?, vote_average: Double, source: SectionType?) {
-        self.id = id
-        self.genre_ids = genre_ids
-        self.media_type = media_type
-        self.original_name = original_name
-        self.original_title = original_title
-        self.poster_path = poster_path
-        self.overview = overview
-        self.vote_count = vote_count
-        self.release_date = release_date
-        self.vote_average = vote_average
-        self.source = source
-    }
 }
 

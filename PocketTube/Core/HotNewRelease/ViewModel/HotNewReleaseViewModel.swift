@@ -35,7 +35,7 @@ class HotNewReleaseViewModel: NSObject {
         let dispatchGroup = DispatchGroup()
         
         dispatchGroup.enter()
-        APIManager.shared.getUpcomingMovies { [weak self] result in
+        APIManager.shared.fetchUpcomingMovies { [weak self] result in
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let media):
@@ -53,7 +53,7 @@ class HotNewReleaseViewModel: NSObject {
         }
         
         dispatchGroup.enter()
-        APIManager.shared.getPopularMovies { [weak self] result in
+        APIManager.shared.fetchPopularMovies { [weak self] result in
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let media):
@@ -69,7 +69,7 @@ class HotNewReleaseViewModel: NSObject {
         }
         
         dispatchGroup.enter()
-        APIManager.shared.getTop10TVs { [weak self] result in
+        APIManager.shared.fetchTop10TVs { [weak self] result in
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let media):
@@ -85,7 +85,7 @@ class HotNewReleaseViewModel: NSObject {
         }
         
         dispatchGroup.enter()
-        APIManager.shared.getTop10Movies { [weak self] result in
+        APIManager.shared.fetchTop10Movies { [weak self] result in
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let media):

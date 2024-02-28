@@ -16,9 +16,12 @@ final class DatabaseManager {
     /// Shared instance of class
     public static let shared = DatabaseManager()
     
-    private init() {}
+    init() {}
     
     private let database = Database.database().reference()
+}
+
+extension DatabaseManager: DatabaseManagerProtocol {
     
     static func safeEmail(emailAddress: String) -> String {
         var safeEmail = emailAddress.replacingOccurrences(of: ".", with: "-")
@@ -163,23 +166,5 @@ final class DatabaseManager {
 //                   completion(.success(medias))
 //               }
 //           }
-    }
-}
-
-
-struct ChatAppUser {
-    let firstName: String
-    let lastName: String
-    let emailAddress: String
-    
-    var safeEmail: String {
-        let safeEmail = emailAddress.replacingOccurrences(of: ".", with: "-")
-//        safeEmail = safeEmail.replacingOccurrences(of: "@", with: "-")
-        return safeEmail
-    }
-    
-    var profilePictureFileName: String {
-        //logan-gmail-com_profile_picture.png
-        return "\(safeEmail)_profile_picture.png"
     }
 }

@@ -32,24 +32,7 @@ class UserService {
             }
         }
     }
-    
-    static func fetchUser(withUid uid: String) async throws -> User {
-        if let nsData = userCache.object(forKey: uid as NSString) {
-            if let user = try? JSONDecoder().decode(User.self, from: nsData as Data) {
-                return user
-            }
-        }
         
-        let snapshot = try await FirestoreConstants.UserCollection.document(uid).getDocument()
-        let user = try snapshot.data(as: User.self)
-        
-        if let userData = try? JSONEncoder().encode(user) {
-            userCache.setObject(userData as NSData, forKey: uid as NSString)
-        }
-        
-        return user
-    }
-    
     static func fetchUser(withUid uid: String, completion: @escaping (User?, Error?) -> Void) {
         if let nsData = userCache.object(forKey: uid as NSString) {
             if let user = try? JSONDecoder().decode(User.self, from: nsData as Data) {
@@ -83,62 +66,7 @@ class UserService {
         
     }
     
-    static func fetchUsers() async throws -> [User] {
-        guard let uid = Auth.auth().currentUser?.uid else { return [] }
-        let snapshot = try await FirestoreConstants.UserCollection.getDocuments()
-        let users = snapshot.documents.compactMap({ try? $0.data(as: User.self) })
-        return users.filter({ $0.id != uid })
-    }
 }
-
-// MARK: - Feed Updates
-
-extension UserService {
-    func updateUserFeedAfterFollow(followedUid: String) async throws {
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
-        let threadsSnapshot = try await FirestoreConstants.MediaCollection.whereField("ownerUid", isEqualTo: followedUid).getDocuments()
-        
-        for document in threadsSnapshot.documents {
-            try await FirestoreConstants
-                .UserCollection
-                .document(currentUid)
-                .collection("user-feed")
-                .document(document.documentID)
-                .setData([:])
-        }
-    }
-    
-    func updateUserFeedAfterUnfollow(unfollowedUid: String) async throws {
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
-        let threadsSnapshot = try await FirestoreConstants.MediaCollection.whereField("ownerUid", isEqualTo: unfollowedUid).getDocuments()
-        
-        for document in threadsSnapshot.documents {
-            try await FirestoreConstants
-                .UserCollection
-                .document(currentUid)
-                .collection("user-feed")
-                .document(document.documentID)
-                .delete()
-        }
-    }
-}
-
-// MARK: - Helpers 
-
-extension UserService {
-    private static func fetchUsers(_ snapshot: QuerySnapshot?) async throws -> [User] {
-        var users = [User]()
-        guard let documents = snapshot?.documents else { return [] }
-        
-        for doc in documents {
-            let user = try await UserService.fetchUser(withUid: doc.documentID)
-            users.append(user)
-        }
-        
-        return users
-    }
-}
-
 
 public enum ServiceErrors: Error {
     case failedToFetch

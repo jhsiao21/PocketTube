@@ -193,36 +193,33 @@ class HotNewReleaseHeaderView: UIView, UIScrollViewDelegate {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setupUI()
-        setupConstraints()
+        scrollView.delegate = self
+        layout()
         selectButton(0)
     }
     
-    private func setupUI() {
-        
-        scrollView.delegate = self
-                
-        scrollView.addSubview(hStackView)
-        
+    private func layout() {
         hStackView.addArrangedSubview(popularButton)
         hStackView.addArrangedSubview(upcomingButton)
         hStackView.addArrangedSubview(top10TVsButton)
         hStackView.addArrangedSubview(top10MoviesButton)
         
+        scrollView.addSubview(hStackView)
         addSubview(scrollView)
-    }
-    
-    private func setupConstraints() {
-
-        // 设置scrollView的约束
+        
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            hStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            hStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            hStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            hStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
         ])
     }
-    
+        
     // 快速連結按鈕handler
     @objc private func LinkedBtTapped(_ sender: UIButton) {
         selectButton(sender.tag)

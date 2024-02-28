@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		0206F7182AAA219B00044687 /* MovieGenre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0206F7172AAA219B00044687 /* MovieGenre.swift */; };
 		0206F71A2AAA222100044687 /* TvGenre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0206F7192AAA222100044687 /* TvGenre.swift */; };
+		0265321D2B8F18F800E9B585 /* PocketTubeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0265321C2B8F18F800E9B585 /* PocketTubeTests.swift */; };
+		026532252B8F3A7D00E9B585 /* APIManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026532242B8F3A7D00E9B585 /* APIManagerTest.swift */; };
+		026532272B8F3C5500E9B585 /* DatabaseManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026532262B8F3C5500E9B585 /* DatabaseManagerTest.swift */; };
+		026532292B8F3D3F00E9B585 /* DatabaseManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026532282B8F3D3F00E9B585 /* DatabaseManagerProtocol.swift */; };
+		0265322C2B8F41C600E9B585 /* FakeMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0265322B2B8F41C600E9B585 /* FakeMedia.swift */; };
 		029825692AB8990E00503EF0 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029825682AB8990E00503EF0 /* SearchViewModel.swift */; };
 		0298256E2AB9E8C900503EF0 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0298256D2AB9E8C900503EF0 /* SearchTableViewCell.swift */; };
 		029825702AC3125200503EF0 /* Haptic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0298256F2AC3125200503EF0 /* Haptic.swift */; };
@@ -22,7 +27,6 @@
 		02BC7B832B39339900226DEC /* NaviBarConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC7B822B39339900226DEC /* NaviBarConfigView.swift */; };
 		02D22ABB2B7A1B6B005898B7 /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22ABA2B7A1B6B005898B7 /* UIViewController+Ext.swift */; };
 		02D22ABF2B7A5D76005898B7 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22ABE2B7A5D76005898B7 /* APIError.swift */; };
-		02D22AC12B7A6E1D005898B7 /* APIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22AC02B7A6E1D005898B7 /* APIModel.swift */; };
 		02D22B0F2B7E0D24005898B7 /* APIManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22B0E2B7E0D24005898B7 /* APIManagerProtocol.swift */; };
 		02D22B142B7EFEE7005898B7 /* JGProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 02D22B132B7EFEE7005898B7 /* JGProgressHUD */; };
 		02D22B1C2B875F2E005898B7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 02D22B1B2B875F2E005898B7 /* FirebaseAuth */; };
@@ -88,9 +92,25 @@
 		0AF8A46D2787BEA400FFE877 /* YoutubePreviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF8A46C2787BEA400FFE877 /* YoutubePreviewModel.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		0265321E2B8F18F800E9B585 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0A62099B2734603D00A88D71 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A6209A22734603E00A88D71;
+			remoteInfo = PocketTube;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		0206F7172AAA219B00044687 /* MovieGenre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieGenre.swift; sourceTree = "<group>"; };
 		0206F7192AAA222100044687 /* TvGenre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TvGenre.swift; sourceTree = "<group>"; };
+		0265321A2B8F18F800E9B585 /* PocketTubeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PocketTubeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0265321C2B8F18F800E9B585 /* PocketTubeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PocketTubeTests.swift; sourceTree = "<group>"; };
+		026532242B8F3A7D00E9B585 /* APIManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManagerTest.swift; sourceTree = "<group>"; };
+		026532262B8F3C5500E9B585 /* DatabaseManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManagerTest.swift; sourceTree = "<group>"; };
+		026532282B8F3D3F00E9B585 /* DatabaseManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManagerProtocol.swift; sourceTree = "<group>"; };
+		0265322B2B8F41C600E9B585 /* FakeMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeMedia.swift; sourceTree = "<group>"; };
 		029825682AB8990E00503EF0 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		0298256D2AB9E8C900503EF0 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		0298256F2AC3125200503EF0 /* Haptic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptic.swift; sourceTree = "<group>"; };
@@ -104,7 +124,6 @@
 		02BC7B822B39339900226DEC /* NaviBarConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaviBarConfigView.swift; sourceTree = "<group>"; };
 		02D22ABA2B7A1B6B005898B7 /* UIViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Ext.swift"; sourceTree = "<group>"; };
 		02D22ABE2B7A5D76005898B7 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
-		02D22AC02B7A6E1D005898B7 /* APIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIModel.swift; sourceTree = "<group>"; };
 		02D22B0E2B7E0D24005898B7 /* APIManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManagerProtocol.swift; sourceTree = "<group>"; };
 		02D22B372B876DC4005898B7 /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		02D22B392B8771F8005898B7 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
@@ -161,6 +180,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		026532172B8F18F800E9B585 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0A6209A02734603E00A88D71 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -183,22 +209,49 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0265321B2B8F18F800E9B585 /* PocketTubeTests */ = {
+			isa = PBXGroup;
+			children = (
+				0265322A2B8F419100E9B585 /* MockData */,
+				026532232B8F3A5A00E9B585 /* APITest */,
+				0265321C2B8F18F800E9B585 /* PocketTubeTests.swift */,
+			);
+			path = PocketTubeTests;
+			sourceTree = "<group>";
+		};
+		026532232B8F3A5A00E9B585 /* APITest */ = {
+			isa = PBXGroup;
+			children = (
+				026532242B8F3A7D00E9B585 /* APIManagerTest.swift */,
+				026532262B8F3C5500E9B585 /* DatabaseManagerTest.swift */,
+			);
+			path = APITest;
+			sourceTree = "<group>";
+		};
+		0265322A2B8F419100E9B585 /* MockData */ = {
+			isa = PBXGroup;
+			children = (
+				0265322B2B8F41C600E9B585 /* FakeMedia.swift */,
+			);
+			path = MockData;
+			sourceTree = "<group>";
+		};
 		02AAB5062B2D49870056CE7E /* HotNewRelease */ = {
 			isa = PBXGroup;
 			children = (
-				02AAB5072B2D49A70056CE7E /* ViewController */,
+				02AAB5072B2D49A70056CE7E /* View */,
 				02AAB5082B2D49AE0056CE7E /* ViewModel */,
 			);
 			path = HotNewRelease;
 			sourceTree = "<group>";
 		};
-		02AAB5072B2D49A70056CE7E /* ViewController */ = {
+		02AAB5072B2D49A70056CE7E /* View */ = {
 			isa = PBXGroup;
 			children = (
 				02D274F62A8E4B4C00E95072 /* HotNewReleaseHeaderView.swift */,
 				02D274F42A8DD53000E95072 /* HotNewReleaseViewController.swift */,
 			);
-			path = ViewController;
+			path = View;
 			sourceTree = "<group>";
 		};
 		02AAB5082B2D49AE0056CE7E /* ViewModel */ = {
@@ -321,6 +374,7 @@
 			isa = PBXGroup;
 			children = (
 				02D22B0E2B7E0D24005898B7 /* APIManagerProtocol.swift */,
+				026532282B8F3D3F00E9B585 /* DatabaseManagerProtocol.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -442,7 +496,6 @@
 				0206F7192AAA222100044687 /* TvGenre.swift */,
 				0A7C94D62776507A0072AE85 /* TitleViewModel.swift */,
 				0AF8A46C2787BEA400FFE877 /* YoutubePreviewModel.swift */,
-				02D22AC02B7A6E1D005898B7 /* APIModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -470,6 +523,7 @@
 			isa = PBXGroup;
 			children = (
 				0A6209A52734603E00A88D71 /* PocketTube */,
+				0265321B2B8F18F800E9B585 /* PocketTubeTests */,
 				0A6209A42734603E00A88D71 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -478,6 +532,7 @@
 			isa = PBXGroup;
 			children = (
 				0A6209A32734603E00A88D71 /* PocketTube.app */,
+				0265321A2B8F18F800E9B585 /* PocketTubeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -517,6 +572,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		026532192B8F18F800E9B585 /* PocketTubeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 026532202B8F18F800E9B585 /* Build configuration list for PBXNativeTarget "PocketTubeTests" */;
+			buildPhases = (
+				026532162B8F18F800E9B585 /* Sources */,
+				026532172B8F18F800E9B585 /* Frameworks */,
+				026532182B8F18F800E9B585 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0265321F2B8F18F800E9B585 /* PBXTargetDependency */,
+			);
+			name = PocketTubeTests;
+			productName = PocketTubeTests;
+			productReference = 0265321A2B8F18F800E9B585 /* PocketTubeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		0A6209A22734603E00A88D71 /* PocketTube */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0A6209B72734603E00A88D71 /* Build configuration list for PBXNativeTarget "PocketTube" */;
@@ -555,9 +628,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1300;
+				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1300;
 				TargetAttributes = {
+					026532192B8F18F800E9B585 = {
+						CreatedOnToolsVersion = 15.0.1;
+						TestTargetID = 0A6209A22734603E00A88D71;
+					};
 					0A6209A22734603E00A88D71 = {
 						CreatedOnToolsVersion = 13.0;
 					};
@@ -584,11 +661,19 @@
 			projectRoot = "";
 			targets = (
 				0A6209A22734603E00A88D71 /* PocketTube */,
+				026532192B8F18F800E9B585 /* PocketTubeTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		026532182B8F18F800E9B585 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0A6209A12734603E00A88D71 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -602,6 +687,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		026532162B8F18F800E9B585 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				026532272B8F3C5500E9B585 /* DatabaseManagerTest.swift in Sources */,
+				0265322C2B8F41C600E9B585 /* FakeMedia.swift in Sources */,
+				026532252B8F3A7D00E9B585 /* APIManagerTest.swift in Sources */,
+				0265321D2B8F18F800E9B585 /* PocketTubeTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0A62099F2734603E00A88D71 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -643,6 +739,7 @@
 				02D22B3C2B8777A0005898B7 /* UIColor+Ext.swift in Sources */,
 				02D22B7A2B8D836B005898B7 /* ForgotPasswordViewController.swift in Sources */,
 				0A6209C2273461A800A88D71 /* FavoritesViewController.swift in Sources */,
+				026532292B8F3D3F00E9B585 /* DatabaseManagerProtocol.swift in Sources */,
 				029825722AC51F1400503EF0 /* HomeViewModel.swift in Sources */,
 				0298C6A92A8FA72000D1E569 /* UpcomingCell.swift in Sources */,
 				02D22B5E2B89CF7B005898B7 /* Notification+Extension.swift in Sources */,
@@ -668,12 +765,19 @@
 				0AD9A10427604E4D00131EEF /* Media.swift in Sources */,
 				0A6209BC2734615B00A88D71 /* HomeViewController.swift in Sources */,
 				02D22B3E2B883AA9005898B7 /* ProfileViewController.swift in Sources */,
-				02D22AC12B7A6E1D005898B7 /* APIModel.swift in Sources */,
 				0A7C94D72776507A0072AE85 /* TitleViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0265321F2B8F18F800E9B585 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0A6209A22734603E00A88D71 /* PocketTube */;
+			targetProxy = 0265321E2B8F18F800E9B585 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		0A6209B12734603E00A88D71 /* LaunchScreen.storyboard */ = {
@@ -687,6 +791,55 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		026532212B8F18F800E9B585 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S4URMM3RJV;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Logan.Lab.PocketTubeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PocketTube.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PocketTube";
+			};
+			name = Debug;
+		};
+		026532222B8F18F800E9B585 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S4URMM3RJV;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Logan.Lab.PocketTubeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PocketTube.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PocketTube";
+			};
+			name = Release;
+		};
 		0A6209B52734603E00A88D71 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -862,6 +1015,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		026532202B8F18F800E9B585 /* Build configuration list for PBXNativeTarget "PocketTubeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				026532212B8F18F800E9B585 /* Debug */,
+				026532222B8F18F800E9B585 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		0A62099E2734603D00A88D71 /* Build configuration list for PBXProject "PocketTube" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

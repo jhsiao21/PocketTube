@@ -8,14 +8,14 @@
 import Foundation
 import UIKit
 
-class HomeViewModel  {
+final class HomeViewModel  {
     var mediaData: [String : [Media]] = [:]
     
     public func fetchData(completion: @escaping (Result<Bool, Error>) -> Void) {
         let dispatchGroup = DispatchGroup()
         
         dispatchGroup.enter()
-        APIManager.shared.getMandarinMedia { [weak self] result in
+        APIManager.shared.fetchMandarinMedia { [weak self] result in
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let medias):
@@ -28,7 +28,7 @@ class HomeViewModel  {
         }
         
         dispatchGroup.enter()
-        APIManager.shared.getPlayingMedia { [weak self] result in
+        APIManager.shared.fetchPlayingMedia { [weak self] result in
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let medias):
@@ -41,7 +41,7 @@ class HomeViewModel  {
         }
         
         dispatchGroup.enter()
-        APIManager.shared.getMediaFromUrl(Constants.TrendingMoviesUrl) { [weak self] result in
+        APIManager.shared.fetchMediaFromUrl(Constants.TrendingMoviesUrl) { [weak self] result in
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let medias):
@@ -54,7 +54,7 @@ class HomeViewModel  {
         }
         
         dispatchGroup.enter()
-        APIManager.shared.getMediaFromUrl(Constants.TrendingTVsUrl) { [weak self] result in
+        APIManager.shared.fetchMediaFromUrl(Constants.TrendingTVsUrl) { [weak self] result in
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let medias):
@@ -67,7 +67,7 @@ class HomeViewModel  {
         }
         
         dispatchGroup.enter()
-        APIManager.shared.getMediaFromUrl(Constants.PopularMoviesUrl) { [weak self] result in
+        APIManager.shared.fetchMediaFromUrl(Constants.PopularMoviesUrl) { [weak self] result in
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let medias):
@@ -80,7 +80,7 @@ class HomeViewModel  {
         }
         
         dispatchGroup.enter()
-        APIManager.shared.getMediaFromUrl(Constants.UpcomingMoviesUrl) { [weak self] result in
+        APIManager.shared.fetchMediaFromUrl(Constants.UpcomingMoviesUrl) { [weak self] result in
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let medias):
@@ -93,7 +93,7 @@ class HomeViewModel  {
         }
         
         dispatchGroup.enter()
-        APIManager.shared.getMediaFromUrl(Constants.TopRatedMoviesUrl) { [weak self] result in
+        APIManager.shared.fetchMediaFromUrl(Constants.TopRatedMoviesUrl) { [weak self] result in
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let medias):

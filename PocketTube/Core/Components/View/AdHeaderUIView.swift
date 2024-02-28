@@ -196,12 +196,12 @@ class AdHeaderUIView: UIView {
     
     private func layout() {
         
-        hStackView.addArrangedSubview(tvButton)
-        hStackView.addArrangedSubview(movieButton)
-        hStackView.addArrangedSubview(typeButton)
-        hStackView.addArrangedSubview(UIView())
+//        hStackView.addArrangedSubview(tvButton)
+//        hStackView.addArrangedSubview(movieButton)
+//        hStackView.addArrangedSubview(typeButton)
+//        hStackView.addArrangedSubview(UIView())
 
-        vStackView.addArrangedSubview(hStackView)
+//        vStackView.addArrangedSubview(hStackView)
         
         
         vStackView.addArrangedSubview(posterImageView)
@@ -262,7 +262,7 @@ class AdHeaderUIView: UIView {
     
     private func configureHeroHeaderView() {
 
-        APIManager.shared.getTrendingMovies { [weak self] result in
+        APIManager.shared.fetchTrendingMovies { [weak self] result in
             switch result {
             case .success(let medias):
                 if let media = medias.randomElement() {

@@ -29,10 +29,14 @@ class HotNewReleaseViewController: UIViewController {
         viewModel.fetchData { [weak self] result in
             switch result {
             case .success(_):
-                self?.spinner.dismiss()
-                self?.tableView.reloadData()
+                DispatchQueue.main.async {
+                    self?.spinner.dismiss()
+                    self?.tableView.reloadData()
+                }
             case .failure(let error):
-                self?.spinner.dismiss()
+                DispatchQueue.main.async {
+                    self?.spinner.dismiss()
+                }
                 self?.showUIAlert(message: error.localizedDescription)
             }
         }
@@ -271,7 +275,7 @@ extension HotNewReleaseViewController: ContentActionButtonDelegate {
     func didTappedShareBtn(mediaName: String, image: UIImage) {
         spinner.show(in: view)
         
-        APIManager.shared.getYouTubeMedia(with: "\(mediaName) trailer") { [weak self] result in
+        APIManager.shared.fetchYouTubeMedia(with: "\(mediaName) trailer") { [weak self] result in
 
             switch result {
             case .success(let videoElement):
