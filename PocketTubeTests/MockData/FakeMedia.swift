@@ -40,4 +40,24 @@ enum FakeMedia {
         overview: "This is a test overview",
         mId: NSUUID().uuidString
     )
+    
+    static let fakeMediaData: [Media] = [        
+        Media(
+            id: 969492,
+            genre_ids: [
+                28,
+                53,
+                10752
+            ],
+            media_type: nil,
+            original_name: nil,
+            original_title: "Land of Bad",
+            poster_path: "/khmQoGP39zfrESdHR1BzSf84JTF.jpg",
+            overview: "一支特種部隊前往菲律賓南部執行一項緊急救援任務，代號「死神」（羅素克洛 飾）的空軍無人機駕駛奉命操作「MQ-9死神無人機」進行空中支援，但救援過程卻意外出了差錯，特種部隊因而遭受武裝民兵猛烈攻擊。面對突如其來的危機，「死神」必須想辦法在短短48小時內扭轉失控的救援行動，而他來自天空的指引，將成為身陷絕境的特種部隊成功拯救人質並逃出生天的唯一希望……。",
+            vote_count: 188,
+            release_date: "2024-01-25",
+            vote_average: 7.1
+        )
+    ]
 }
+

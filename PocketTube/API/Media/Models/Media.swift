@@ -40,7 +40,7 @@ struct MediaList: Codable {
     let results: [Media]
 }
 
-struct Media: Codable {
+struct Media: Codable, Equatable {
     let id: Int
     let genre_ids: [Int]?
     let media_type: String?

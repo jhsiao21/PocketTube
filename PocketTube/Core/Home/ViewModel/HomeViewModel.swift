@@ -6,16 +6,28 @@
 //
 
 import Foundation
-import UIKit
+
+protocol HomeViewModelDelegate: AnyObject {
+    func homeViewModel(didReceiveData mediaData: [String : [Media]])
+    
+    func homeViewModel(didReceiveError error: Error)
+}
 
 final class HomeViewModel  {
-    var mediaData: [String : [Media]] = [:]
     
-    public func fetchData(completion: @escaping (Result<Bool, Error>) -> Void) {
+    private let dataProvider: APIManagerProtocol
+    weak var delegate: HomeViewModelDelegate?
+    var mediaData: [String : [Media]] = [:]
+        
+    init(dataProvider: APIManagerProtocol) {
+        self.dataProvider = dataProvider
+    }
+    
+    public func fetchData() {
         let dispatchGroup = DispatchGroup()
         
         dispatchGroup.enter()
-        APIManager.shared.fetchMandarinMedia { [weak self] result in
+        dataProvider.fetchMandarinMedia { [weak self] result in
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let medias):
@@ -23,12 +35,12 @@ final class HomeViewModel  {
                 print("MandarinMedia finish")
             case .failure(let error):
                 print(error.localizedDescription)
-                completion(.failure(error))
+                self?.delegate?.homeViewModel(didReceiveError: error)
             }
         }
-        
+                        
         dispatchGroup.enter()
-        APIManager.shared.fetchPlayingMedia { [weak self] result in
+        dataProvider.fetchPlayingMedia { [weak self] result in
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let medias):
@@ -36,12 +48,12 @@ final class HomeViewModel  {
                 print("PlayingMedia finish")
             case .failure(let error):
                 print(error.localizedDescription)
-                completion(.failure(error))
+                self?.delegate?.homeViewModel(didReceiveError: error)
             }
         }
         
         dispatchGroup.enter()
-        APIManager.shared.fetchMediaFromUrl(Constants.TrendingMoviesUrl) { [weak self] result in
+        dataProvider.fetchMediaFromUrl(Constants.TrendingMoviesUrl) { [weak self] result in
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let medias):
@@ -49,12 +61,12 @@ final class HomeViewModel  {
                 print("TrendingMovies finish")
             case .failure(let error):
                 print(error.localizedDescription)
-                completion(.failure(error))
+                self?.delegate?.homeViewModel(didReceiveError: error)
             }
         }
         
         dispatchGroup.enter()
-        APIManager.shared.fetchMediaFromUrl(Constants.TrendingTVsUrl) { [weak self] result in
+        dataProvider.fetchMediaFromUrl(Constants.TrendingTVsUrl) { [weak self] result in
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let medias):
@@ -62,12 +74,12 @@ final class HomeViewModel  {
                 print("TrendingTVs finish")
             case .failure(let error):
                 print(error.localizedDescription)
-                completion(.failure(error))
+                self?.delegate?.homeViewModel(didReceiveError: error)
             }
         }
         
         dispatchGroup.enter()
-        APIManager.shared.fetchMediaFromUrl(Constants.PopularMoviesUrl) { [weak self] result in
+        dataProvider.fetchMediaFromUrl(Constants.PopularMoviesUrl) { [weak self] result in
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let medias):
@@ -75,12 +87,12 @@ final class HomeViewModel  {
                 print("PopularMovies finish")
             case .failure(let error):
                 print(error.localizedDescription)
-                completion(.failure(error))
+                self?.delegate?.homeViewModel(didReceiveError: error)
             }
         }
         
         dispatchGroup.enter()
-        APIManager.shared.fetchMediaFromUrl(Constants.UpcomingMoviesUrl) { [weak self] result in
+        dataProvider.fetchMediaFromUrl(Constants.UpcomingMoviesUrl) { [weak self] result in
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let medias):
@@ -88,12 +100,12 @@ final class HomeViewModel  {
                 print("UpcomingMovies finish")
             case .failure(let error):
                 print(error.localizedDescription)
-                completion(.failure(error))
+                self?.delegate?.homeViewModel(didReceiveError: error)
             }
         }
         
         dispatchGroup.enter()
-        APIManager.shared.fetchMediaFromUrl(Constants.TopRatedMoviesUrl) { [weak self] result in
+        dataProvider.fetchMediaFromUrl(Constants.TopRatedMoviesUrl) { [weak self] result in
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let medias):
@@ -101,12 +113,12 @@ final class HomeViewModel  {
                 print("TopRatedMovies finish")
             case .failure(let error):
                 print(error.localizedDescription)
-                completion(.failure(error))
+                self?.delegate?.homeViewModel(didReceiveError: error)
             }
         }
         
         dispatchGroup.notify(queue: .main) {
-            completion(.success(true))
+            self.delegate?.homeViewModel(didReceiveData: self.mediaData)
         }
     }
 }

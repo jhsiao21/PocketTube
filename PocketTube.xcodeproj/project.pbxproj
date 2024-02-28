@@ -14,6 +14,7 @@
 		026532272B8F3C5500E9B585 /* DatabaseManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026532262B8F3C5500E9B585 /* DatabaseManagerTest.swift */; };
 		026532292B8F3D3F00E9B585 /* DatabaseManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026532282B8F3D3F00E9B585 /* DatabaseManagerProtocol.swift */; };
 		0265322C2B8F41C600E9B585 /* FakeMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0265322B2B8F41C600E9B585 /* FakeMedia.swift */; };
+		0265322F2B8F8A9800E9B585 /* HomeViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0265322E2B8F8A9800E9B585 /* HomeViewModelTest.swift */; };
 		029825692AB8990E00503EF0 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029825682AB8990E00503EF0 /* SearchViewModel.swift */; };
 		0298256E2AB9E8C900503EF0 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0298256D2AB9E8C900503EF0 /* SearchTableViewCell.swift */; };
 		029825702AC3125200503EF0 /* Haptic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0298256F2AC3125200503EF0 /* Haptic.swift */; };
@@ -111,6 +112,7 @@
 		026532262B8F3C5500E9B585 /* DatabaseManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManagerTest.swift; sourceTree = "<group>"; };
 		026532282B8F3D3F00E9B585 /* DatabaseManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManagerProtocol.swift; sourceTree = "<group>"; };
 		0265322B2B8F41C600E9B585 /* FakeMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeMedia.swift; sourceTree = "<group>"; };
+		0265322E2B8F8A9800E9B585 /* HomeViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTest.swift; sourceTree = "<group>"; };
 		029825682AB8990E00503EF0 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		0298256D2AB9E8C900503EF0 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		0298256F2AC3125200503EF0 /* Haptic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptic.swift; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 		0265321B2B8F18F800E9B585 /* PocketTubeTests */ = {
 			isa = PBXGroup;
 			children = (
+				0265322D2B8F8A4400E9B585 /* ViewModelTest */,
 				0265322A2B8F419100E9B585 /* MockData */,
 				026532232B8F3A5A00E9B585 /* APITest */,
 				0265321C2B8F18F800E9B585 /* PocketTubeTests.swift */,
@@ -234,6 +237,14 @@
 				0265322B2B8F41C600E9B585 /* FakeMedia.swift */,
 			);
 			path = MockData;
+			sourceTree = "<group>";
+		};
+		0265322D2B8F8A4400E9B585 /* ViewModelTest */ = {
+			isa = PBXGroup;
+			children = (
+				0265322E2B8F8A9800E9B585 /* HomeViewModelTest.swift */,
+			);
+			path = ViewModelTest;
 			sourceTree = "<group>";
 		};
 		02AAB5062B2D49870056CE7E /* HotNewRelease */ = {
@@ -694,6 +705,7 @@
 				026532272B8F3C5500E9B585 /* DatabaseManagerTest.swift in Sources */,
 				0265322C2B8F41C600E9B585 /* FakeMedia.swift in Sources */,
 				026532252B8F3A7D00E9B585 /* APIManagerTest.swift in Sources */,
+				0265322F2B8F8A9800E9B585 /* HomeViewModelTest.swift in Sources */,
 				0265321D2B8F18F800E9B585 /* PocketTubeTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

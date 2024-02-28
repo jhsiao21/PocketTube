@@ -11,11 +11,16 @@ import JGProgressHUD
 
 class HomeViewController: UIViewController {
 
-    private var viewModel = HomeViewModel()
+    private lazy var viewModel: HomeViewModel = {
+        let vm = HomeViewModel(dataProvider: APIManager.shared)
+        vm.delegate = self
+        return vm
+    }()
+    
     private var advertisingView : AdHeaderUIView?
     private var naviBarConfigView = NaviBarConfigView()
     private let spinner = JGProgressHUD(style: .dark)
-    
+        
     /*
     定義一個constant的閉包，並且透過()立即執行閉包
     let constant = {
@@ -52,16 +57,19 @@ class HomeViewController: UIViewController {
         naviBarConfigView.pushSearchViewDelegate = self
         
         spinner.show(in: view)
-        viewModel.fetchData { [weak self] result in
-            switch result {
-            case .success(_):
-                self?.spinner.dismiss()
-                self?.homeFeedTable.reloadData()
-            case .failure(let error):
-                self?.spinner.dismiss()
-                self?.showUIAlert(message: error.localizedDescription)
-            }
-        }
+        viewModel.fetchData()
+        
+//        spinner.show(in: view)
+//        viewModel.fetchData { [weak self] result in
+//            switch result {
+//            case .success(_):
+//                self?.spinner.dismiss()
+//                self?.homeFeedTable.reloadData()
+//            case .failure(let error):
+//                self?.spinner.dismiss()
+//                self?.showUIAlert(message: error.localizedDescription)
+//            }
+//        }
         
         /// 監聽didRefresh通知
         NotificationCenter.default.addObserver(forName: .didRefresh, object: nil, queue: nil) { [weak self] _ in
@@ -126,6 +134,18 @@ class HomeViewController: UIViewController {
             //登入後發送didLogInNotification通知
 //            NotificationCenter.default.post(name: .didLogInNotification, object: nil)
         }
+    }
+}
+
+extension HomeViewController: HomeViewModelDelegate {
+    func homeViewModel(didReceiveData mediaData: [String : [Media]]) {
+        self.spinner.dismiss()
+        self.homeFeedTable.reloadData()
+    }
+    
+    func homeViewModel(didReceiveError error: Error) {
+        self.spinner.dismiss()
+        showUIAlert(message: error.localizedDescription)
     }
 }
 

@@ -15,9 +15,7 @@ class TableViewCell: UITableViewCell {
     
     weak var contentActionButtonDelegate: ContentActionButtonDelegate?
     
-    private var medias: [Media] = [Media]()
-    
-    private let viewModel = HomeViewModel()
+    private var medias: [Media] = [Media]()    
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
