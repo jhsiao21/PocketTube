@@ -1,29 +1,28 @@
 //
-//  HomeViewModelTest.swift
+//  HotNewReleaseViewModelTest.swift
 //  PocketTubeTests
 //
-//  Created by LoganMacMini on 2024/2/28.
+//  Created by LoganMacMini on 2024/2/29.
 //
 
 import XCTest
 @testable import PocketTube
 
-final class HomeViewModelTest: XCTestCase {
-        
+final class HotNewReleaseViewModelTest: XCTestCase {
+
     override func setUp() {
         super.setUp()
         
     }
-    
+
     override func tearDown() {
         super.tearDown()
-        
     }
     
     func testInitAndNotNil() {
         // Arrange
-        let mockDataProvider = HomeViewModelMockDataProvider(result: .success(MockData.fakeMediaDic))
-        let sut = HomeViewModel(dataProvider: mockDataProvider)
+        let mockDataProvider = HotNewReleaseViewModelMockDataProvider(result: .success(MockData.fakeItems))
+        let sut = HotNewReleaseViewModel(dataProvider: mockDataProvider)
         
         // Action
         
@@ -33,8 +32,8 @@ final class HomeViewModelTest: XCTestCase {
     
     func testFetchSuccess() {
         // Arrange
-        let mockDataProvider = HomeViewModelMockDataProvider(result: .success(MockData.fakeMediaDic))
-        let sut = HomeViewModel(dataProvider: mockDataProvider)
+        let mockDataProvider = HotNewReleaseViewModelMockDataProvider(result: .success(MockData.fakeItems))
+        let sut = HotNewReleaseViewModel(dataProvider: mockDataProvider)
         
         //Spy去接sut.fetchData()的callback結果
         let spy = SpyDelegate()
@@ -49,15 +48,15 @@ final class HomeViewModelTest: XCTestCase {
 
         // Assert
         waitForExpectations(timeout: 5) { error in
-            XCTAssertNotNil(spy.capturedData)
+            XCTAssertNotNil(spy.capturedItem)
             XCTAssertNil(spy.capturedError)
         }
     }
     
     func testFetchFailure() {
         // Arrange
-        let provider = HomeViewModelMockDataProvider(result: .failure(NSError(domain: "", code: 0)))
-        let sut = HomeViewModel(dataProvider: provider)
+        let mockDataProvider = HotNewReleaseViewModelMockDataProvider(result: .failure(NSError(domain: "", code: 0)))
+        let sut = HotNewReleaseViewModel(dataProvider: mockDataProvider)
         
         //Spy去接sut.fetchData()的callback結果
         let spy = SpyDelegate()
@@ -67,7 +66,7 @@ final class HomeViewModelTest: XCTestCase {
         sut.fetchData()
         
         // Assert
-        XCTAssertNil(spy.capturedData)
+        XCTAssertNil(spy.capturedItem)
         XCTAssertNotNil(spy.capturedError)
     }
 }

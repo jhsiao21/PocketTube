@@ -6,13 +6,15 @@
 //
 
 import Foundation
-import UIKit
 
-enum SectionType: Int, Codable {
-    case Popular = 0
-    case Upcoming = 1
-    case Top10TVs = 2
-    case Top10Movies = 3
+protocol HotNewReleaseViewModelDelegate: AnyObject {
+    func hotNewReleaseViewModel(didReceiveItem item: [HotNewReleaseViewModelItem])
+    
+    func hotNewReleaseViewModel(didReceiveError error: Error)
+}
+
+protocol HotNewReleaseViewModelDataProvider {
+    func fetchMediaData(completion: @escaping (Result<[HotNewReleaseViewModelItem], Error>) -> Void)
 }
 
 protocol HotNewReleaseViewModelItem {
@@ -22,91 +24,29 @@ protocol HotNewReleaseViewModelItem {
     var rowCount: Int { get }
 }
 
-class HotNewReleaseViewModel: NSObject {
+final class HotNewReleaseViewModel {
     
+    private let dataProvider: HotNewReleaseViewModelDataProvider
+    weak var delegate: HotNewReleaseViewModelDelegate?
     var items: [HotNewReleaseViewModelItem] = []
-    
-    override init() {
-        super.init()
-//        fetchData()
+        
+    init(dataProvider: HotNewReleaseViewModelDataProvider) {
+        self.dataProvider = dataProvider
     }
     
-    func fetchData(completion: @escaping (Result<Bool, Error>) -> Void) {
-        let dispatchGroup = DispatchGroup()
-        
-        dispatchGroup.enter()
-        APIManager.shared.fetchUpcomingMovies { [weak self] result in
-            defer { dispatchGroup.leave() }
+    func fetchData() {
+        dataProvider.fetchMediaData { [weak self] result in
             switch result {
-            case .success(let media):
-                let mediaItem = HotNewReleaseViewModelUpcomingItem(medias: media)
-                self?.items.append(mediaItem)
-                
-                self?.items = self?.items.sorted { (item1, item2) -> Bool in
-                    return item1.type.rawValue < item2.type.rawValue
-                } ?? []
-                
+            case .success(let item):
+                self?.delegate?.hotNewReleaseViewModel(didReceiveItem: item)
             case .failure(let error):
-                completion(.failure(error))
-                print("Failed to fetch upcoming movies: \(error.localizedDescription)")
+                self?.delegate?.hotNewReleaseViewModel(didReceiveError: error)
             }
-        }
-        
-        dispatchGroup.enter()
-        APIManager.shared.fetchPopularMovies { [weak self] result in
-            defer { dispatchGroup.leave() }
-            switch result {
-            case .success(let media):
-                let mediaItem = HotNewReleaseViewModelPopularItem(medias: media)
-                self?.items.append(mediaItem)
-                self?.items = self?.items.sorted { (item1, item2) -> Bool in
-                    return item1.type.rawValue < item2.type.rawValue
-                } ?? []
-            case .failure(let error):
-                completion(.failure(error))
-                print("Failed to fetch popular movies: \(error.localizedDescription)")
-            }
-        }
-        
-        dispatchGroup.enter()
-        APIManager.shared.fetchTop10TVs { [weak self] result in
-            defer { dispatchGroup.leave() }
-            switch result {
-            case .success(let media):
-                let mediaItem = HotNewReleaseViewModelTop10TVsItem(medias: media)
-                self?.items.append(mediaItem)
-                self?.items = self?.items.sorted { (item1, item2) -> Bool in
-                    return item1.type.rawValue < item2.type.rawValue
-                } ?? []
-            case .failure(let error):
-                completion(.failure(error))
-                print("Failed to fetch Top 10 TVs movies: \(error.localizedDescription)")
-            }
-        }
-        
-        dispatchGroup.enter()
-        APIManager.shared.fetchTop10Movies { [weak self] result in
-            defer { dispatchGroup.leave() }
-            switch result {
-            case .success(let media):
-                let mediaItem = HotNewReleaseViewModelTop10MoviesItem(medias: media)
-                self?.items.append(mediaItem)
-                self?.items = self?.items.sorted { (item1, item2) -> Bool in
-                    return item1.type.rawValue < item2.type.rawValue
-                } ?? []
-            case .failure(let error):
-                completion(.failure(error))
-                print("Failed to fetch Top10 Movies movies: \(error.localizedDescription)")
-            }
-        }
-        
-        dispatchGroup.notify(queue: .main) {
-            completion(.success(true))
         }
     }
 }
 
-class HotNewReleaseViewModelPopularItem: HotNewReleaseViewModelItem {
+struct HotNewReleaseViewModelPopularItem: HotNewReleaseViewModelItem {
     var type: SectionType {
         return .Popular
     }
@@ -130,7 +70,7 @@ class HotNewReleaseViewModelPopularItem: HotNewReleaseViewModelItem {
     }
 }
 
-class HotNewReleaseViewModelUpcomingItem: HotNewReleaseViewModelItem {
+struct HotNewReleaseViewModelUpcomingItem: HotNewReleaseViewModelItem {
     var type: SectionType {
         return .Upcoming
     }
@@ -154,7 +94,7 @@ class HotNewReleaseViewModelUpcomingItem: HotNewReleaseViewModelItem {
     }
 }
 
-class HotNewReleaseViewModelTop10MoviesItem: HotNewReleaseViewModelItem {
+struct HotNewReleaseViewModelTop10MoviesItem: HotNewReleaseViewModelItem {
     var type: SectionType {
         return .Top10Movies
     }
@@ -178,7 +118,7 @@ class HotNewReleaseViewModelTop10MoviesItem: HotNewReleaseViewModelItem {
     }
 }
 
-class HotNewReleaseViewModelTop10TVsItem: HotNewReleaseViewModelItem {
+struct HotNewReleaseViewModelTop10TVsItem: HotNewReleaseViewModelItem {
     var type: SectionType {
         return .Top10TVs
     }

@@ -10,7 +10,11 @@ import JGProgressHUD
 
 class FavoritesViewController: UIViewController {
     
-    private var viewModel = FavoritesViewModel()
+    private lazy var viewModel : FavoritesViewModel = {
+        let vm = FavoritesViewModel(dataProvider: DatabaseManager.shared)
+        vm.delegate = self
+        return vm
+    }()
     
     private let favoritesTable: UITableView = {
        
@@ -32,16 +36,7 @@ class FavoritesViewController: UIViewController {
         favoritesTable.dataSource = self
         
         spinner.show(in: view)
-        viewModel.fetchData { [weak self] result in
-            switch result {
-            case .success(_):
-                self?.spinner.dismiss()
-                self?.favoritesTable.reloadData()
-            case .failure(let error):
-                self?.spinner.dismiss()
-                self?.showUIAlert(message: error.localizedDescription)
-            }
-        }
+        viewModel.fetchData()
         
         setupNotificationObservers()
     }
@@ -49,23 +44,14 @@ class FavoritesViewController: UIViewController {
     /// 設定通知
     func setupNotificationObservers() {
         let observerAction: (Notification) -> Void = { [weak self] _ in
-            self?.updateFaborites()
+            self?.updateFavorites()
         }
         NotificationCenter.default.addObserver(forName: .didFavorite, object: nil, queue: nil, using: observerAction)
         NotificationCenter.default.addObserver(forName: .didRefresh, object: nil, queue: nil, using: observerAction)
     }
     
-    func updateFaborites() {
-        viewModel.fetchData { [weak self] result in
-            switch result {
-            case .success(_):
-                self?.spinner.dismiss()
-                self?.favoritesTable.reloadData()
-            case .failure(let error):
-                self?.spinner.dismiss()
-                self?.showUIAlert(message: error.localizedDescription)
-            }
-        }
+    func updateFavorites() {
+        viewModel.fetchData()
     }
             
     override func viewDidLayoutSubviews() {
@@ -74,12 +60,25 @@ class FavoritesViewController: UIViewController {
     }
 }
 
+extension FavoritesViewController: FavoriteViewModelDelegate {
+    
+    func favoriteViewModel(didReceiveData data: [FMedia]) {
+        viewModel.medias = data
+        self.spinner.dismiss()
+        self.favoritesTable.reloadData()
+    }
+    
+    func favoriteViewModel(didReceiveError error: Error) {
+        self.spinner.dismiss()
+        self.showUIAlert(message: error.localizedDescription)
+    }
+}
 
+// MARK: - TableView Delegate, TableView Data Source
 extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.medias.count
     }
-    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
        

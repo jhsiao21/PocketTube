@@ -8,34 +8,44 @@
 import Foundation
 import Firebase
 
+protocol FavoriteViewModelDelegate: AnyObject {
+    func favoriteViewModel(didReceiveData data: [FMedia])
+    func favoriteViewModel(didReceiveError error: Error)
+}
+
+protocol FavoriteViewModelDataProvider {
+    func fetchFMediaData(completion: @escaping (Result<[FMedia], Error>) -> Void)
+}
+
 class FavoritesViewModel {
+    
+    weak var delegate: FavoriteViewModelDelegate?
+    private let dataProvider: FavoriteViewModelDataProvider
     var medias: [FMedia] = [FMedia]()
     
-    func fetchData(completion: @escaping (Result<Bool, Error>) -> Void) {
-        
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        
-        DatabaseManager.shared.fetchMedias(uid: uid) { result in
+    init(dataProvider: FavoriteViewModelDataProvider) {
+        self.dataProvider = dataProvider
+    }
+    
+    func fetchData() {
+        dataProvider.fetchFMediaData { [weak self] result in
             switch result {
-            case .success(let medias):
-                self.medias = medias.sorted(by: { $0.timestamp.dateValue() > $1.timestamp.dateValue() }) //按照時間排序
-//                self.medias = medias //沒排序
-                completion(.success(true))
-            case .failure(let error):
-                print(error.localizedDescription)
-                completion(.failure(ServiceErrors.failedToFetch))
+            case .success(let data):
+                self?.delegate?.favoriteViewModel(didReceiveData: data)
+            case .failure(let failure):
+                self?.delegate?.favoriteViewModel(didReceiveError: failure)
             }
         }
     }
     
     func deleteMedia(mediaId: String, completion: @escaping (Result<Bool, Error>) -> Void) {
-        DatabaseManager.shared.mediaDelete(mediaId: mediaId) { result in
-            switch result {
-            case .success(_):
-                completion(.success(true))
-            case .failure(let failure):
-                completion(.failure(failure))
+            DatabaseManager.shared.mediaDelete(mediaId: mediaId) { result in
+                switch result {
+                case .success(_):
+                    completion(.success(true))
+                case .failure(let failure):
+                    completion(.failure(failure))
+                }
             }
         }
-    }
 }

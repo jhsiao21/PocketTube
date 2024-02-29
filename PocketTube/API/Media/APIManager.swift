@@ -311,7 +311,10 @@ extension APIManager : APIManagerProtocol {
     
 }
 
+// MARK: - HomeViewModel Data Provider
 extension APIManager: HomeViewModelDataProvider {
+    
+    /// implenting fetchMediaData method
     func fetchMediaData(completion: @escaping (Result<[String : [Media]], Error>) -> Void) {
         var mediaData : [String : [Media]] = [:]
         let dispatchGroup = DispatchGroup()
@@ -409,6 +412,85 @@ extension APIManager: HomeViewModelDataProvider {
         
         dispatchGroup.notify(queue: .main) {
             completion(.success(mediaData))
+        }
+    }
+}
+
+
+extension APIManager: HotNewReleaseViewModelDataProvider {
+    
+    func fetchMediaData(completion: @escaping (Result<[HotNewReleaseViewModelItem], Error>) -> Void) {
+        var items: [HotNewReleaseViewModelItem] = []
+        let dispatchGroup = DispatchGroup()
+        
+        dispatchGroup.enter()
+        fetchUpcomingMovies { result in
+            defer { dispatchGroup.leave() }
+            switch result {
+            case .success(let media):
+                let mediaItem = HotNewReleaseViewModelUpcomingItem(medias: media)
+                items.append(mediaItem)
+                
+                items = items.sorted { (item1, item2) -> Bool in
+                    return item1.type.rawValue < item2.type.rawValue
+                }
+                
+            case .failure(let error):
+                completion(.failure(error))
+                print("Failed to fetch upcoming movies: \(error.localizedDescription)")
+            }
+        }
+        
+        dispatchGroup.enter()
+        fetchPopularMovies { result in
+            defer { dispatchGroup.leave() }
+            switch result {
+            case .success(let media):
+                let mediaItem = HotNewReleaseViewModelPopularItem(medias: media)
+                items.append(mediaItem)
+                items = items.sorted { (item1, item2) -> Bool in
+                    return item1.type.rawValue < item2.type.rawValue
+                }
+            case .failure(let error):
+                print("Failed to fetch popular movies: \(error.localizedDescription)")
+                completion(.failure(error))
+            }
+        }
+        
+        dispatchGroup.enter()
+        fetchTop10TVs { result in
+            defer { dispatchGroup.leave() }
+            switch result {
+            case .success(let media):
+                let mediaItem = HotNewReleaseViewModelTop10TVsItem(medias: media)
+                items.append(mediaItem)
+                items = items.sorted { (item1, item2) -> Bool in
+                    return item1.type.rawValue < item2.type.rawValue
+                } 
+            case .failure(let error):
+                print("Failed to fetch Top 10 TVs movies: \(error.localizedDescription)")
+                completion(.failure(error))
+            }
+        }
+        
+        dispatchGroup.enter()
+        fetchTop10Movies { result in
+            defer { dispatchGroup.leave() }
+            switch result {
+            case .success(let media):
+                let mediaItem = HotNewReleaseViewModelTop10MoviesItem(medias: media)
+                items.append(mediaItem)
+                items = items.sorted { (item1, item2) -> Bool in
+                    return item1.type.rawValue < item2.type.rawValue
+                }
+            case .failure(let error):
+                print("Failed to fetch Top10 Movies movies: \(error.localizedDescription)")
+                completion(.failure(error))
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            completion(.success(items))
         }
     }
 }

@@ -1,6 +1,6 @@
 //
 //  HomeViewModel.swift
-//  Netflix Clone
+//  PocketTube
 //
 //  Created by LoganMacMini on 2023/9/28.
 //

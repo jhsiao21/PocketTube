@@ -35,7 +35,7 @@ final class DatabaseManagerTest: XCTestCase {
         var result: (Result<FavoriteResponse, Error>)?
         
         // 2. Action
-        databaseManager.recordMedia(uid: realUid, media: FakeMedia.realData) { res in
+        databaseManager.recordMedia(uid: realUid, media: MockData.realFMedia) { res in
             result = res
             expectation.fulfill()
         }
@@ -86,7 +86,7 @@ final class DatabaseManagerTest: XCTestCase {
         var result: Result<Bool, Error>?
         
         // 2. Action
-        databaseManager.mediaExists(with: FakeMedia.realData.caption, uid: realUid) { res in
+        databaseManager.mediaExists(with: MockData.realFMedia.caption, uid: realUid) { res in
             result = res
             expectation.fulfill()
         }
@@ -109,7 +109,7 @@ final class DatabaseManagerTest: XCTestCase {
         var result: Result<Bool, Error>?
         
         // 2. Action
-        databaseManager.mediaExists(with: FakeMedia.fakeData.caption, uid: realUid) { res in
+        databaseManager.mediaExists(with: MockData.fakeFMedia.caption, uid: realUid) { res in
             result = res
             expectation.fulfill()
         }
@@ -174,14 +174,14 @@ final class DatabaseManagerTest: XCTestCase {
             let deleteExpectation = expectation(description: "mediaDelete completion")
                                     
             // 錄製media
-        databaseManager.recordMedia(uid: fakeUid, media: FakeMedia.fakeData) { result in
+        databaseManager.recordMedia(uid: fakeUid, media: MockData.fakeFMedia) { result in
                 switch result {
                 case .success(let response):
                     XCTAssertNotNil(response)
                     recordExpectation.fulfill()
                     
                     // 如果recordMedia成功，接著測試delete
-                    self.databaseManager.mediaDelete(mediaId: FakeMedia.fakeData.mId) { deleteResult in
+                    self.databaseManager.mediaDelete(mediaId: MockData.fakeFMedia.mId) { deleteResult in
                         switch deleteResult {
                         case .success(let success):
                             XCTAssertTrue(success)

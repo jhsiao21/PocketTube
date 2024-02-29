@@ -137,6 +137,7 @@ class HomeViewController: UIViewController {
     }
 }
 
+// MARK: - HomeViewModel Delegate
 extension HomeViewController: HomeViewModelDelegate {
     func homeViewModel(didReceiveData mediaData: [String : [Media]]) {
         viewModel.mediaData = mediaData

@@ -9,7 +9,7 @@ import Foundation
 import Firebase
 import FirebaseFirestore
 
-struct FMedia: Codable, Hashable {
+struct FMedia: Codable, Hashable, Equatable {
 //    @DocumentID private var mediaId: String?
     let ownerUid: String
     let caption: String

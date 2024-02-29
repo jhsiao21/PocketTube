@@ -10,7 +10,7 @@ import Foundation
 
 typealias MediaResult = Result<[String : [Media]], Error>
 
-class MockDataProvider: HomeViewModelDataProvider {
+class HomeViewModelMockDataProvider: HomeViewModelDataProvider {
     
     private let mediaResult: MediaResult
     

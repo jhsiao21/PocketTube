@@ -13,7 +13,13 @@ class HotNewReleaseViewController: UIViewController {
     private let naviBarConfigView = NaviBarConfigView()
     private let hotNewReleaseHeaderView = HotNewReleaseHeaderView()
     private let tableView = UITableView(frame: .zero, style: .grouped)
-    private let viewModel = HotNewReleaseViewModel()
+    
+    private lazy var viewModel : HotNewReleaseViewModel = {
+        let vm = HotNewReleaseViewModel(dataProvider: APIManager.shared)
+        vm.delegate = self
+        return vm
+    }()
+    
     private let spinner = JGProgressHUD(style: .dark)
             
     override func viewDidLoad() {
@@ -26,20 +32,7 @@ class HotNewReleaseViewController: UIViewController {
         naviBarConfigView.pushSearchViewDelegate = self
         
         spinner.show(in: view)
-        viewModel.fetchData { [weak self] result in
-            switch result {
-            case .success(_):
-                DispatchQueue.main.async {
-                    self?.spinner.dismiss()
-                    self?.tableView.reloadData()
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self?.spinner.dismiss()
-                }
-                self?.showUIAlert(message: error.localizedDescription)
-            }
-        }
+        viewModel.fetchData()
     }
     
     private func style() {
@@ -96,6 +89,20 @@ class HotNewReleaseViewController: UIViewController {
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }
+    }
+}
+
+// MARK: - HotNewReleaseViewModel Delegate
+extension HotNewReleaseViewController: HotNewReleaseViewModelDelegate {
+    func hotNewReleaseViewModel(didReceiveItem data: [HotNewReleaseViewModelItem]) {
+        viewModel.items = data
+        self.spinner.dismiss()
+        self.tableView.reloadData()
+    }
+    
+    func hotNewReleaseViewModel(didReceiveError error: Error) {
+        self.spinner.dismiss()
+        self.showUIAlert(message: error.localizedDescription)
     }
 }
 
@@ -271,6 +278,7 @@ extension HotNewReleaseViewController : SearchViewControllerPresentDelegate {
     }
 }
 
+// MARK: - ContentActionButton Delegate
 extension HotNewReleaseViewController: ContentActionButtonDelegate {
     func didTappedShareBtn(mediaName: String, image: UIImage) {
         spinner.show(in: view)

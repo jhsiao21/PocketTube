@@ -1,29 +1,19 @@
 //
-//  HomeViewModelTest.swift
+//  FavoriteViewModelTest.swift
 //  PocketTubeTests
 //
-//  Created by LoganMacMini on 2024/2/28.
+//  Created by LoganMacMini on 2024/2/29.
 //
 
 import XCTest
 @testable import PocketTube
 
-final class HomeViewModelTest: XCTestCase {
-        
-    override func setUp() {
-        super.setUp()
-        
-    }
-    
-    override func tearDown() {
-        super.tearDown()
-        
-    }
-    
+final class FavoriteViewModelTest: XCTestCase {
+
     func testInitAndNotNil() {
         // Arrange
-        let mockDataProvider = HomeViewModelMockDataProvider(result: .success(MockData.fakeMediaDic))
-        let sut = HomeViewModel(dataProvider: mockDataProvider)
+        let mockDataProvider = FavoriteViewModelMockDataProvider(result: .success(MockData.fakeFMedias))
+        let sut = FavoritesViewModel(dataProvider: mockDataProvider)
         
         // Action
         
@@ -33,8 +23,8 @@ final class HomeViewModelTest: XCTestCase {
     
     func testFetchSuccess() {
         // Arrange
-        let mockDataProvider = HomeViewModelMockDataProvider(result: .success(MockData.fakeMediaDic))
-        let sut = HomeViewModel(dataProvider: mockDataProvider)
+        let mockDataProvider = FavoriteViewModelMockDataProvider(result: .success(MockData.fakeFMedias))
+        let sut = FavoritesViewModel(dataProvider: mockDataProvider)
         
         //Spy去接sut.fetchData()的callback結果
         let spy = SpyDelegate()
@@ -49,15 +39,15 @@ final class HomeViewModelTest: XCTestCase {
 
         // Assert
         waitForExpectations(timeout: 5) { error in
-            XCTAssertNotNil(spy.capturedData)
+            XCTAssertNotNil(spy.capturedFData)
             XCTAssertNil(spy.capturedError)
         }
     }
     
     func testFetchFailure() {
         // Arrange
-        let provider = HomeViewModelMockDataProvider(result: .failure(NSError(domain: "", code: 0)))
-        let sut = HomeViewModel(dataProvider: provider)
+        let provider = FavoriteViewModelMockDataProvider(result: .failure(NSError(domain: "", code: 0)))
+        let sut = FavoritesViewModel(dataProvider: provider)
         
         //Spy去接sut.fetchData()的callback結果
         let spy = SpyDelegate()
@@ -67,7 +57,8 @@ final class HomeViewModelTest: XCTestCase {
         sut.fetchData()
         
         // Assert
-        XCTAssertNil(spy.capturedData)
+        XCTAssertNil(spy.capturedFData)
         XCTAssertNotNil(spy.capturedError)
     }
+
 }

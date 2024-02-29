@@ -168,3 +168,34 @@ extension DatabaseManager: DatabaseManagerProtocol {
 //           }
     }
 }
+
+//MARK: - FavoriteViewModel Data Provider
+extension DatabaseManager: FavoriteViewModelDataProvider {
+    func fetchFMediaData(completion: @escaping (Result<[FMedia], Error>) -> Void) {
+        var medias: [FMedia] = []
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        fetchMedias(uid: uid) { result in
+            switch result {
+            case .success(let data):
+                medias = data.sorted(by: { $0.timestamp.dateValue() > $1.timestamp.dateValue() }) //按照時間排序
+//              medias = data //沒排序
+                completion(.success(medias))
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func deleteMedia(mediaId: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+        mediaDelete(mediaId: mediaId) { result in
+            switch result {
+            case .success(_):
+                completion(.success(true))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+}
