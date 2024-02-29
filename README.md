@@ -17,24 +17,28 @@ The following content includes technical details, feature introductions, and dem
 * Testable API class and view model for Unit Test
 
 ## Introduction
-Authentication
+### Authentication
 
 ![](images/Authentication.png)
 ![](images/LogIn.png)
 ![](images/SignUp.png)
+
 [Demo video](https://www.youtube.com/watch?v=OS2JBtEoAFg)
 
-Home
+### Home
 
 ![](images/Home.png)
+
 [Demo video](https://www.youtube.com/watch?v=4F-UszejoWA)
 
-HotNewRelease
+### HotNewRelease
 
 ![](images/HotNewRelease.png)
+
 [Demo video](https://www.youtube.com/watch?v=tuH_Y2zdWZs)
 
-Search
+### Search
 
 ![](images/Search.png)
+
 [Demo video](https://www.youtube.com/watch?v=BQcOcP1j3bY)
