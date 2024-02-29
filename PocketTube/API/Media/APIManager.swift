@@ -8,11 +8,7 @@
 import Foundation
 
 final class APIManager {
-    
-    func fetchMedia(completion: @escaping (Result<[Media], Error>) -> Void) {
-        completion(.failure(NSError(domain: "", code: 0)))
-    }
-    
+        
     static let shared: APIManager = APIManager()
     
     init(){
@@ -313,6 +309,108 @@ extension APIManager : APIManagerProtocol {
         task.resume()
     }
     
+}
+
+extension APIManager: HomeViewModelDataProvider {
+    func fetchMediaData(completion: @escaping (Result<[String : [Media]], Error>) -> Void) {
+        var mediaData : [String : [Media]] = [:]
+        let dispatchGroup = DispatchGroup()
+        
+        dispatchGroup.enter()
+        fetchMandarinMedia { result in
+            defer { dispatchGroup.leave() }
+            switch result {
+            case .success(let medias):
+                mediaData["\(String(Sections.MandarinMedia.caseDescription))"] = medias
+                print("MandarinMedia finish")
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(.failure(error))
+            }
+        }
+        
+        dispatchGroup.enter()
+        fetchPlayingMedia { result in
+            defer { dispatchGroup.leave() }
+            switch result {
+            case .success(let medias):
+                mediaData["\(String(Sections.NowPlaying.caseDescription))"] = medias
+                print("PlayingMedia finish")
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(.failure(error))
+            }
+        }
+        
+        dispatchGroup.enter()
+        fetchMediaFromUrl(Constants.TrendingMoviesUrl) { result in
+            defer { dispatchGroup.leave() }
+            switch result {
+            case .success(let medias):
+                mediaData["\(String(Sections.TrendingMovies.caseDescription))"] = medias
+                print("TrendingMovies finish")
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(.failure(error))
+            }
+        }
+        
+        dispatchGroup.enter()
+        fetchMediaFromUrl(Constants.TrendingTVsUrl) { result in
+            defer { dispatchGroup.leave() }
+            switch result {
+            case .success(let medias):
+                mediaData["\(String(describing: Sections.TrendingTVs.caseDescription))"] = medias
+                print("TrendingTVs finish")
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(.failure(error))
+            }
+        }
+        
+        dispatchGroup.enter()
+        fetchMediaFromUrl(Constants.PopularMoviesUrl) { result in
+            defer { dispatchGroup.leave() }
+            switch result {
+            case .success(let medias):
+                mediaData["\(String(Sections.PopularMovies.caseDescription))"] = medias
+                print("PopularMovies finish")
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(.failure(error))
+            }
+        }
+        
+        dispatchGroup.enter()
+        fetchMediaFromUrl(Constants.UpcomingMoviesUrl) { result in
+            defer { dispatchGroup.leave() }
+            switch result {
+            case .success(let medias):
+                mediaData["\(String(Sections.UpcomingMovies.caseDescription))"] = medias
+                print("UpcomingMovies finish")
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(.failure(error))
+            }
+        }
+        
+        dispatchGroup.enter()
+        fetchMediaFromUrl(Constants.TopRatedMoviesUrl) { result in
+            defer { dispatchGroup.leave() }
+            switch result {
+            case .success(let medias):
+                mediaData["\(String(Sections.Top10Movies.caseDescription))"] = medias
+                print("TopRatedMovies finish")
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(.failure(error))
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            completion(.success(mediaData))
+        }
+    }
 }
 
 struct Constants {

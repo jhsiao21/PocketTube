@@ -59,7 +59,7 @@ final class HomeViewModelTest: XCTestCase {
         let provider = MockDataProvider(result: .failure(NSError(domain: "", code: 0)))
         let sut = HomeViewModel(dataProvider: provider)
         
-        //Spy去接sut.fetchMoney()的callback結果
+        //Spy去接sut.fetchData()的callback結果
         let spy = SpyDelegate()
         sut.delegate = spy
         
@@ -71,66 +71,6 @@ final class HomeViewModelTest: XCTestCase {
         XCTAssertNotNil(spy.capturedError)
     }
 
-}
-
-class MockDataProvider: APIManagerProtocol {
-    
-    typealias MediaResult = Result<[Media], Error>
-    
-    private let mediaResult: MediaResult
-    
-    init(result: MediaResult) {
-        self.mediaResult = result
-    }
-    
-    func fetchMandarinMedia(completion: @escaping (MediaResult) -> Void) {
-        completion(mediaResult)
-    }
-    
-    func fetchPlayingMedia(completion: @escaping (MediaResult) -> Void) {
-        completion(mediaResult)
-    }
-    
-    func fetchTrendingMovies(completion: @escaping (MediaResult) -> Void) {
-        completion(mediaResult)
-    }
-    
-    func fetchTrendingTvs(completion: @escaping (MediaResult) -> Void) {
-        completion(mediaResult)
-    }
-    
-    func fetchUpcomingMovies(completion: @escaping (MediaResult) -> Void) {
-        completion(mediaResult)
-    }
-    
-    func fetchPopularMovies(completion: @escaping (MediaResult) -> Void) {
-        completion(mediaResult)
-    }
-    
-    func fetchTop10Movies(completion: @escaping (MediaResult) -> Void) {
-        completion(mediaResult)
-    }
-    
-    func fetchTop10TVs(completion: @escaping (MediaResult) -> Void) {
-        completion(mediaResult)
-    }
-    
-    func fetchDiscoverMovies(completion: @escaping (MediaResult) -> Void) {
-        completion(mediaResult)
-    }
-    
-    func fetchMediaFromUrl(_ url: String, completion: @escaping (MediaResult) -> Void) {
-        completion(mediaResult)
-    }
-    
-    func searchMedia(with query: String, completion: @escaping (MediaResult) -> Void) {
-        completion(mediaResult)
-    }
-    
-    func fetchYouTubeMedia(with query: String, completion: @escaping (Result<PocketTube.VideoElement, Error>) -> Void) {
-        
-    }
-    
 }
 
 class SpyDelegate: HomeViewModelDelegate {

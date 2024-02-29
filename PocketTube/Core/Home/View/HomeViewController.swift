@@ -139,6 +139,7 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: HomeViewModelDelegate {
     func homeViewModel(didReceiveData mediaData: [String : [Media]]) {
+        viewModel.mediaData = mediaData
         self.spinner.dismiss()
         self.homeFeedTable.reloadData()
     }
