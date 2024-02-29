@@ -18,13 +18,23 @@ The following content includes technical details, feature introductions, and dem
 
 ## Introduction
 Authentication
+
+![](images/Authentication.png)
+![](images/LogIn.png)
+![](images/SignUp.png)
 [Demo video](https://www.youtube.com/watch?v=OS2JBtEoAFg)
 
 Home
+
+![](images/Home.png)
 [Demo video](https://www.youtube.com/watch?v=4F-UszejoWA)
 
-Search
-[Demo video](https://www.youtube.com/watch?v=BQcOcP1j3bY)
-
 HotNewRelease
+
+![](images/HotNewRelease.png)
 [Demo video](https://www.youtube.com/watch?v=tuH_Y2zdWZs)
+
+Search
+
+![](images/Search.png)
+[Demo video](https://www.youtube.com/watch?v=BQcOcP1j3bY)
