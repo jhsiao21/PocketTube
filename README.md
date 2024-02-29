@@ -42,3 +42,7 @@ The following content includes technical details, feature introductions, and dem
 ![](images/Search.png)
 
 [Demo video](https://www.youtube.com/watch?v=BQcOcP1j3bY)
+
+## Build
+1. Drag your own GoogleService-Info.plist into the project.
+2. Replace your FacebookAppID and FacebookClientToken in Info.plist file.
