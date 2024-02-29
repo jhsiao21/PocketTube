@@ -10,9 +10,11 @@ import Foundation
 
 class SpyDelegate {
     private(set) var capturedData: [String : [Media]]?
-    private(set) var capturedItem: [HotNewReleaseViewModelItem]?
-    private(set) var capturedError: Error?
     private(set) var capturedFData: [FMedia]?
+    private(set) var capturedItem: [HotNewReleaseViewModelItem]?
+    private(set) var capturedSearchItem: [SearchResultViewModelItem]?
+    private(set) var capturedError: Error?
+    
 }
 
 // MARK: - HomeViewModel Delegate
@@ -38,12 +40,28 @@ extension SpyDelegate: HotNewReleaseViewModelDelegate {
     }
 }
 
+// MARK: - FavoriteViewModel Delegate
 extension SpyDelegate: FavoriteViewModelDelegate {
     func favoriteViewModel(didReceiveData data: [PocketTube.FMedia]) {
         capturedFData = data
     }
     
     func favoriteViewModel(didReceiveError error: Error) {
+        capturedError = error
+    }
+}
+
+// MARK: - SearchViewModelDelegate
+extension SpyDelegate: SearchViewModelDelegate {
+    func searchViewModel(didReceiveData data: [SearchResultViewModelItem]) {
+        capturedSearchItem = data
+    }
+    
+    func searchViewModel(didReceiveSearchData data: [SearchResultViewModelItem]) {
+        capturedSearchItem = data
+    }
+    
+    func searchViewModel(didReceiveError error: Error) {
         capturedError = error
     }
 }

@@ -417,6 +417,7 @@ extension APIManager: HomeViewModelDataProvider {
 }
 
 
+// MARK: - HotNewReleaseViewModel DataProvider
 extension APIManager: HotNewReleaseViewModelDataProvider {
     
     func fetchMediaData(completion: @escaping (Result<[HotNewReleaseViewModelItem], Error>) -> Void) {
@@ -491,6 +492,43 @@ extension APIManager: HotNewReleaseViewModelDataProvider {
         
         dispatchGroup.notify(queue: .main) {
             completion(.success(items))
+        }
+    }
+}
+
+//MARK: - SearchViewModelDataProvider
+extension APIManager: SearchViewModelDataProvider {
+    
+    func fetchDiscoverMedia(completion: @escaping (Result<[SearchResultViewModelItem], Error>) -> Void) {
+        var defaultItems: [SearchResultViewModelItem] = []
+        
+        fetchDiscoverMovies { result in
+            switch result {
+            case .success(let media):
+                let mediaItem = MoviesAndTVsItem(medias: media) //這裡決定預設要顯示什麼內容
+                defaultItems.append(mediaItem)
+                completion(.success(defaultItems))
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func searchFor(with mediaName: String, completion: @escaping (Result<[SearchResultViewModelItem], Error>) -> Void) {
+        var searchedItems: [SearchResultViewModelItem] = []
+        
+        searchMedia(with: mediaName) { result in
+            switch result {
+            case .success(let media):
+                searchedItems.removeAll()
+                let mediaItem = MoviesAndTVsItem(medias: media)
+                searchedItems.append(mediaItem)
+                completion(.success(searchedItems))
+            case .failure(let error):
+                completion(.failure(error))
+                print(error.localizedDescription)
+            }
         }
     }
 }

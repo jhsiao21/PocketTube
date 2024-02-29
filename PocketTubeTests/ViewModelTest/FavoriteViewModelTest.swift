@@ -60,5 +60,4 @@ final class FavoriteViewModelTest: XCTestCase {
         XCTAssertNil(spy.capturedFData)
         XCTAssertNotNil(spy.capturedError)
     }
-
 }

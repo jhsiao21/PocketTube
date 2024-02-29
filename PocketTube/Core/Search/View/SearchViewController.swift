@@ -10,20 +10,15 @@ import JGProgressHUD
 
 final class SearchViewController: UIViewController {
     
-    private var viewModel = SearchViewModel()
+    private lazy var viewModel : SearchViewModel = {
+        let vm = SearchViewModel(dataProvider: APIManager.shared)
+        vm.delegate = self
+        return vm
+    }()
     private let tableView = UITableView(frame: .zero, style: .grouped)
     static let shared = SearchViewController()
     private let spinner = JGProgressHUD(style: .dark)
-    
-    private init()
-    {
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+        
     private let searchController: UISearchController = {
         let controller = UISearchController(searchResultsController: nil)
         controller.searchBar.placeholder = "Search for a Movie or TV show"
@@ -41,18 +36,7 @@ final class SearchViewController: UIViewController {
         setupTableView()
         
         spinner.show(in: view)
-        viewModel.fetchDiscoverMovies { [weak self] result in
-            switch result {
-            case .success(_):
-                self?.spinner.dismiss()
-                DispatchQueue.main.async {
-                    self?.tableView.reloadData()
-                }
-            case .failure(let failure):
-                self?.spinner.dismiss()
-                self?.showUIAlert(message: failure.localizedDescription)
-            }
-        }
+        viewModel.fetchDiscoverMovies()
     }
     
     private func style() {
@@ -88,6 +72,32 @@ final class SearchViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         navigationController?.navigationBar.tintColor = .white
+    }
+}
+
+// MARK: - SearchViewModelDelegate
+extension SearchViewController: SearchViewModelDelegate {
+    func searchViewModel(didReceiveData data: [SearchResultViewModelItem]) {
+        viewModel.defaultItems = data
+        DispatchQueue.main.async {
+            self.spinner.dismiss()
+            self.tableView.reloadData()
+        }
+    }
+    
+    func searchViewModel(didReceiveSearchData data: [SearchResultViewModelItem]) {
+        viewModel.searchedItems = data
+        DispatchQueue.main.async {
+            self.spinner.dismiss()
+            self.tableView.reloadData()
+        }
+    }
+    
+    func searchViewModel(didReceiveError error: Error) {
+        DispatchQueue.main.async {
+            self.spinner.dismiss()
+            self.showUIAlert(message: error.localizedDescription)
+        }        
     }
 }
 
@@ -231,13 +241,6 @@ extension SearchViewController: UISearchResultsUpdating {
             return
         }
         
-        viewModel.search(with: query) { [weak self] result in
-            switch result {
-            case .success(_):
-                self?.tableView.reloadData()
-            case .failure(let failure):
-                self?.showUIAlert(message: failure.localizedDescription)
-            }
-        }
+        viewModel.search(with: query)
     }
 }

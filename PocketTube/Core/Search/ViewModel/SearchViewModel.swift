@@ -8,9 +8,17 @@
 import Foundation
 import UIKit
 
-enum SearchResultType: Int, Codable {
-    case MoviesAndTVs = 0
-    case SearchChampion = 1
+protocol SearchViewModelDelegate: AnyObject {
+    func searchViewModel(didReceiveData data: [SearchResultViewModelItem])
+    func searchViewModel(didReceiveSearchData data: [SearchResultViewModelItem])
+    func searchViewModel(didReceiveError error: Error)
+}
+
+protocol SearchViewModelDataProvider {
+    typealias SearchResult = Result<[SearchResultViewModelItem], Error>
+    
+    func fetchDiscoverMedia(completion: @escaping (SearchResult) -> Void)
+    func searchFor(with mediaName: String, completion: @escaping (SearchResult) -> Void)
 }
 
 protocol SearchResultViewModelItem {
@@ -19,44 +27,37 @@ protocol SearchResultViewModelItem {
     var rowCount: Int { get }
 }
 
-class SearchViewModel : NSObject {
+class SearchViewModel {
+    
+    weak var delegate: SearchViewModelDelegate?
+    private let dataProvider: SearchViewModelDataProvider
     
     var defaultItems: [SearchResultViewModelItem] = []
     var searchedItems: [SearchResultViewModelItem] = []
     
-    override init() {
-        super.init()
-        //        fetchDiscoverMovies()
+    init(dataProvider: SearchViewModelDataProvider) {
+        self.dataProvider = dataProvider
     }
     
     // MARK: - API request
-    func fetchDiscoverMovies(completion: @escaping (Result<Bool, Error>) -> Void) {
-        APIManager.shared.fetchDiscoverMovies { [weak self] result in
+    func fetchDiscoverMovies() {
+        dataProvider.fetchDiscoverMedia { [weak self] result in
             switch result {
-            case .success(let media):
-                let mediaItem = MoviesAndTVsItem(medias: media) //這裡決定預設要顯示什麼內容
-                self?.defaultItems.append(mediaItem)
-                completion(.success(true))
-            case .failure(let error):
-                print(error.localizedDescription)
-                completion(.failure(error))
+            case .success(let data):
+                self?.delegate?.searchViewModel(didReceiveData: data)
+            case .failure(let failure):
+                self?.delegate?.searchViewModel(didReceiveError: failure)
             }
         }
     }
     
-    func search(with query: String, completion: @escaping (Result<Bool, Error>) -> Void) {
-        APIManager.shared.searchMedia(with: query) { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let media):
-                    self?.searchedItems.removeAll()
-                    let mediaItem = MoviesAndTVsItem(medias: media)
-                    self?.searchedItems.append(mediaItem)
-                    completion(.success(true))
-                case .failure(let error):
-                    completion(.failure(error))
-                    print(error.localizedDescription)
-                }
+    func search(with mediaName: String) {
+        dataProvider.searchFor(with: mediaName) { [weak self] result in
+            switch result {
+            case .success(let data):
+                self?.delegate?.searchViewModel(didReceiveSearchData: data)
+            case .failure(let error):
+                self?.delegate?.searchViewModel(didReceiveError: error)
             }
         }
     }

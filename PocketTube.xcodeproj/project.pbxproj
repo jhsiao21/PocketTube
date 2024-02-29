@@ -22,6 +22,9 @@
 		0265323E2B90631600E9B585 /* HotNewReleaseViewModelMockDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0265323D2B90631600E9B585 /* HotNewReleaseViewModelMockDataProvider.swift */; };
 		026532402B90732D00E9B585 /* FavoriteViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0265323F2B90732D00E9B585 /* FavoriteViewModelTest.swift */; };
 		026532422B90736000E9B585 /* FavoriteViewModelMockDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026532412B90736000E9B585 /* FavoriteViewModelMockDataProvider.swift */; };
+		026532452B907A8800E9B585 /* SearchResultType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026532442B907A8800E9B585 /* SearchResultType.swift */; };
+		026532472B90B51B00E9B585 /* SearchViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026532462B90B51B00E9B585 /* SearchViewModelTest.swift */; };
+		026532492B90B55B00E9B585 /* SearchViewModelMockDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026532482B90B55B00E9B585 /* SearchViewModelMockDataProvider.swift */; };
 		029825692AB8990E00503EF0 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029825682AB8990E00503EF0 /* SearchViewModel.swift */; };
 		0298256E2AB9E8C900503EF0 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0298256D2AB9E8C900503EF0 /* SearchTableViewCell.swift */; };
 		029825702AC3125200503EF0 /* Haptic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0298256F2AC3125200503EF0 /* Haptic.swift */; };
@@ -124,6 +127,9 @@
 		0265323D2B90631600E9B585 /* HotNewReleaseViewModelMockDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotNewReleaseViewModelMockDataProvider.swift; sourceTree = "<group>"; };
 		0265323F2B90732D00E9B585 /* FavoriteViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteViewModelTest.swift; sourceTree = "<group>"; };
 		026532412B90736000E9B585 /* FavoriteViewModelMockDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteViewModelMockDataProvider.swift; sourceTree = "<group>"; };
+		026532442B907A8800E9B585 /* SearchResultType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultType.swift; sourceTree = "<group>"; };
+		026532462B90B51B00E9B585 /* SearchViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModelTest.swift; sourceTree = "<group>"; };
+		026532482B90B55B00E9B585 /* SearchViewModelMockDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModelMockDataProvider.swift; sourceTree = "<group>"; };
 		029825682AB8990E00503EF0 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		0298256D2AB9E8C900503EF0 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		0298256F2AC3125200503EF0 /* Haptic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptic.swift; sourceTree = "<group>"; };
@@ -247,6 +253,7 @@
 				026532322B9027B800E9B585 /* HomeViewModelMockDataProvider.swift */,
 				0265323D2B90631600E9B585 /* HotNewReleaseViewModelMockDataProvider.swift */,
 				026532412B90736000E9B585 /* FavoriteViewModelMockDataProvider.swift */,
+				026532482B90B55B00E9B585 /* SearchViewModelMockDataProvider.swift */,
 			);
 			path = MockData;
 			sourceTree = "<group>";
@@ -257,6 +264,7 @@
 				0265322E2B8F8A9800E9B585 /* HomeViewModelTest.swift */,
 				026532392B90400700E9B585 /* HotNewReleaseViewModelTest.swift */,
 				0265323F2B90732D00E9B585 /* FavoriteViewModelTest.swift */,
+				026532462B90B51B00E9B585 /* SearchViewModelTest.swift */,
 			);
 			path = ViewModelTest;
 			sourceTree = "<group>";
@@ -265,6 +273,14 @@
 			isa = PBXGroup;
 			children = (
 				026532362B90385E00E9B585 /* SectionType.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		026532432B907A7800E9B585 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				026532442B907A8800E9B585 /* SearchResultType.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -372,6 +388,7 @@
 		02AAB5112B2D4D5A0056CE7E /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				026532432B907A7800E9B585 /* Model */,
 				02AAB5132B2D4D6A0056CE7E /* View */,
 				02AAB5122B2D4D670056CE7E /* ViewModel */,
 			);
@@ -727,7 +744,9 @@
 				0265322C2B8F41C600E9B585 /* MockData.swift in Sources */,
 				026532402B90732D00E9B585 /* FavoriteViewModelTest.swift in Sources */,
 				026532252B8F3A7D00E9B585 /* APIManagerTest.swift in Sources */,
+				026532492B90B55B00E9B585 /* SearchViewModelMockDataProvider.swift in Sources */,
 				0265323C2B9040A400E9B585 /* SpyDelegate.swift in Sources */,
+				026532472B90B51B00E9B585 /* SearchViewModelTest.swift in Sources */,
 				0265322F2B8F8A9800E9B585 /* HomeViewModelTest.swift in Sources */,
 				0265323E2B90631600E9B585 /* HotNewReleaseViewModelMockDataProvider.swift in Sources */,
 				0265323A2B90400700E9B585 /* HotNewReleaseViewModelTest.swift in Sources */,
@@ -788,6 +807,7 @@
 				02D22B652B8B706C005898B7 /* ShowAlertDelegate.swift in Sources */,
 				0AD8A1BE2786FDB000612F1E /* YoutubeSearchResponse.swift in Sources */,
 				0298256E2AB9E8C900503EF0 /* SearchTableViewCell.swift in Sources */,
+				026532452B907A8800E9B585 /* SearchResultType.swift in Sources */,
 				02D22ABB2B7A1B6B005898B7 /* UIViewController+Ext.swift in Sources */,
 				0A6209A92734603E00A88D71 /* SceneDelegate.swift in Sources */,
 				0AF8A46D2787BEA400FFE877 /* YoutubePreviewModel.swift in Sources */,
