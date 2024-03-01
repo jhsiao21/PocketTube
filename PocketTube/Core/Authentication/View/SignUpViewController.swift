@@ -12,6 +12,8 @@ import JGProgressHUD
 class SignUpViewController: UIViewController {
     
     private let spinner = JGProgressHUD(style: .dark)
+    private var validEmail = false
+    private var validPassword = false
         
     private var titleLabel: UILabel = {
         let label = UILabel()
@@ -37,7 +39,7 @@ class SignUpViewController: UIViewController {
                             font: SignUpViewController.textFieldFont,
                             cornerRadius: 40/2,
                             borderColor: SignUpViewController.textFieldBorderColor,
-                            backgroundColor: SignUpViewController.backgroundColor,
+                            backgroundColor: .secondarySystemBackground,
                             borderWidth: 1.0)
         textField.placeholder = "User Name"
         textField.clipsToBounds = true
@@ -51,7 +53,7 @@ class SignUpViewController: UIViewController {
                             font: SignUpViewController.textFieldFont,
                             cornerRadius: 40/2,
                             borderColor: SignUpViewController.textFieldBorderColor,
-                            backgroundColor: SignUpViewController.backgroundColor,
+                            backgroundColor: .secondarySystemBackground,
                             borderWidth: 1.0)
         textField.placeholder = "Phone Number"
         textField.keyboardType = .phonePad
@@ -66,7 +68,7 @@ class SignUpViewController: UIViewController {
                             font: SignUpViewController.textFieldFont,
                             cornerRadius: 40/2,
                             borderColor: SignUpViewController.textFieldBorderColor,
-                            backgroundColor: SignUpViewController.backgroundColor,
+                            backgroundColor: .secondarySystemBackground,
                             borderWidth: 1.0)
         textField.placeholder = "Password"
         textField.isSecureTextEntry = true
@@ -81,7 +83,7 @@ class SignUpViewController: UIViewController {
                             font: SignUpViewController.textFieldFont,
                             cornerRadius: 40/2,
                             borderColor: SignUpViewController.textFieldBorderColor,
-                            backgroundColor: SignUpViewController.backgroundColor,
+                            backgroundColor: .secondarySystemBackground,
                             borderWidth: 1.0)
         textField.placeholder = "E-mail Address"
         textField.clipsToBounds = true
@@ -89,8 +91,22 @@ class SignUpViewController: UIViewController {
         return textField
     }()
     
-    private var errorLabel: UILabel = {
+    private let emailValidationLabel: UILabel = {
         let label = UILabel()
+        label.textAlignment = .left
+        label.textColor = .red
+        label.font = .systemFont(ofSize: 14, weight: .medium)
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let passwordValidationLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.textColor = .red
+        label.font = .systemFont(ofSize: 14, weight: .medium)
+        label.isHidden = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -114,6 +130,7 @@ class SignUpViewController: UIViewController {
 
         self.hideKeyboardWhenTappedAround()
         layout()
+        setupTextField()
     }
     
     private func layout() {
@@ -122,45 +139,51 @@ class SignUpViewController: UIViewController {
         view.addSubview(nameTextField)
         view.addSubview(phoneNumberTextField)
         view.addSubview(emailTextField)
+        view.addSubview(emailValidationLabel)
         view.addSubview(passwordTextField)
+        view.addSubview(passwordValidationLabel)
         view.addSubview(signUpButton)
-        view.addSubview(errorLabel)
         
         NSLayoutConstraint.activate([
             backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
             backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             backButton.widthAnchor.constraint(equalToConstant: 25),
             backButton.heightAnchor.constraint(equalToConstant: 25),
-            
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+                        
             titleLabel.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 50),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             
-            view.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor, constant: 40),
-            nameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
             nameTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 40),
+            nameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
+            view.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor, constant: 40),
             nameTextField.heightAnchor.constraint(equalToConstant: 40),
             
-            view.trailingAnchor.constraint(equalTo: phoneNumberTextField.trailingAnchor, constant: 40),
-            phoneNumberTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
             phoneNumberTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 20),
+            phoneNumberTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
+            view.trailingAnchor.constraint(equalTo: phoneNumberTextField.trailingAnchor, constant: 40),
             phoneNumberTextField.heightAnchor.constraint(equalToConstant: 40),
-            
-            view.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor, constant: 40),
-            emailTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
+                        
             emailTextField.topAnchor.constraint(equalTo: phoneNumberTextField.bottomAnchor, constant: 20),
+            emailTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
+            view.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor, constant: 40),
             emailTextField.heightAnchor.constraint(equalToConstant: 40),
             
-            view.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor, constant: 40),
-            passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
+            emailValidationLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 0),
+            emailValidationLabel.leadingAnchor.constraint(equalTo: emailTextField.leadingAnchor),
+            emailValidationLabel.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor),
+            
             passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 20),
+            passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
+            view.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor, constant: 40),
             passwordTextField.heightAnchor.constraint(equalToConstant: 40),
             
-            errorLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            errorLabel.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 15),
+            passwordValidationLabel.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 0),
+            passwordValidationLabel.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor),
+            passwordValidationLabel.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor),
             
             view.trailingAnchor.constraint(equalTo: signUpButton.trailingAnchor, constant: 60),
             signUpButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 60),
-            signUpButton.topAnchor.constraint(equalTo: errorLabel.bottomAnchor, constant: 25),
+            signUpButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 50),
             signUpButton.heightAnchor.constraint(equalToConstant: 40),
         ])
     }
@@ -179,12 +202,13 @@ class SignUpViewController: UIViewController {
     }
 
     @objc func didTapSignUpButton() {
-        spinner.show(in: view)
-        
+                
         if let email = emailTextField.text,
             let password = passwordTextField.text,
            let userName = nameTextField.text,
-           let phone = phoneNumberTextField.text {
+           let phone = phoneNumberTextField.text,
+           validEmail, validPassword {
+            spinner.show(in: view)
             AuthService.shared.createUser(withEmail: email, password: password, userName: userName, phone: phone ) { [unowned self] result in
                 var message: String = ""
                 DispatchQueue.main.async {
@@ -199,11 +223,44 @@ class SignUpViewController: UIViewController {
                     self.showUIAlert(message: message)
                 }
             }
+        } else {
+            showUIAlert(message: "Something went wrong.\nPlease check your information.")
         }
     }
-
-    func display(alertController: UIAlertController) {
-        self.present(alertController, animated: true, completion: nil)
+    
+    // MARK: Format Check
+    private func setupTextField() {
+        emailTextField.textValidation { [weak self] text in
+            guard let strongSelf = self else {
+                return
+            }
+            let isValidEmail = text.emailValidation()
+            strongSelf.emailValidationLabel.isHidden = false
+            if isValidEmail {
+                self?.emailValidationLabel.text = ""
+                strongSelf.validEmail = true
+            }
+            else {
+                self?.emailValidationLabel.text = "Email is not valid"
+                strongSelf.validEmail = false
+            }
+        }
+        
+        passwordTextField.textValidation { [weak self] text in
+            guard let strongSelf = self else {
+                return
+            }
+            let isValidPassword = text.passwordValidation()
+            self?.passwordValidationLabel.isHidden = false
+            if isValidPassword {
+                self?.passwordValidationLabel.text = ""
+                strongSelf.validPassword = true
+            }
+            else {
+                self?.passwordValidationLabel.text = "At least 8 characters"
+                strongSelf.validPassword = false
+            }
+        }
     }
 }
 

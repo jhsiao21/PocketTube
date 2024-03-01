@@ -11,7 +11,7 @@ class LandingScreenViewController: UIViewController {
     
     var logoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "AppIcon")
+        imageView.image = UIImage(named: "1024px_pocket_icon")
         imageView.tintColor = LandingScreenViewController.tintColor
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false

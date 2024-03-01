@@ -41,12 +41,13 @@ class LoginViewController: UIViewController {
                             font: textFieldFont,
                             cornerRadius: 55/2,
                             borderColor: textFieldBorderColor,
-                            backgroundColor: backgroundColor,
+                            backgroundColor: .secondarySystemBackground,
                             borderWidth: 1.0)
         textField.placeholder = "E-mail"
         textField.textContentType = .emailAddress
         textField.clipsToBounds = true
         textField.returnKeyType = .continue
+        textField.autocapitalizationType = .none
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -57,7 +58,7 @@ class LoginViewController: UIViewController {
                             font: textFieldFont,
                             cornerRadius: 55/2,
                             borderColor: textFieldBorderColor,
-                            backgroundColor: backgroundColor,
+                            backgroundColor: .secondarySystemBackground,
                             borderWidth: 1.0)
         textField.placeholder = "Password"
         textField.isSecureTextEntry = true
@@ -133,6 +134,8 @@ class LoginViewController: UIViewController {
         
         self.hideKeyboardWhenTappedAround()
         layout()
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
     }
     
     private func layout() {
@@ -445,4 +448,19 @@ extension LoginViewController {
     
     private static let separatorFont = UIFont.boldSystemFont(ofSize: 14)
     private static let separatorTextColor = UIColor(red: 176/255, green: 179/255, blue: 198/255, alpha: 1)
+}
+
+// MARK: - UITextField Delegate，按下return的觸發
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if textField == emailTextField {
+            passwordTextField.becomeFirstResponder()
+        }
+        else if textField == passwordTextField {
+            didTapLoginButton()
+        }
+        
+        return true
+    }
 }
