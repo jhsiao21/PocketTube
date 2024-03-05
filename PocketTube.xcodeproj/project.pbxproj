@@ -78,6 +78,8 @@
 		02D22B822B8DD0CD005898B7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 02D22B812B8DD0CD005898B7 /* GoogleService-Info.plist */; };
 		02D274F52A8DD53000E95072 /* HotNewReleaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D274F42A8DD53000E95072 /* HotNewReleaseViewController.swift */; };
 		02D274F72A8E4B4C00E95072 /* HotNewReleaseHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D274F62A8E4B4C00E95072 /* HotNewReleaseHeaderView.swift */; };
+		02FDFC042B975ED400C77BFC /* PMKAlamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 02FDFC032B975ED400C77BFC /* PMKAlamofire */; };
+		02FDFC072B975EFF00C77BFC /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 02FDFC062B975EFF00C77BFC /* SwiftyJSON */; };
 		0A1942D0274A620100B3FA93 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1942CF274A620100B3FA93 /* TableViewCell.swift */; };
 		0A5AAA9D2769057B00149719 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5AAA9C2769057B00149719 /* String+Ext.swift */; };
 		0A5AAAA7276AE1D500149719 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5AAAA6276AE1D500149719 /* CollectionViewCell.swift */; };
@@ -210,10 +212,12 @@
 				02D22B222B875F2E005898B7 /* FirebaseDatabaseSwift in Frameworks */,
 				02D22B202B875F2E005898B7 /* FirebaseDatabase in Frameworks */,
 				0A5AAAAC276AE2E600149719 /* SDWebImageMapKit in Frameworks */,
+				02FDFC042B975ED400C77BFC /* PMKAlamofire in Frameworks */,
 				02D22B282B875F2E005898B7 /* FirebaseStorage in Frameworks */,
 				02D22B142B7EFEE7005898B7 /* JGProgressHUD in Frameworks */,
 				02D22B362B876AC4005898B7 /* GoogleSignIn in Frameworks */,
 				02D22B332B8769F4005898B7 /* FacebookLogin in Frameworks */,
+				02FDFC072B975EFF00C77BFC /* SwiftyJSON in Frameworks */,
 				0A5AAAAA276AE2E600149719 /* SDWebImage in Frameworks */,
 				02D22B242B875F2E005898B7 /* FirebaseFirestore in Frameworks */,
 				02D22B1C2B875F2E005898B7 /* FirebaseAuth in Frameworks */,
@@ -664,6 +668,8 @@
 				02D22B272B875F2E005898B7 /* FirebaseStorage */,
 				02D22B322B8769F4005898B7 /* FacebookLogin */,
 				02D22B352B876AC4005898B7 /* GoogleSignIn */,
+				02FDFC032B975ED400C77BFC /* PMKAlamofire */,
+				02FDFC062B975EFF00C77BFC /* SwiftyJSON */,
 			);
 			productName = "Netflix Clone";
 			productReference = 0A6209A32734603E00A88D71 /* PocketTube.app */;
@@ -703,6 +709,8 @@
 				02D22B1A2B875F2E005898B7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				02D22B312B8769F4005898B7 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 				02D22B342B876AC3005898B7 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				02FDFC022B975ED400C77BFC /* XCRemoteSwiftPackageReference "PMKAlamofire" */,
+				02FDFC052B975EFF00C77BFC /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 			);
 			productRefGroup = 0A6209A42734603E00A88D71 /* Products */;
 			projectDirPath = "";
@@ -1133,6 +1141,22 @@
 				minimumVersion = 7.0.0;
 			};
 		};
+		02FDFC022B975ED400C77BFC /* XCRemoteSwiftPackageReference "PMKAlamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/PromiseKit/PMKAlamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
+		02FDFC052B975EFF00C77BFC /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
 		0A5AAAA8276AE2E600149719 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
@@ -1193,6 +1217,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 02D22B342B876AC3005898B7 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignIn;
+		};
+		02FDFC032B975ED400C77BFC /* PMKAlamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02FDFC022B975ED400C77BFC /* XCRemoteSwiftPackageReference "PMKAlamofire" */;
+			productName = PMKAlamofire;
+		};
+		02FDFC062B975EFF00C77BFC /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02FDFC052B975EFF00C77BFC /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
 		};
 		0A5AAAA9276AE2E600149719 /* SDWebImage */ = {
 			isa = XCSwiftPackageProductDependency;

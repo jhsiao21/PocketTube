@@ -14,6 +14,9 @@ import FirebaseCore
 import JGProgressHUD
 import AuthenticationServices
 import CryptoKit
+import Alamofire
+import SwiftyJSON
+import PromiseKit
 
 class LoginViewController: UIViewController {
     
