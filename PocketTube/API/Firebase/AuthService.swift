@@ -7,6 +7,7 @@
 
 import Firebase
 
+
 class AuthService {
     
     var userSession: FirebaseAuth.User?
@@ -50,7 +51,7 @@ class AuthService {
             completion(.success(true))
         }
     }
-        
+            
     /// create user data to firebase database
     func createUser(withEmail email: String, password: String, userName: String, phone: String, completion: @escaping (Result<Bool, Error>) -> Void) {
         
@@ -96,4 +97,9 @@ class AuthService {
             }
         }
     }
+}
+
+enum FacebookLoginError: Error {
+    case failedToGetAccessToken
+    case failedToFetchUserProfile
 }

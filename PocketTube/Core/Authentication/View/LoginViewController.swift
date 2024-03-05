@@ -238,132 +238,238 @@ class LoginViewController: UIViewController {
         spinner.show(in: view)
         
         guard let email = emailTextField.text, let password = passwordTextField.text else { return }
-        AuthService.shared.login(email: email, password: password) { [unowned self] result in
-            switch result {
-            case .success(_):
-                UserService.shared.fetchCurrentUser { [unowned self] result in
-                    DispatchQueue.main.async {
-                        self.spinner.dismiss()
-                    }
-                    switch result {
-                    case .success(let user):
-                        guard let user = user as? User else { return }
-                        
-                        UserDefaults.standard.set(user.email, forKey: "email")
-                        UserDefaults.standard.set(user.userName, forKey: "name")
-                        self.loginSuccess()
-                        
-                    case .failure(let error):
-                        self.showUIAlert(message: error.localizedDescription)
-                    }
-                }
                 
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self.spinner.dismiss()
-                }
-                self.showUIAlert(message: error.localizedDescription)
+        firstly {
+            AuthServicePromise.shared.login(email: email, password: password)
+        }.then { _ in
+            UserServicePromise.shared.fetchCurrentUser()
+        }.done { user in
+            UserDefaults.standard.set(user.email, forKey: "email")
+            UserDefaults.standard.set(user.userName, forKey: "name")
+            self.loginSuccess()
+        }.ensure {
+            DispatchQueue.main.async {
+                self.spinner.dismiss()
             }
+        }.catch { error in
+            self.showUIAlert(message: error.localizedDescription)
         }
+        
+//        AuthService.shared.login(email: email, password: password) { [unowned self] result in
+//            switch result {
+//            case .success(_):
+//                UserService.shared.fetchCurrentUser { [unowned self] result in
+//                    DispatchQueue.main.async {
+//                        self.spinner.dismiss()
+//                    }
+//                    switch result {
+//                    case .success(let user):
+//                        guard let user = user as? User else { return }
+//                        
+//                        UserDefaults.standard.set(user.email, forKey: "email")
+//                        UserDefaults.standard.set(user.userName, forKey: "name")
+//                        self.loginSuccess()
+//                        
+//                    case .failure(let error):
+//                        self.showUIAlert(message: error.localizedDescription)
+//                    }
+//                }
+//                
+//            case .failure(let error):
+//                DispatchQueue.main.async {
+//                    self.spinner.dismiss()
+//                }
+//                self.showUIAlert(message: error.localizedDescription)
+//            }
+//        }
     }
     
-    @objc func didTapFacebookButton() {
-        spinner.show(in: view)
-        let loginManager = LoginManager()
-        // 添加 public_profile 到請求的權限中，以便獲取姓名和頭像
-        loginManager.logIn(permissions: ["email", "public_profile"], from: self) { [unowned self] (result, error) in
-            if let error = error {
-                DispatchQueue.main.async {
-                    self.spinner.dismiss()
-                }
-                self.showUIAlert(message: error.localizedDescription)
-                return
-            }
-            guard let token = AccessToken.current else {
-                print("Failed to get access token")
-                DispatchQueue.main.async {
-                    self.spinner.dismiss()
-                }
-                self.showUIAlert(message: "Failed to get access token")
-                return
-            }
-            
-            // 使用Graph API獲取用戶資訊
-            let fbRequest = FBSDKLoginKit.GraphRequest(graphPath: "me",
-                                                       parameters: ["fields": "email, first_name, last_name, picture.type(large)"],
-                                                       tokenString: token.tokenString,
-                                                       version: nil,
-                                                       httpMethod: .get)
-            // execute request
-            fbRequest.start { _, result, error in
-                guard let result = result as? [String : Any], error == nil else {
-                    print("Failed to make facebook graph request")
-                    return
-                }
-                
-                print(result)
-                
-                /*
-                 ["picture": {
-                 data =     {
-                 height = 200;
-                 "is_silhouette" = 0;
-                 url = "https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10221311206604346&height=200&width=200&ext=1709036862&hash=AfrfPeu_ZxQ22YY0yuqSYna06coTMyG04g-3QWAHpfMvHA";
-                 width = 200;
-                 };
-                 }, "first_name": Logan, "last_name": Hsiao, "email": jhsiao1121@gmail.com, "id": 10221311206604346]
-                 */
-                
-                guard let firstName = result["first_name"] as? String,
-                      let email = result["email"] as? String,
-                      let picture = result["picture"] as? [String: Any],
-                      let data = picture["data"] as? [String: Any],
-                      let pictureUrl = data["url"] as? String else {
-                    print("Failed to get email and name from fb result")
-                    return
-                }
-                
-                UserDefaults.standard.set(email, forKey: "email")
-                UserDefaults.standard.set("\(firstName)", forKey: "name")
-                
-                AuthService.shared.login(credential: FacebookAuthProvider.credential(withAccessToken: token.tokenString)) { [unowned self] result in
-                    switch result {
-                    case .success(_):
-                        
-                        guard let uid = Auth.auth().currentUser?.uid else { return }
-                        UserService.fetchUser(withUid: uid) { [unowned self] user, error in
-                            DispatchQueue.main.async {
-                                self.spinner.dismiss()
-                            }
-                            
-                            if let user = user, error == nil {
-                                // user exists
-                                print("user data: \(user)")
-                                self.loginSuccess()
-                            }
-                            else { // user does not exists
-                                AuthService.shared.uploadUserData(email: email, userName: "\(firstName)", phone: "N/A", id: uid) { [unowned self] result in
-                                    switch result {
-                                    case .success(_):
-                                        print("upload user data to firestore database success")
-                                        self.loginSuccess()
-                                    case .failure(let failure):
-                                        self.showUIAlert(message: failure.localizedDescription)
-                                    }
+    func performFirebaseLogin(token: String, email: String, firstName: String) -> Promise<Void> {
+        return Promise { seal in
+            AuthService.shared.login(credential: FacebookAuthProvider.credential(withAccessToken: token)) { result in
+                switch result {
+                case .success(_):
+                    UserService.fetchUser(withUid: Auth.auth().currentUser?.uid ?? "") { user, error in
+                        if let user = user, error == nil {
+                            // User exists
+                            seal.fulfill(())
+                        } else {
+                            // User does not exist, upload user data
+                            AuthService.shared.uploadUserData(email: email, userName: firstName, phone: "N/A", id: Auth.auth().currentUser?.uid ?? "") { result in
+                                switch result {
+                                case .success(_):
+                                    seal.fulfill(())
+                                case .failure(let error):
+                                    seal.reject(error)
                                 }
                             }
                         }
-                    case .failure(let error):
-                        DispatchQueue.main.async {
-                            self.spinner.dismiss()
-                        }
-                        self.showUIAlert(message: error.localizedDescription)
                     }
+                case .failure(let error):
+                    seal.reject(error)
                 }
             }
         }
     }
     
+    // MARK: - Facebook login
+    @objc func didTapFacebookButton() {
+        spinner.show(in: view)
+        
+        firstly {
+                loginWithFacebook()
+            }.then { token -> Promise<(AccessToken, String, String, String)> in
+                // Now we pass the token forward in the promise chain
+                self.fetchFacebookUserProfile(token: token).map { (token, $0, $1, $2) }
+            }.then { token, email, firstName, pictureUrl -> Promise<Void> in
+                // Token is now available in this scope
+                UserDefaults.standard.set(email, forKey: "email")
+                UserDefaults.standard.set(firstName, forKey: "name")
+                return self.performFirebaseLogin(token: token.tokenString, email: email, firstName: firstName)
+            }.ensure {
+                DispatchQueue.main.async {
+                    self.spinner.dismiss()
+                }
+                self.loginSuccess()
+            }.catch { error in
+                self.showUIAlert(message: error.localizedDescription)
+            }
+    
+//        let loginManager = LoginManager()
+//        // 添加 public_profile 到請求的權限中，以便獲取姓名和頭像
+//        loginManager.logIn(permissions: ["email", "public_profile"], from: self) { [unowned self] (result, error) in
+//            if let error = error {
+//                DispatchQueue.main.async {
+//                    self.spinner.dismiss()
+//                }
+//                self.showUIAlert(message: error.localizedDescription)
+//                return
+//            }
+//            guard let token = AccessToken.current else {
+//                print("Failed to get access token")
+//                DispatchQueue.main.async {
+//                    self.spinner.dismiss()
+//                }
+//                self.showUIAlert(message: "Failed to get access token")
+//                return
+//            }
+//            
+//            // 使用Graph API獲取用戶資訊
+//            let fbRequest = FBSDKLoginKit.GraphRequest(graphPath: "me",
+//                                                       parameters: ["fields": "email, first_name, last_name, picture.type(large)"],
+//                                                       tokenString: token.tokenString,
+//                                                       version: nil,
+//                                                       httpMethod: .get)
+//            // execute request
+//            fbRequest.start { _, result, error in
+//                guard let result = result as? [String : Any], error == nil else {
+//                    print("Failed to make facebook graph request")
+//                    return
+//                }
+//                
+//                print(result)
+//                
+//                /*
+//                 ["picture": {
+//                 data =     {
+//                 height = 200;
+//                 "is_silhouette" = 0;
+//                 url = "https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10221311206604346&height=200&width=200&ext=1709036862&hash=AfrfPeu_ZxQ22YY0yuqSYna06coTMyG04g-3QWAHpfMvHA";
+//                 width = 200;
+//                 };
+//                 }, "first_name": Logan, "last_name": Hsiao, "email": jhsiao1121@gmail.com, "id": 10221311206604346]
+//                 */
+//                
+//                guard let firstName = result["first_name"] as? String,
+//                      let email = result["email"] as? String,
+//                      let picture = result["picture"] as? [String: Any],
+//                      let data = picture["data"] as? [String: Any],
+//                      let pictureUrl = data["url"] as? String else {
+//                    print("Failed to get email and name from fb result")
+//                    return
+//                }
+//                
+//                UserDefaults.standard.set(email, forKey: "email")
+//                UserDefaults.standard.set("\(firstName)", forKey: "name")
+//                
+//                AuthService.shared.login(credential: FacebookAuthProvider.credential(withAccessToken: token.tokenString)) { [unowned self] result in
+//                    switch result {
+//                    case .success(_):
+//                        
+//                        guard let uid = Auth.auth().currentUser?.uid else { return }
+//                        UserService.fetchUser(withUid: uid) { [unowned self] user, error in
+//                            DispatchQueue.main.async {
+//                                self.spinner.dismiss()
+//                            }
+//                            
+//                            if let user = user, error == nil {
+//                                // user exists
+//                                print("user data: \(user)")
+//                                self.loginSuccess()
+//                            }
+//                            else { // user does not exists
+//                                AuthService.shared.uploadUserData(email: email, userName: "\(firstName)", phone: "N/A", id: uid) { [unowned self] result in
+//                                    switch result {
+//                                    case .success(_):
+//                                        print("upload user data to firestore database success")
+//                                        self.loginSuccess()
+//                                    case .failure(let failure):
+//                                        self.showUIAlert(message: failure.localizedDescription)
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    case .failure(let error):
+//                        DispatchQueue.main.async {
+//                            self.spinner.dismiss()
+//                        }
+//                        self.showUIAlert(message: error.localizedDescription)
+//                    }
+//                }
+//            }
+//        }
+    }
+    
+    func loginWithFacebook() -> Promise<AccessToken> {
+        return Promise { seal in
+            let loginManager = LoginManager()
+            loginManager.logIn(permissions: ["email", "public_profile"], from: self) { result, error in
+                if let error = error {
+                    seal.reject(error)
+                } else if let token = AccessToken.current {
+                    seal.fulfill(token)
+                } else {
+                    seal.reject(FacebookLoginError.failedToGetAccessToken)
+                }
+            }
+        }
+    }
+    
+    func fetchFacebookUserProfile(token: AccessToken) -> Promise<(String, String, String)> {
+        return Promise { seal in
+            let fbRequest = GraphRequest(graphPath: "me",
+                                         parameters: ["fields": "email, first_name, picture.type(large)"],
+                                         tokenString: token.tokenString,
+                                         version: nil,
+                                         httpMethod: .get)
+            fbRequest.start { _, result, error in
+                if let error = error {
+                    seal.reject(error)
+                } else if let result = result as? [String: Any],
+                          let email = result["email"] as? String,
+                          let firstName = result["first_name"] as? String,
+                          let picture = result["picture"] as? [String: Any],
+                          let data = picture["data"] as? [String: Any],
+                          let pictureUrl = data["url"] as? String {
+                    seal.fulfill((email, firstName, pictureUrl))
+                } else {
+                    seal.reject(FacebookLoginError.failedToFetchUserProfile)
+                }
+            }
+        }
+    }
+        
+    // MARK: - Google login
     @objc private func didTapGoogleButton() {
         spinner.show(in: view)
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }

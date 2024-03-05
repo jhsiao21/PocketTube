@@ -75,5 +75,5 @@ public enum ServiceErrors: Error {
     case failedToCreate
     case failedToLogin
     case encodingError
-    
+    case notLoggedIn
 }
