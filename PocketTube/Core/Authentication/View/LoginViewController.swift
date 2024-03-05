@@ -12,6 +12,8 @@ import FirebaseAuth
 import GoogleSignIn
 import FirebaseCore
 import JGProgressHUD
+import AuthenticationServices
+import CryptoKit
 
 class LoginViewController: UIViewController {
     
@@ -128,6 +130,15 @@ class LoginViewController: UIViewController {
         return button
     }()
     
+    private let appleButton: ASAuthorizationAppleIDButton = {
+        let button = ASAuthorizationAppleIDButton(authorizationButtonType: .signUp,
+                                                  authorizationButtonStyle: .whiteOutline)
+        button.addTarget(self, action: #selector(didTapAppleButton), for: .touchUpInside)
+        button.cornerRadius = 55 / 2
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = LoginViewController.backgroundColor
@@ -148,6 +159,7 @@ class LoginViewController: UIViewController {
         view.addSubview(separatorLabel)
         view.addSubview(facebookButton)
         view.addSubview(googleButton)
+        view.addSubview(appleButton)
         
         NSLayoutConstraint.activate([
             backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
@@ -189,8 +201,16 @@ class LoginViewController: UIViewController {
             googleButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
             googleButton.topAnchor.constraint(equalTo: facebookButton.bottomAnchor, constant: 10),
             googleButton.heightAnchor.constraint(equalToConstant: 55),
+            
+            view.trailingAnchor.constraint(equalTo: appleButton.trailingAnchor, constant: 50),
+            appleButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
+            appleButton.topAnchor.constraint(equalTo: googleButton.bottomAnchor, constant: 10),
+            appleButton.heightAnchor.constraint(equalToConstant: 55),
         ])
-        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+//        self.performExistingAccountSetupFlows()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -217,8 +237,7 @@ class LoginViewController: UIViewController {
         guard let email = emailTextField.text, let password = passwordTextField.text else { return }
         AuthService.shared.login(email: email, password: password) { [unowned self] result in
             switch result {
-            case .success(let success):
-                
+            case .success(_):
                 UserService.shared.fetchCurrentUser { [unowned self] result in
                     DispatchQueue.main.async {
                         self.spinner.dismiss()
@@ -235,7 +254,6 @@ class LoginViewController: UIViewController {
                         self.showUIAlert(message: error.localizedDescription)
                     }
                 }
-                
                 
             case .failure(let error):
                 DispatchQueue.main.async {
@@ -415,7 +433,43 @@ class LoginViewController: UIViewController {
             }
         }
     }
+    
+    // MARK: - Sign in with Apple 登入
+    fileprivate var currentNonce: String?
+    
+    // - Tag: perform_appleid_password_request
+    /// Prompts the user if an existing iCloud Keychain credential or Apple ID credential is found.
+    func performExistingAccountSetupFlows() {
+        // Prepare requests for both Apple ID and password providers.
+        let requests = [ASAuthorizationAppleIDProvider().createRequest(),
+                        ASAuthorizationPasswordProvider().createRequest()]
+        
+        // Create an authorization controller with the given requests.
+        let authorizationController = ASAuthorizationController(authorizationRequests: requests)
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
+    }
+    
+    @objc private func didTapAppleButton() {
+        let request = creatAppleIdRequest()
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
+    }
+    
+    func creatAppleIdRequest() -> ASAuthorizationAppleIDRequest {
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        let nonce = randomNonceString()
+        request.nonce = sha256(nonce)
+        currentNonce = nonce
+        return request
+    }
 }
+
 extension LoginViewController {
     
     func showPopup(isSuccess: Bool) {
@@ -462,5 +516,136 @@ extension LoginViewController: UITextFieldDelegate {
         }
         
         return true
+    }
+}
+
+// MARK: Apple Authorization Delegate
+extension LoginViewController: ASAuthorizationControllerDelegate {
+    /// 登入成功
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            
+            // ask apple server for token
+            
+            guard let nonce = currentNonce else {
+                fatalError("Invalid state: A login callback was received, but no login")
+            }
+            guard let appleIDToken = appleIDCredential.identityToken else {
+                print("Unalbe to fetch identity token  ")
+                return
+            }
+            guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+                print("Unable to seriaiez tokeb string from data: \(appleIDToken.debugDescription)")
+                return
+            }
+            
+            guard let email = appleIDCredential.email,
+                  let givenName = appleIDCredential.fullName?.givenName else { return }
+            
+            UserDefaults.standard.set(email, forKey: "email")
+            UserDefaults.standard.set(givenName, forKey: "name")
+            
+            AuthService.shared.login(credential: OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: currentNonce)) { [weak self] result in
+                switch result {
+                case .success(_):
+                    
+                    guard let uid = Auth.auth().currentUser?.uid else { return }
+                    UserService.fetchUser(withUid: uid) { user, error in
+                        if let user = user, error == nil {
+                            // user exists
+                            print("user data: \(user)")
+                            self?.loginSuccess()
+                        } else {
+                            AuthService.shared.uploadUserData(email: email, userName: givenName, phone: "N/A", id: uid) { [unowned self] result in
+                                switch result {
+                                case .success(_):
+                                    self?.loginSuccess()
+                                case .failure(let failure):
+                                    self?.showUIAlert(message: failure.localizedDescription)
+                                }
+                            }
+                        }
+                    }
+                case .failure(let error):
+                    self?.showUIAlert(message: error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    ///登入失敗
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        switch error {
+        case ASAuthorizationError.canceled:
+            self.showUIAlert(message: "User canceled")
+        case ASAuthorizationError.failed:
+            self.showUIAlert(message: "Authorization failed")
+        case ASAuthorizationError.invalidResponse:
+            self.showUIAlert(message: "Authorization response invalid")
+        case ASAuthorizationError.notHandled:
+            self.showUIAlert(message: "Authorization not handled")
+        case ASAuthorizationError.unknown:
+            self.showUIAlert(message: "Authorization failed, unknown reason")
+        case ASAuthorizationError.notInteractive:
+            self.showUIAlert(message: "Authorization not interactive")
+        default:
+            break
+        }
+    }
+}
+
+//MARK: - ASAuthorizationControllerPresentationContextProviding
+// 在畫面上顯示授權畫面(告知ASAuthorizationController該呈現在哪個Window上)
+extension LoginViewController: ASAuthorizationControllerPresentationContextProviding{
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
+    }
+}
+
+extension LoginViewController {
+    
+    // Adapted from https://auth0.com/docs/api-auth/tutorials/nonce#generate-a-cryptographically-random-nonce
+    private func randomNonceString(length: Int = 32) -> String {
+        precondition(length > 0)
+        let charset: [Character] =
+        Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+        var result = ""
+        var remainingLength = length
+        
+        while remainingLength > 0 {
+            let randoms: [UInt8] = (0 ..< 16).map { _ in
+                var random: UInt8 = 0
+                let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
+                if errorCode != errSecSuccess {
+                    fatalError(
+                        "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
+                    )
+                }
+                return random
+            }
+            
+            randoms.forEach { random in
+                if remainingLength == 0 {
+                    return
+                }
+                
+                if random < charset.count {
+                    result.append(charset[Int(random)])
+                    remainingLength -= 1
+                }
+            }
+        }
+        
+        return result
+    }
+    
+    private func sha256(_ input: String) -> String {
+        let inputData = Data(input.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        let hashString = hashedData.compactMap {
+            String(format: "%02x", $0)
+        }.joined()
+        
+        return hashString
     }
 }

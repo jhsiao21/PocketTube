@@ -14,6 +14,7 @@ class UserService {
     var currentUser: User?
     
     static let shared = UserService()
+    private init() { }
     private static let userCache = NSCache<NSString, NSData>()
     
     func fetchCurrentUser(completion: @escaping (Result<User, Error>) -> Void) {

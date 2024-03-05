@@ -12,8 +12,8 @@ class AuthService {
     var userSession: FirebaseAuth.User?
     
     static let shared = AuthService()
-    
-    init() {
+        
+    private init() {
         self.userSession = Auth.auth().currentUser
         UserService.shared.fetchCurrentUser { result in
             switch result {

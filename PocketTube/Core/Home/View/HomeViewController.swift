@@ -101,15 +101,7 @@ class HomeViewController: UIViewController {
 //            homeFeedTable.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
-    
-    @objc func searchButtonTapped() {
-        DispatchQueue.main.async {
-            let vc = SearchViewController.shared
-            vc.hidesBottomBarWhenPushed = true
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
-    }
-    
+        
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
