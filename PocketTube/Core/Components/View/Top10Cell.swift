@@ -17,7 +17,7 @@ class Top10Cell: UITableViewCell {
     
     private var media: Media?
     
-    private let horizontalStackView : UIStackView = {
+    private let hStackView : UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
@@ -27,7 +27,7 @@ class Top10Cell: UITableViewCell {
         return stackView
     }()
     
-    private let verticalStackView : UIStackView = {
+    private let vStackView : UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical // 设置垂直方向布局
@@ -37,12 +37,12 @@ class Top10Cell: UITableViewCell {
         return stackView
     }()
     
-    private let horizontalStackViewUnderPosterImage : UIStackView = {
+    private let hStackViewUnderPosterImage : UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.alignment = .trailing
-        stackView.spacing = 0
+        stackView.alignment = .bottom
+//        stackView.spacing = 15
         
         return stackView
     }()
@@ -66,71 +66,123 @@ class Top10Cell: UITableViewCell {
         return imageView
     }()
     
-    private let shareBtn: CustomButton = {
-        let button = CustomButton()
-        let image = UIImage(systemName: "paperplane", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24))
-        
-        // 建立一個屬性字典來設置按鈕內文字的樣式，移除下底線
-        let titleAttributes: [NSAttributedString.Key: Any] = [
-            .underlineStyle: NSUnderlineStyle.Element().rawValue,
-        ]
-        
-        let attributedTitle = NSAttributedString(string: "分享", attributes: titleAttributes)
-        button.setAttributedTitle(attributedTitle, for: .normal)
-        
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
-        button.setImage(image, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = .label
-        button.setTitleColor(UIColor.lightGray, for: .normal)
+    private let shareBtn: UIButton = {
+        var configuration = UIButton.Configuration.plain() //Creates a configuration for a button with a transparent
+        configuration.baseForegroundColor = UIColor.white
+        configuration.buttonSize = .small
+        configuration.image = UIImage(systemName: "paperplane", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20))
+        configuration.imagePlacement = .top
+        configuration.attributedSubtitle = AttributedString("分享", attributes: AttributeContainer())
+        configuration.titleAlignment = .center
+        configuration.imagePadding = 10
+        let button = UIButton(configuration: configuration, primaryAction: nil)
         button.addTarget(self, action: #selector(shareBtnTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.clipsToBounds = true
         
         return button
     }()
-
-    private let watchListBtn: CustomButton = {
-        let button = CustomButton()
-        let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24))
-        
-        // 建立一個屬性字典來設置按鈕內文字的樣式，移除下底線
-        let titleAttributes: [NSAttributedString.Key: Any] = [
-            .underlineStyle: NSUnderlineStyle.Element().rawValue,
-        ]
-        
-        let attributedTitle = NSAttributedString(string: "加入口袋名單", attributes: titleAttributes)
-        button.setAttributedTitle(attributedTitle, for: .normal)
-        
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
-        button.setImage(image, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = .label
-        button.setTitleColor(UIColor.lightGray, for: .normal)
+    
+    private let watchListBtn: UIButton = {
+        var configuration = UIButton.Configuration.plain() //Creates a configuration for a button with a transparent
+        configuration.baseForegroundColor = UIColor.white
+        configuration.buttonSize = .small
+        configuration.image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20))
+        configuration.imagePlacement = .top
+        configuration.attributedSubtitle = AttributedString("加入口袋名單", attributes: AttributeContainer())
+        configuration.titleAlignment = .center
+        configuration.imagePadding = 10
+        let button = UIButton(configuration: configuration, primaryAction: nil)
         button.addTarget(self, action: #selector(myWatchListBtnTapped), for: .touchUpInside)
-        
-        return button
-    }()
-
-    private let playBtn: CustomButton = {
-        let button = CustomButton()
-        let image = UIImage(systemName: "play.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24))
-        
-        // 建立一個屬性字典來設置按鈕內文字的樣式，移除下底線
-        let titleAttributes: [NSAttributedString.Key: Any] = [
-            .underlineStyle: NSUnderlineStyle.Element().rawValue,
-        ]
-        
-        let attributedTitle = NSAttributedString(string: "播放", attributes: titleAttributes)
-        button.setAttributedTitle(attributedTitle, for: .normal)
-        
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
-        button.setImage(image, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = .label
-        button.setTitleColor(UIColor.lightGray, for: .normal)
-        button.addTarget(self, action: #selector(playBtnTapped), for: .touchUpInside)
+        button.clipsToBounds = true
         
         return button
     }()
+    
+    private let playBtn: UIButton = {
+        var configuration = UIButton.Configuration.plain() //Creates a configuration for a button with a transparent
+        configuration.baseForegroundColor = UIColor.white
+        configuration.buttonSize = .small
+        configuration.image = UIImage(systemName: "play.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20))
+        configuration.imagePlacement = .top
+        configuration.attributedSubtitle = AttributedString("播放", attributes: AttributeContainer())
+        configuration.titleAlignment = .center
+        configuration.imagePadding = 10
+        let button = UIButton(configuration: configuration, primaryAction: nil)
+        button.addTarget(self, action: #selector(playBtnTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.clipsToBounds = true
+        
+        return button
+    }()
+    
+//    private let shareBtn: CustomButton = {
+//        let button = CustomButton()
+//        let image = UIImage(systemName: "paperplane", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24))
+//        
+//        // 建立一個屬性字典來設置按鈕內文字的樣式，移除下底線
+//        let titleAttributes: [NSAttributedString.Key: Any] = [
+//            .underlineStyle: NSUnderlineStyle.Element().rawValue,
+//        ]
+//        
+//        let attributedTitle = NSAttributedString(string: "分享", attributes: titleAttributes)
+//        button.setAttributedTitle(attributedTitle, for: .normal)
+//        
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+//        button.setImage(image, for: .normal)
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        button.tintColor = .label
+//        button.setTitleColor(UIColor.lightGray, for: .normal)
+//        button.addTarget(self, action: #selector(shareBtnTapped), for: .touchUpInside)
+//        
+//        return button
+//    }()
+    
+
+//    private let watchListBtn: CustomButton = {
+//        let button = CustomButton()
+//        let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24))
+//        
+//        // 建立一個屬性字典來設置按鈕內文字的樣式，移除下底線
+//        let titleAttributes: [NSAttributedString.Key: Any] = [
+//            .underlineStyle: NSUnderlineStyle.Element().rawValue,
+//        ]
+//        
+//        let attributedTitle = NSAttributedString(string: "加入口袋名單", attributes: titleAttributes)
+//        button.setAttributedTitle(attributedTitle, for: .normal)
+//        
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+//        button.setImage(image, for: .normal)
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        button.tintColor = .label
+//        button.setTitleColor(UIColor.lightGray, for: .normal)
+//        button.addTarget(self, action: #selector(myWatchListBtnTapped), for: .touchUpInside)
+//        
+//        return button
+//    }()
+
+//    private let playBtn: CustomButton = {
+//        let button = CustomButton()
+//        let image = UIImage(systemName: "play.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24))
+//        
+//        // 建立一個屬性字典來設置按鈕內文字的樣式，移除下底線
+//        let titleAttributes: [NSAttributedString.Key: Any] = [
+//            .underlineStyle: NSUnderlineStyle.Element().rawValue,
+//        ]
+//        
+//        let attributedTitle = NSAttributedString(string: "播放", attributes: titleAttributes)
+//        button.setAttributedTitle(attributedTitle, for: .normal)
+//        
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+//        button.setImage(image, for: .normal)
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        button.tintColor = .label
+//        button.setTitleColor(UIColor.lightGray, for: .normal)
+//        button.addTarget(self, action: #selector(playBtnTapped), for: .touchUpInside)
+//        
+//        return button
+//    }()
     
     private let titleLabel: UILabel = {
         let textLabel = UILabel()
@@ -168,52 +220,50 @@ class Top10Cell: UITableViewCell {
 
     private func layout() {
         
-        horizontalStackView.addArrangedSubview(indexHeaderLabel)
-        horizontalStackView.addArrangedSubview(verticalStackView)
+        hStackView.addArrangedSubview(indexHeaderLabel)
+        hStackView.addArrangedSubview(vStackView)
         
-        horizontalStackViewUnderPosterImage.addArrangedSubview(shareBtn)
-        horizontalStackViewUnderPosterImage.addArrangedSubview(watchListBtn)
-        horizontalStackViewUnderPosterImage.addArrangedSubview(playBtn)
+        vStackView.addArrangedSubview(posterImageView)
         
-        verticalStackView.addArrangedSubview(posterImageView)
-        verticalStackView.addArrangedSubview(horizontalStackViewUnderPosterImage)
-        verticalStackView.addArrangedSubview(titleLabel)
-        verticalStackView.addArrangedSubview(overviewLabel)
-        verticalStackView.addArrangedSubview(genreLabel)
+        hStackViewUnderPosterImage.addArrangedSubview(shareBtn)
+        hStackViewUnderPosterImage.addArrangedSubview(watchListBtn)
+        hStackViewUnderPosterImage.addArrangedSubview(playBtn)
         
-        contentView.addSubview(horizontalStackView)
+        vStackView.addArrangedSubview(hStackViewUnderPosterImage)
+        vStackView.addArrangedSubview(titleLabel)
+        vStackView.addArrangedSubview(overviewLabel)
+        vStackView.addArrangedSubview(genreLabel)
+        
+        contentView.addSubview(hStackView)
         
         NSLayoutConstraint.activate([
-            //與下一個cell的距離
-            verticalStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -25),
-            
             // horizontalStackView 在 cell 内的约束
-            horizontalStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            horizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            horizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            horizontalStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            
+            hStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            hStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            hStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            hStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -25), //與下一個cell的距離
+                        
             // posterImageView 的宽度和高度约束
             posterImageView.widthAnchor.constraint(equalToConstant: 350),
             posterImageView.heightAnchor.constraint(equalToConstant: 200),
             
             // dateHeaderLabel 的约束
-            indexHeaderLabel.widthAnchor.constraint(equalTo: horizontalStackView.widthAnchor, multiplier: 0.1), // Adjust as needed
+            indexHeaderLabel.widthAnchor.constraint(equalTo: hStackView.widthAnchor, multiplier: 0.1), // Adjust as needed
             
             // horizontalStackViewUnderPosterImage 的约束
-            horizontalStackViewUnderPosterImage.leadingAnchor.constraint(equalTo: posterImageView.leadingAnchor),
-            horizontalStackViewUnderPosterImage.trailingAnchor.constraint(equalTo: posterImageView.trailingAnchor),
+            hStackViewUnderPosterImage.leadingAnchor.constraint(equalTo: hStackView.leadingAnchor),
+            hStackViewUnderPosterImage.trailingAnchor.constraint(equalTo: hStackView.trailingAnchor),
             
             // shareBtn
             shareBtn.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 170),
             
             // titleLabel 的约束
             titleLabel.heightAnchor.constraint(equalToConstant: 50),
-            titleLabel.leadingAnchor.constraint(equalTo: horizontalStackViewUnderPosterImage.leadingAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: posterImageView.leadingAnchor),
             
             // overviewLabel 的约束
             overviewLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: -10),
-            overviewLabel.leadingAnchor.constraint(equalTo: horizontalStackViewUnderPosterImage.leadingAnchor),
+            overviewLabel.leadingAnchor.constraint(equalTo: posterImageView.leadingAnchor),
             
             //genreLabel
             genreLabel.leadingAnchor.constraint(equalTo: posterImageView.leadingAnchor),

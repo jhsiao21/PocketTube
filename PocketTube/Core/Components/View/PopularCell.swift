@@ -45,77 +45,128 @@ class PopularCell: UITableViewCell {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.alignment = .trailing
-        stackView.spacing = 0
+        stackView.alignment = .bottom
+//        stackView.spacing = 0
         
         return stackView
     }()
     
-    private let shareBtn: CustomButton = {
-        let button = CustomButton()
-        let image = UIImage(systemName: "paperplane", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24))
-        
-        // 建立一個屬性字典來設置按鈕內文字的樣式，移除下底線
-        let titleAttributes: [NSAttributedString.Key: Any] = [
-            .underlineStyle: NSUnderlineStyle.Element().rawValue,
-        ]
-        
-        let attributedTitle = NSAttributedString(string: "分享", attributes: titleAttributes)
-        button.setAttributedTitle(attributedTitle, for: .normal)
-        
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
-        button.setImage(image, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = .label
-        button.setTitleColor(UIColor.lightGray, for: .normal)
+    private let shareBtn: UIButton = {
+        var configuration = UIButton.Configuration.plain() //Creates a configuration for a button with a transparent
+        configuration.baseForegroundColor = UIColor.white
+        configuration.buttonSize = .small
+        configuration.image = UIImage(systemName: "paperplane", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20))
+        configuration.imagePlacement = .top
+        configuration.attributedSubtitle = AttributedString("分享", attributes: AttributeContainer())
+        configuration.titleAlignment = .center
+        configuration.imagePadding = 10
+        let button = UIButton(configuration: configuration, primaryAction: nil)
         button.addTarget(self, action: #selector(shareBtnTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.clipsToBounds = true
         
         return button
     }()
-
-    private let watchListBtn: CustomButton = {
-        let button = CustomButton()
-        let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24))
-        
-        // 建立一個屬性字典來設置按鈕內文字的樣式，移除下底線
-        let titleAttributes: [NSAttributedString.Key: Any] = [
-            .underlineStyle: NSUnderlineStyle.Element().rawValue,
-        ]
-        
-        let attributedTitle = NSAttributedString(string: "加入口袋名單", attributes: titleAttributes)
-        button.setAttributedTitle(attributedTitle, for: .normal)
-        
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
-        button.setImage(image, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = .label
-        button.setTitleColor(UIColor.lightGray, for: .normal)
+    
+    private let watchListBtn: UIButton = {
+        var configuration = UIButton.Configuration.plain() //Creates a configuration for a button with a transparent
+        configuration.baseForegroundColor = UIColor.white
+        configuration.buttonSize = .small
+        configuration.image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20))
+        configuration.imagePlacement = .top
+        configuration.attributedSubtitle = AttributedString("加入口袋名單", attributes: AttributeContainer())
+        configuration.titleAlignment = .center
+        configuration.imagePadding = 10
+        let button = UIButton(configuration: configuration, primaryAction: nil)
         button.addTarget(self, action: #selector(myWatchListBtnTapped), for: .touchUpInside)
-        
-        return button
-    }()
-
-    private let playBtn: CustomButton = {
-        let button = CustomButton()
-        let image = UIImage(systemName: "play.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24))
-        
-        // 建立一個屬性字典來設置按鈕內文字的樣式，移除下底線
-        let titleAttributes: [NSAttributedString.Key: Any] = [
-            .underlineStyle: NSUnderlineStyle.Element().rawValue,
-        ]
-        
-        let attributedTitle = NSAttributedString(string: "播放", attributes: titleAttributes)
-        button.setAttributedTitle(attributedTitle, for: .normal)
-        
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
-        button.setImage(image, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = .label
-        button.setTitleColor(UIColor.lightGray, for: .normal)
-        button.addTarget(self, action: #selector(playBtnTapped), for: .touchUpInside)
+        button.clipsToBounds = true
         
         return button
     }()
+    
+    private let playBtn: UIButton = {
+        var configuration = UIButton.Configuration.plain() //Creates a configuration for a button with a transparent
+        configuration.baseForegroundColor = UIColor.white
+        configuration.buttonSize = .small
+        configuration.image = UIImage(systemName: "play.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20))
+        configuration.imagePlacement = .top
+        configuration.attributedSubtitle = AttributedString("播放", attributes: AttributeContainer())
+        configuration.titleAlignment = .center
+        configuration.imagePadding = 10
+        let button = UIButton(configuration: configuration, primaryAction: nil)
+        button.addTarget(self, action: #selector(playBtnTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.clipsToBounds = true
+        
+        return button
+    }()
+    
+//    private let shareBtn: CustomButton = {
+//        let button = CustomButton()
+//        let image = UIImage(systemName: "paperplane", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24))
+//        
+//        // 建立一個屬性字典來設置按鈕內文字的樣式，移除下底線
+//        let titleAttributes: [NSAttributedString.Key: Any] = [
+//            .underlineStyle: NSUnderlineStyle.Element().rawValue,
+//        ]
+//        
+//        let attributedTitle = NSAttributedString(string: "分享", attributes: titleAttributes)
+//        button.setAttributedTitle(attributedTitle, for: .normal)
+//        
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+//        button.setImage(image, for: .normal)
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        button.tintColor = .label
+//        button.setTitleColor(UIColor.lightGray, for: .normal)
+//        button.addTarget(self, action: #selector(shareBtnTapped), for: .touchUpInside)
+//        
+//        return button
+//    }()
+//
+//    private let watchListBtn: CustomButton = {
+//        let button = CustomButton()
+//        let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24))
+//        
+//        // 建立一個屬性字典來設置按鈕內文字的樣式，移除下底線
+//        let titleAttributes: [NSAttributedString.Key: Any] = [
+//            .underlineStyle: NSUnderlineStyle.Element().rawValue,
+//        ]
+//        
+//        let attributedTitle = NSAttributedString(string: "加入口袋名單", attributes: titleAttributes)
+//        button.setAttributedTitle(attributedTitle, for: .normal)
+//        
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+//        button.setImage(image, for: .normal)
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        button.tintColor = .label
+//        button.setTitleColor(UIColor.lightGray, for: .normal)
+//        button.addTarget(self, action: #selector(myWatchListBtnTapped), for: .touchUpInside)
+//        
+//        return button
+//    }()
+//
+//    private let playBtn: CustomButton = {
+//        let button = CustomButton()
+//        let image = UIImage(systemName: "play.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24))
+//        
+//        // 建立一個屬性字典來設置按鈕內文字的樣式，移除下底線
+//        let titleAttributes: [NSAttributedString.Key: Any] = [
+//            .underlineStyle: NSUnderlineStyle.Element().rawValue,
+//        ]
+//        
+//        let attributedTitle = NSAttributedString(string: "播放", attributes: titleAttributes)
+//        button.setAttributedTitle(attributedTitle, for: .normal)
+//        
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+//        button.setImage(image, for: .normal)
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        button.tintColor = .label
+//        button.setTitleColor(UIColor.lightGray, for: .normal)
+//        button.addTarget(self, action: #selector(playBtnTapped), for: .touchUpInside)
+//        
+//        return button
+//    }()
 
     private let vStackViewMargin : UIStackView = {
         let stackView = UIStackView()
@@ -182,7 +233,7 @@ class PopularCell: UITableViewCell {
             vStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             vStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             //與下一個cell的距離
-            vStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -25),
+            vStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
                         
             posterImageView.widthAnchor.constraint(equalToConstant: contentView.bounds.width),
             posterImageView.heightAnchor.constraint(equalToConstant: 250),

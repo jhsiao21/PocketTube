@@ -50,7 +50,7 @@ class UpcomingCell: UITableViewCell {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.alignment = .trailing
+        stackView.alignment = .bottom
         stackView.spacing = 0
         
         return stackView
@@ -92,48 +92,82 @@ class UpcomingCell: UITableViewCell {
         imageView.layer.cornerRadius = 8.0
         return imageView
     }()
-        
-    private let reminderBtn: CustomButton = {
-        let button = CustomButton()
-        let image = UIImage(systemName: "bell", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24))
-        
-        let titleAttributes: [NSAttributedString.Key: Any] = [
-            .underlineStyle: NSUnderlineStyle.Element().rawValue,
-        ]
-        
-        let attributedTitle = NSAttributedString(string: "提醒我", attributes: titleAttributes)
-        button.setAttributedTitle(attributedTitle, for: .normal)
-        
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        button.setImage(image, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = .label
-        button.setTitleColor(UIColor.lightGray, for: .normal)
+    
+    private let reminderBtn: UIButton = {
+        var configuration = UIButton.Configuration.plain() //Creates a configuration for a button with a transparent
+        configuration.baseForegroundColor = UIColor.white
+        configuration.buttonSize = .small
+        configuration.image = UIImage(systemName: "bell", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20))
+        configuration.imagePlacement = .top
+        configuration.attributedSubtitle = AttributedString("提醒我", attributes: AttributeContainer())
+        configuration.titleAlignment = .center
+        configuration.imagePadding = 10
+        let button = UIButton(configuration: configuration, primaryAction: nil)
         button.addTarget(self, action: #selector(remindMeBtnTapped), for: .touchUpInside)
-        
-        return button
-    }()
-
-    private let infoBtn: CustomButton = {
-        let button = CustomButton()
-        let image = UIImage(systemName: "info.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24))
-        
-        let titleAttributes: [NSAttributedString.Key: Any] = [
-            .underlineStyle: NSUnderlineStyle.Element().rawValue,
-        ]
-        
-        let attributedTitle = NSAttributedString(string: "資訊", attributes: titleAttributes)
-        button.setAttributedTitle(attributedTitle, for: .normal)
-        
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        button.setImage(image, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = .label
-        button.setTitleColor(UIColor.lightGray, for: .normal)
-        button.addTarget(self, action: #selector(infoBtnTapped), for: .touchUpInside)
+        button.clipsToBounds = true
         
         return button
     }()
+    
+    private let infoBtn: UIButton = {
+        var configuration = UIButton.Configuration.plain() //Creates a configuration for a button with a transparent
+        configuration.baseForegroundColor = UIColor.white
+        configuration.buttonSize = .small
+        configuration.image = UIImage(systemName: "info.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20))
+        configuration.imagePlacement = .top
+        configuration.attributedSubtitle = AttributedString("資訊", attributes: AttributeContainer())
+        configuration.titleAlignment = .center
+        configuration.imagePadding = 10
+        let button = UIButton(configuration: configuration, primaryAction: nil)
+        button.addTarget(self, action: #selector(infoBtnTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.clipsToBounds = true
+        
+        return button
+    }()
+        
+//    private let reminderBtn: CustomButton = {
+//        let button = CustomButton()
+//        let image = UIImage(systemName: "bell", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24))
+//        
+//        let titleAttributes: [NSAttributedString.Key: Any] = [
+//            .underlineStyle: NSUnderlineStyle.Element().rawValue,
+//        ]
+//        
+//        let attributedTitle = NSAttributedString(string: "提醒我", attributes: titleAttributes)
+//        button.setAttributedTitle(attributedTitle, for: .normal)
+//        
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+//        button.setImage(image, for: .normal)
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        button.tintColor = .label
+//        button.setTitleColor(UIColor.lightGray, for: .normal)
+//        button.addTarget(self, action: #selector(remindMeBtnTapped), for: .touchUpInside)
+//        
+//        return button
+//    }()
+
+//    private let infoBtn: CustomButton = {
+//        let button = CustomButton()
+//        let image = UIImage(systemName: "info.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24))
+//        
+//        let titleAttributes: [NSAttributedString.Key: Any] = [
+//            .underlineStyle: NSUnderlineStyle.Element().rawValue,
+//        ]
+//        
+//        let attributedTitle = NSAttributedString(string: "資訊", attributes: titleAttributes)
+//        button.setAttributedTitle(attributedTitle, for: .normal)
+//        
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+//        button.setImage(image, for: .normal)
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        button.tintColor = .label
+//        button.setTitleColor(UIColor.lightGray, for: .normal)
+//        button.addTarget(self, action: #selector(infoBtnTapped), for: .touchUpInside)
+//        
+//        return button
+//    }()
 
        
     private let titleLabel: UILabel = {
@@ -173,12 +207,13 @@ class UpcomingCell: UITableViewCell {
         
         hStackView.addArrangedSubview(vStackView)
         
+        hStackViewUnderPosterImage.addArrangedSubview(dateLabel)
         hStackViewUnderPosterImage.addArrangedSubview(reminderBtn)
         hStackViewUnderPosterImage.addArrangedSubview(infoBtn)
         
         vStackView.addArrangedSubview(posterImageView)
         vStackView.addArrangedSubview(hStackViewUnderPosterImage)
-        vStackView.addArrangedSubview(dateLabel)
+//        vStackView.addArrangedSubview(dateLabel)
         vStackView.addArrangedSubview(titleLabel)
         vStackView.addArrangedSubview(overviewLabel)
         vStackView.addArrangedSubview(genreLabel)

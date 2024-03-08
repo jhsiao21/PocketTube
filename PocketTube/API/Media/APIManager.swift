@@ -297,6 +297,7 @@ extension APIManager : APIManagerProtocol {
             }
             
             do {
+                // 嘗試解析正常的搜索結果
                 let results = try JSONDecoder().decode(YoutubeSearchResponse.self, from: data)
                 
                 guard let youtubeMedia = results.videoElementsWithVideoId else {
@@ -305,7 +306,15 @@ extension APIManager : APIManagerProtocol {
                 }
                 completion(.success(youtubeMedia))
             } catch {
-                completion(.failure(error))
+                // 解析失敗時，嘗試解析為錯誤回應模型
+                do {
+                    let errorResponse = try JSONDecoder().decode(YoutubeErrorResponse.self, from: data)
+                    let errorMessage = errorResponse.error.errors.first?.message ?? "Unknown error"
+                    completion(.failure(NSError(domain: "YoutubeError", code: errorResponse.error.code, userInfo: [NSLocalizedDescriptionKey: errorMessage])))
+                } catch {
+                    // 如果錯誤回應也無法解析，則返回原始解析錯誤
+                    completion(.failure(error))
+                }
                 print(error.localizedDescription)
             }
         }
