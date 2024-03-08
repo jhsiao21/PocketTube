@@ -77,7 +77,7 @@ final class SearchViewController: UIViewController {
 
 // MARK: - SearchViewModelDelegate
 extension SearchViewController: SearchViewModelDelegate {
-    func searchViewModel(didReceiveData data: [SearchResultViewModelItem]) {
+    func searchViewModel(didReceiveData data: [Media]) {
         viewModel.defaultItems = data
         DispatchQueue.main.async {
             self.spinner.dismiss()
@@ -85,8 +85,9 @@ extension SearchViewController: SearchViewModelDelegate {
         }
     }
     
-    func searchViewModel(didReceiveSearchData data: [SearchResultViewModelItem]) {
+    func searchViewModel(didReceiveSearchData data: [Media]) {
         viewModel.searchedItems = data
+        let _ = print("searchedItems: \(viewModel.searchedItems.count)")
         DispatchQueue.main.async {
             self.spinner.dismiss()
             self.tableView.reloadData()
@@ -105,40 +106,25 @@ extension SearchViewController: SearchViewModelDelegate {
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        if searchController.isActive {
-            return viewModel.searchedItems.count
-        } else {
-            return viewModel.defaultItems.count
-        }
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if searchController.isActive {
-            return viewModel.searchedItems[section].rowCount
-        } else {
-            return viewModel.defaultItems[section].rowCount
-        }
+                        
+        return searchController.isActive ? viewModel.searchedItems.count : viewModel.defaultItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        var item : SearchResultViewModelItem
-        if searchController.isActive, viewModel.searchedItems.count > 0 {
-            item = viewModel.searchedItems[indexPath.section] as! SearchResultItem
-        } else {
-            item = viewModel.defaultItems[indexPath.section] as! MoviesAndTVsItem
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifier, for: indexPath) as? SearchTableViewCell else {
+            return SearchTableViewCell()
         }
         
-       if let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifier, for: indexPath) as? SearchTableViewCell {
-            if item.medias.count > indexPath.row {
-                let media = item.medias[indexPath.row]
-                cell.configure(with: media)
-                return cell
-            }
-        }
+        let media = (searchController.isActive) ? viewModel.searchedItems[indexPath.row] : viewModel.defaultItems[indexPath.row]
         
-        return SearchTableViewCell()
+        cell.configure(with: media)
+        
+        return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -160,44 +146,21 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
                 
         let headerView = CustomCellHeaderView()
-        
-        var item : SearchResultViewModelItem
-        if searchController.isActive, viewModel.searchedItems.count > 0 {
-            item = viewModel.searchedItems[section]
+
+        if searchController.isActive {
+            headerView.titleLabel.text = "搜尋結果"
         } else {
-            item = viewModel.defaultItems[section]
+            headerView.titleLabel.text = "節目與電影推薦"
         }
-        
-        print("item.sectionTitle: \(item.sectionTitle)")
-        headerView.titleLabel.text = item.sectionTitle // 設置每個section的Header
         
         return headerView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let item = searchController.isActive ? viewModel.searchedItems[indexPath.section] : viewModel.defaultItems[indexPath.section]
-        
-        var media : Media? = nil
-        
-        switch item.type {
-            
-        case .SearchResult:
-            if let item = item as? SearchResultItem {
-                media = item.medias[indexPath.row]
-            }
-        case .MoviesAndTVs:
-            if let item = item as? MoviesAndTVsItem {
-                media = item.medias[indexPath.row]
-            }
-        }
+        let media = searchController.isActive ? viewModel.searchedItems[indexPath.section] : viewModel.defaultItems[indexPath.row]
                 
-        guard let mediaTitle = media?.displayTitle,
-              let mediaOverview = media?.overview else {
-            return
-        }
-        
-        previewMedia(mediaName: mediaTitle, mediaOverview: mediaOverview)
+        previewMedia(mediaName: media.displayTitle, mediaOverview: media.overview)
         
         //選取時此列會以灰色來突出顯示，並保持在被選取狀態
         //加入取消列的選取
@@ -218,6 +181,8 @@ extension SearchViewController: UISearchBarDelegate {
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchController.isActive = false
+        viewModel.searchedItems.removeAll()
         self.tableView.reloadData()
     }
 }
@@ -236,5 +201,6 @@ extension SearchViewController: UISearchResultsUpdating {
         }
         
         viewModel.search(with: query)
+        
     }
 }

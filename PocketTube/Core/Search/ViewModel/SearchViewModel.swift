@@ -9,14 +9,14 @@ import Foundation
 import UIKit
 
 protocol SearchViewModelDelegate: AnyObject {
-    func searchViewModel(didReceiveData data: [SearchResultViewModelItem])
-    func searchViewModel(didReceiveSearchData data: [SearchResultViewModelItem])
+    func searchViewModel(didReceiveData data: [Media])
+    func searchViewModel(didReceiveSearchData data: [Media])
     func searchViewModel(didReceiveError error: Error)
 }
 
 protocol SearchViewModelDataProvider {
-    func fetchDiscoverMedia(completion: @escaping (Result<[MoviesAndTVsItem], Error>) -> Void)
-    func searchFor(with mediaName: String, completion: @escaping (Result<[SearchResultItem], Error>) -> Void)
+    func fetchDiscoverMedia(completion: @escaping (Result<[Media], Error>) -> Void)
+    func searchFor(with mediaName: String, completion: @escaping (Result<[Media], Error>) -> Void)
 }
 
 protocol SearchResultViewModelItem {
@@ -31,8 +31,8 @@ class SearchViewModel {
     weak var delegate: SearchViewModelDelegate?
     private let dataProvider: SearchViewModelDataProvider
     
-    var defaultItems: [SearchResultViewModelItem] = []
-    var searchedItems: [SearchResultViewModelItem] = []
+    var defaultItems: [Media] = []
+    var searchedItems: [Media] = []
     
     init(dataProvider: SearchViewModelDataProvider) {
         self.dataProvider = dataProvider
