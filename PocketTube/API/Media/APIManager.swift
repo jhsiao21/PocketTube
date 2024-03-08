@@ -502,8 +502,8 @@ extension APIManager: HotNewReleaseViewModelDataProvider {
 //MARK: - SearchViewModelDataProvider
 extension APIManager: SearchViewModelDataProvider {
     
-    func fetchDiscoverMedia(completion: @escaping (Result<[SearchResultViewModelItem], Error>) -> Void) {
-        var defaultItems: [SearchResultViewModelItem] = []
+    func fetchDiscoverMedia(completion: @escaping (Result<[MoviesAndTVsItem], Error>) -> Void) {
+        var defaultItems: [MoviesAndTVsItem] = []
         
         fetchDiscoverMovies { result in
             switch result {
@@ -518,14 +518,14 @@ extension APIManager: SearchViewModelDataProvider {
         }
     }
     
-    func searchFor(with mediaName: String, completion: @escaping (Result<[SearchResultViewModelItem], Error>) -> Void) {
-        var searchedItems: [SearchResultViewModelItem] = []
+    func searchFor(with mediaName: String, completion: @escaping (Result<[SearchResultItem], Error>) -> Void) {
+        var searchedItems: [SearchResultItem] = []
         
         searchMedia(with: mediaName) { result in
             switch result {
             case .success(let media):
                 searchedItems.removeAll()
-                let mediaItem = MoviesAndTVsItem(medias: media)
+                let mediaItem = SearchResultItem(medias: media)
                 searchedItems.append(mediaItem)
                 completion(.success(searchedItems))
             case .failure(let error):

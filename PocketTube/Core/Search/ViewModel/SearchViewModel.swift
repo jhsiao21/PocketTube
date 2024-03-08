@@ -15,16 +15,15 @@ protocol SearchViewModelDelegate: AnyObject {
 }
 
 protocol SearchViewModelDataProvider {
-    typealias SearchResult = Result<[SearchResultViewModelItem], Error>
-    
-    func fetchDiscoverMedia(completion: @escaping (SearchResult) -> Void)
-    func searchFor(with mediaName: String, completion: @escaping (SearchResult) -> Void)
+    func fetchDiscoverMedia(completion: @escaping (Result<[MoviesAndTVsItem], Error>) -> Void)
+    func searchFor(with mediaName: String, completion: @escaping (Result<[SearchResultItem], Error>) -> Void)
 }
 
 protocol SearchResultViewModelItem {
     var type: SearchResultType { get }
     var sectionTitle: String { get }
     var rowCount: Int { get }
+    var medias: [Media] { get }
 }
 
 class SearchViewModel {
@@ -63,17 +62,17 @@ class SearchViewModel {
     }
 }
 
-class SearchChampionItem: SearchResultViewModelItem {
+struct SearchResultItem: SearchResultViewModelItem {
     var type: SearchResultType {
-        return .SearchChampion
+        return .SearchResult
     }
     
     var sectionTitle: String {
-        return "搜尋冠軍"
+        return "搜尋結果"
     }
     
     var rowCount: Int {
-        return 20
+        return medias.count
     }
     
     var medias: [Media]
@@ -83,7 +82,7 @@ class SearchChampionItem: SearchResultViewModelItem {
     }
 }
 
-class MoviesAndTVsItem: SearchResultViewModelItem {
+struct MoviesAndTVsItem: SearchResultViewModelItem {
     var type: SearchResultType {
         return .MoviesAndTVs
     }
@@ -92,6 +91,7 @@ class MoviesAndTVsItem: SearchResultViewModelItem {
         return "節目與電影推薦"
     }
     
+    // set to 20, because API return 20
     var rowCount: Int {
         return 20
     }

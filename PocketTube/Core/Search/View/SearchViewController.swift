@@ -125,12 +125,12 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     {
         var item : SearchResultViewModelItem
         if searchController.isActive, viewModel.searchedItems.count > 0 {
-            item = viewModel.searchedItems[indexPath.section]
+            item = viewModel.searchedItems[indexPath.section] as! SearchResultItem
         } else {
-            item = viewModel.defaultItems[indexPath.section]
+            item = viewModel.defaultItems[indexPath.section] as! MoviesAndTVsItem
         }
         
-        if let item = item as? MoviesAndTVsItem, let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifier, for: indexPath) as? SearchTableViewCell {
+       if let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifier, for: indexPath) as? SearchTableViewCell {
             if item.medias.count > indexPath.row {
                 let media = item.medias[indexPath.row]
                 cell.configure(with: media)
@@ -158,13 +158,8 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-        let headerView = UIView()
-        
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .label
-        label.font = UIFont.boldSystemFont(ofSize: 20)
+                
+        let headerView = CustomCellHeaderView()
         
         var item : SearchResultViewModelItem
         if searchController.isActive, viewModel.searchedItems.count > 0 {
@@ -173,9 +168,8 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
             item = viewModel.defaultItems[section]
         }
         
-//        print("\(item.sectionTitle)")
-        label.text = "\(item.sectionTitle)" // 設置每個section的Header
-        headerView.addSubview(label)
+        print("item.sectionTitle: \(item.sectionTitle)")
+        headerView.titleLabel.text = item.sectionTitle // 設置每個section的Header
         
         return headerView
     }
@@ -188,8 +182,8 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         
         switch item.type {
             
-        case .SearchChampion:
-            if let item = item as? SearchChampionItem {
+        case .SearchResult:
+            if let item = item as? SearchResultItem {
                 media = item.medias[indexPath.row]
             }
         case .MoviesAndTVs:
@@ -224,8 +218,7 @@ extension SearchViewController: UISearchBarDelegate {
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        //        tableViewReloadDelegate?.reload()
-        tableView.reloadData()
+        self.tableView.reloadData()
     }
 }
 
