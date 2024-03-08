@@ -202,7 +202,7 @@ class PopularCell: UITableViewCell {
         
         self.media = media
         posterImageView.sd_setImage(with: posterUrl, completed: nil)
-        titleLabel.text = (media.original_title ?? media.original_name) ?? "Unknown title name"
+        titleLabel.text = media.displayTitle
         overviewLabel.text = overview.briefOverview()
         genreLabel.text = getMovieGenreNames(for: genre)
     }
@@ -220,7 +220,7 @@ class PopularCell: UITableViewCell {
     @objc private func shareBtnTapped() {
         print("shareBtnTapped")
         
-        guard let mediaTitle = media?.original_title ?? media?.original_name,
+        guard let mediaTitle = media?.displayTitle,
               let image = posterImageView.image else {
             return
         }
@@ -232,7 +232,7 @@ class PopularCell: UITableViewCell {
         print("myWatchListBtnTapped")
         
         guard let uid = Auth.auth().currentUser?.uid,
-              let mediaTitle = media?.original_title ?? media?.original_name,
+              let mediaTitle = media?.displayTitle,
               let imageUrl = media?.poster_path,
               let overview = media?.overview else {
             return
@@ -245,10 +245,12 @@ class PopularCell: UITableViewCell {
     
     @objc private func playBtnTapped() {
         print("playBtnTapped")
-        
-        guard let media = self.media,
-              let mediaName = media.original_title ?? media.original_name else { return }
                 
-        contentActionButtonDelegate?.didTappedPlayBtn(mediaName: "\(mediaName)", mediaOverview: media.overview)
+        guard let mediaTitle = media?.displayTitle,
+              let mediaOverview = media?.overview else {
+            return
+        }
+                
+        contentActionButtonDelegate?.didTappedPlayBtn(mediaName: mediaTitle, mediaOverview: mediaOverview)
     }
 }

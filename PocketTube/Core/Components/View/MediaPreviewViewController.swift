@@ -113,7 +113,8 @@ class MediaPreviewViewController: UIViewController, UIScrollViewDelegate {
         titleLabel.text = model.title
         overviewLabel.text = model.titleOverview
         
-        guard let url = URL(string: "https://www.youtube.com/embed/\(model.youtubeView.id.videoId)") else {
+        guard let videoId = model.youtubeView.id.videoId,
+              let url = URL(string: "https://www.youtube.com/embed/\(videoId)") else {
             return
         }
         

@@ -197,12 +197,13 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
                 media = item.medias[indexPath.row]
             }
         }
-        
-        guard let mediaTitle = media?.original_title ?? media?.original_name else {
+                
+        guard let mediaTitle = media?.displayTitle,
+              let mediaOverview = media?.overview else {
             return
         }
         
-        previewMedia(mediaName: mediaTitle, mediaOverview: media?.overview)
+        previewMedia(mediaName: mediaTitle, mediaOverview: mediaOverview)
         
         //選取時此列會以灰色來突出顯示，並保持在被選取狀態
         //加入取消列的選取

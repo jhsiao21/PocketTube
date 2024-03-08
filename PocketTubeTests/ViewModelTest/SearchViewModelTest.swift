@@ -69,13 +69,13 @@ final class SearchViewModelTest: XCTestCase {
         //Spy去接sut.search()的callback結果
         let spy = SpyDelegate()
         sut.delegate = spy
-        let query = (MockData.fakeSearchItems[0] as? MoviesAndTVsItem)?.medias[0].original_title
+        let query = (MockData.fakeSearchItems[0] as? MoviesAndTVsItem)?.medias[0].displayTitle
         
         // Action
         sut.search(with: query!)
         
         // Assert
-        XCTAssertEqual((spy.capturedSearchItem?[0] as? MoviesAndTVsItem)?.medias[0].original_title, query!)
+        XCTAssertEqual((spy.capturedSearchItem?[0] as? MoviesAndTVsItem)?.medias[0].displayTitle, query!)
         XCTAssertNil(spy.capturedError)
     }
 
@@ -87,13 +87,13 @@ final class SearchViewModelTest: XCTestCase {
         //Spy去接sut.search()的callback結果
         let spy = SpyDelegate()
         sut.delegate = spy
-        let query = (MockData.fakeSearchItems[0] as? MoviesAndTVsItem)?.medias[0].original_title
+        let query = (MockData.fakeSearchItems[0] as? MoviesAndTVsItem)?.medias[0].displayTitle
         
         // Action
         sut.search(with: query!)
         
         // Assert
-        XCTAssertNotEqual((spy.capturedSearchItem?[0] as? MoviesAndTVsItem)?.medias[1].original_title, query!)
+        XCTAssertNotEqual((spy.capturedSearchItem?[0] as? MoviesAndTVsItem)?.medias[1].displayTitle, query!)
         XCTAssertNil(spy.capturedError)
     }
 }

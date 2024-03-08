@@ -297,14 +297,17 @@ extension APIManager : APIManagerProtocol {
             }
             
             do {
-                let results = try JSONDecoder().decode(YoutubeSearchResponse.self, from: data)                
-                completion(.success(results.items[0]))
-
+                let results = try JSONDecoder().decode(YoutubeSearchResponse.self, from: data)
+                
+                guard let youtubeMedia = results.videoElementsWithVideoId else {
+                    completion(.failure(NSError(domain: "There are no \(query) data on Youtube.", code: -1)))
+                    return
+                }
+                completion(.success(youtubeMedia))
             } catch {
                 completion(.failure(error))
                 print(error.localizedDescription)
             }
-
         }
         task.resume()
     }

@@ -59,13 +59,12 @@ class TableViewCell: UITableViewCell {
     
     private func favoriteMediaAt(indexPath: IndexPath) {
         guard let uid = Auth.auth().currentUser?.uid,
-              let mediaTitle = medias[indexPath.row].original_title ?? medias[indexPath.row].original_name,
               let imageUrl = medias[indexPath.row].poster_path,
               let overview = medias[indexPath.row].overview else {
             return
         }
         
-        let media = FMedia(ownerUid: uid, caption: mediaTitle, timestamp: Timestamp(), imageUrl: imageUrl, overview: overview, mId: NSUUID().uuidString)
+        let media = FMedia(ownerUid: uid, caption: medias[indexPath.row].displayTitle, timestamp: Timestamp(), imageUrl: imageUrl, overview: overview, mId: NSUUID().uuidString)
         contentActionButtonDelegate?.didTappedWatchListBtn(uid: uid, media: media)
     }
 }
@@ -93,11 +92,8 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
         collectionView.deselectItem(at: indexPath, animated: true)
         
         let media = medias[indexPath.row]
-        guard let mediaTitle = media.original_title ?? media.original_name else {
-            return
-        }
         
-        contentActionButtonDelegate?.didTappedPlayBtn(mediaName: "\(mediaTitle)", mediaOverview: media.overview)
+        contentActionButtonDelegate?.didTappedPlayBtn(mediaName: "\(media.displayTitle)", mediaOverview: media.overview)
     }
     
     // 長按觸發

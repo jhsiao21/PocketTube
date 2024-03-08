@@ -5,21 +5,21 @@
 //  Created by Amr Hossam on 06/01/2022.
 //
 
-import Foundation
-
-
-
 struct YoutubeSearchResponse: Codable {
     let items: [VideoElement]
+    
+    var videoElementsWithVideoId: VideoElement? {        
+        return items.first { $0.id.videoId != nil } ?? nil
+    }
 }
-
 
 struct VideoElement: Codable {
     let id: IdVideoElement
 }
 
-
 struct IdVideoElement: Codable {
     let kind: String
-    let videoId: String
+    let videoId: String?
+    let channelId: String?
+    let playlistId: String?
 }

@@ -24,7 +24,7 @@
 	<key>FacebookClientToken</key>
 	<string>c267aa9aed09a6d6071af575601dfd80</string>
 	<key>FacebookDisplayName</key>
-	<string>My Messenger</string>
+	<string>PocketTube</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>

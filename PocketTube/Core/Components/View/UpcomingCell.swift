@@ -247,7 +247,7 @@ class UpcomingCell: UITableViewCell {
         monthLabel.text = date.getMonth()
         dayLabel.text = date.getDay()
         dateLabel.text = date.formatDate()
-        titleLabel.text = (media.original_title ?? media.original_name) ?? "Unknown title name"
+        titleLabel.text = media.displayTitle
         overviewLabel.text = overview.briefOverview()
         genreLabel.text = getMovieGenreNames(for: genre)
     }

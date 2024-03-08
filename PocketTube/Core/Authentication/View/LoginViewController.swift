@@ -244,17 +244,12 @@ class LoginViewController: UIViewController {
                     }
                     switch result {
                     case .success(let user):
-                        guard let user = user as? User else { return }
-                        
-                        UserDefaults.standard.set(user.email, forKey: "email")
-                        UserDefaults.standard.set(user.userName, forKey: "name")
-                        self.loginSuccess()
-                        
+                        guard let user = user as? User else { return }                        
+                        self.loginSuccess(email: user.email, name: user.userName)
                     case .failure(let error):
                         self.showUIAlert(message: error.localizedDescription)
                     }
                 }
-                
             case .failure(let error):
                 DispatchQueue.main.async {
                     self.spinner.dismiss()
@@ -320,9 +315,6 @@ class LoginViewController: UIViewController {
                     return
                 }
                 
-                UserDefaults.standard.set(email, forKey: "email")
-                UserDefaults.standard.set("\(firstName)", forKey: "name")
-                
                 AuthService.shared.login(credential: FacebookAuthProvider.credential(withAccessToken: token.tokenString)) { [unowned self] result in
                     switch result {
                     case .success(_):
@@ -336,14 +328,14 @@ class LoginViewController: UIViewController {
                             if let user = user, error == nil {
                                 // user exists
                                 print("user data: \(user)")
-                                self.loginSuccess()
+                                self.loginSuccess(email: email, name: firstName)
                             }
                             else { // user does not exists
                                 AuthService.shared.uploadUserData(email: email, userName: "\(firstName)", phone: "N/A", id: uid) { [unowned self] result in
                                     switch result {
                                     case .success(_):
                                         print("upload user data to firestore database success")
-                                        self.loginSuccess()
+                                        self.loginSuccess(email: email, name: firstName)
                                     case .failure(let failure):
                                         self.showUIAlert(message: failure.localizedDescription)
                                     }
@@ -386,15 +378,12 @@ class LoginViewController: UIViewController {
                 print("User failed to log in with google")
                 return
             }
-            
-            print("Did sign in with Google: \(user)")
-            
+                        
             guard let email = user.profile?.email,
-                  let firstName = user.profile?.givenName,
-                  let lastName = user.profile?.familyName  else { return }
-            
-            UserDefaults.standard.set(email, forKey: "email")
-            UserDefaults.standard.set("\(firstName)", forKey: "name")
+                  let firstName = user.profile?.givenName else {
+                self.showUIAlert(message: "Unable to get email and givenName from Google.")
+                return
+            }
             
             AuthService.shared.login(credential: GoogleAuthProvider.credential(withIDToken: idToken,
                                                                                accessToken: user.accessToken.tokenString)) { [unowned self] result in
@@ -410,14 +399,14 @@ class LoginViewController: UIViewController {
                         if let user = user, error == nil {
                             // user exists
                             print("user data: \(user)")
-                            self.loginSuccess()
+                            self.loginSuccess(email: email, name: firstName)
                         }
                         else { // user does not exists
                             AuthService.shared.uploadUserData(email: email, userName: "\(firstName)", phone: "N/A", id: uid) { [unowned self] result in
                                 switch result {
                                 case .success(_):
                                     print("upload user data to firestore database success")
-                                    self.loginSuccess()
+                                    self.loginSuccess(email: email, name: firstName)
                                 case .failure(let failure):
                                     self.showUIAlert(message: failure.localizedDescription)
                                 }
@@ -473,7 +462,7 @@ class LoginViewController: UIViewController {
 extension LoginViewController {
     
     func showPopup(isSuccess: Bool) {
-        let successMessage = "User was sucessfully logged in."
+        let successMessage = "Login successfully."
         let errorMessage = "Something went wrong. Please try again"
         let alert = UIAlertController(title: isSuccess ? "Success": "Error", message: isSuccess ? successMessage: errorMessage, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Done", style: UIAlertAction.Style.default, handler: { [unowned self] action in
@@ -483,7 +472,10 @@ extension LoginViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    func loginSuccess() {
+    func loginSuccess(email: String, name: String) {
+        UserDefaults.standard.set(email, forKey: "email")
+        UserDefaults.standard.set("\(name)", forKey: "name")
+        
         NotificationCenter.default.post(name: .didRefresh, object: nil)
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
@@ -523,43 +515,56 @@ extension LoginViewController: UITextFieldDelegate {
 extension LoginViewController: ASAuthorizationControllerDelegate {
     /// 登入成功
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        self.spinner.show(in: view)
+        
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
             
             // ask apple server for token
-            
+            var errorMsg = ""
             guard let nonce = currentNonce else {
-                fatalError("Invalid state: A login callback was received, but no login")
+                errorMsg = "Invalid state: A login callback was received, but no login"
+                showUIAlert(message: errorMsg)
+                return
             }
             guard let appleIDToken = appleIDCredential.identityToken else {
-                print("Unalbe to fetch identity token  ")
+                errorMsg = "Unalbe to fetch identity token"
+                showUIAlert(message: errorMsg)
                 return
             }
             guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
-                print("Unable to seriaiez tokeb string from data: \(appleIDToken.debugDescription)")
+                errorMsg = "Unable to seriaiez tokeb string from data: \(appleIDToken.debugDescription)"
+                showUIAlert(message: errorMsg)
                 return
             }
-            
-            guard let email = appleIDCredential.email,
-                  let givenName = appleIDCredential.fullName?.givenName else { return }
-            
-            UserDefaults.standard.set(email, forKey: "email")
-            UserDefaults.standard.set(givenName, forKey: "name")
-            
-            AuthService.shared.login(credential: OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: currentNonce)) { [weak self] result in
+                       
+            AuthService.shared.login(credential: OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)) { [weak self] result in
+                
+                DispatchQueue.main.async {
+                    self?.spinner.dismiss()
+                }
+                
                 switch result {
                 case .success(_):
                     
                     guard let uid = Auth.auth().currentUser?.uid else { return }
                     UserService.fetchUser(withUid: uid) { user, error in
                         if let user = user, error == nil {
-                            // user exists
+                            // user exists （後續登入）
                             print("user data: \(user)")
-                            self?.loginSuccess()
+                            self?.loginSuccess(email: user.email, name: user.userName)
                         } else {
+                            // 首次登入，上傳user data
+                            
+                            guard let email = appleIDCredential.email,
+                                  let givenName = appleIDCredential.fullName?.givenName else {
+                                self?.showUIAlert(message: "Unable to get email and givenName from AppleIDCredential")
+                                return
+                            }
+                            
                             AuthService.shared.uploadUserData(email: email, userName: givenName, phone: "N/A", id: uid) { [unowned self] result in
                                 switch result {
                                 case .success(_):
-                                    self?.loginSuccess()
+                                    self?.loginSuccess(email: email, name: givenName)
                                 case .failure(let failure):
                                     self?.showUIAlert(message: failure.localizedDescription)
                                 }

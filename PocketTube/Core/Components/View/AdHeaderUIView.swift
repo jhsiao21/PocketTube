@@ -240,7 +240,7 @@ class AdHeaderUIView: UIView {
         print("myWatchListBtnTapped")
         
         guard let uid = Auth.auth().currentUser?.uid,
-              let mediaTitle = media?.original_title ?? media?.original_name,
+              let mediaTitle = media?.displayTitle,
               let imageUrl = media?.poster_path,
               let overview = media?.overview else {
             return
@@ -253,11 +253,13 @@ class AdHeaderUIView: UIView {
     
     @objc private func playBtnTapped() {
         print("playBtnTapped")
-        
-        guard let media = self.media,
-              let mediaTitle = media.original_title ?? media.original_name else { return }
                 
-        contentActionButtonDelegate?.didTappedPlayBtn(mediaName: "\(mediaTitle)", mediaOverview: media.overview)
+        guard let mediaTitle = media?.displayTitle,
+              let mediaOverview = media?.overview else {
+            return
+        }
+                
+        contentActionButtonDelegate?.didTappedPlayBtn(mediaName: mediaTitle, mediaOverview: mediaOverview)
     }
     
     private func configureHeroHeaderView() {

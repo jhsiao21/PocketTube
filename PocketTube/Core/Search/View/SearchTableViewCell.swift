@@ -74,11 +74,14 @@ class SearchTableViewCell: UITableViewCell {
     
     public func configure(with media: Media) {
 
-        guard let url = media.poster_path, let posterUrl = URL(string: "https://image.tmdb.org/t/p/w500/\(url)") else {
-            return
+        if let url = media.poster_path, let posterUrl = URL(string: "https://image.tmdb.org/t/p/w500/\(url)") {
+            posterImage.sd_setImage(with: posterUrl, completed: nil)
+            titleLabel.text = media.displayTitle
+        } else {
+            posterImage.image = UIImage(named: "No_poster_icon")!.withRenderingMode(.alwaysTemplate)
+            posterImage.tintColor = .lightGray
+            titleLabel.text = media.displayTitle
         }
-        posterImage.sd_setImage(with: posterUrl, completed: nil)
-        titleLabel.text = (media.original_title ?? media.original_name) ?? "Unknown media name"
     }
     
     override func layoutSubviews() {

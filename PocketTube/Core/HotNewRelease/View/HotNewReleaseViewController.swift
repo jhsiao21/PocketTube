@@ -243,7 +243,7 @@ extension HotNewReleaseViewController: UITableViewDelegate, UITableViewDataSourc
             }
         }
         
-        guard let mediaTitle = media?.original_title ?? media?.original_name else {
+        guard let mediaTitle = media?.displayTitle else {
             return
         }
         

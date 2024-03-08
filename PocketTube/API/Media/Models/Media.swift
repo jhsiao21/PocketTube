@@ -51,5 +51,23 @@ struct Media: Codable, Equatable {
     let vote_count: Int
     let release_date: String?
     let vote_average: Double
+    let title: String?
+    let name: String?
+    
+//    var displayTitle: String {
+//        return title ?? name ?? original_title ?? original_name ?? "Unknown"
+//    }
+    
+    var displayTitle: String {
+        let candidates = [title, name, original_title, original_name]
+        let candidate = candidates.first(where: { $0?.containsChineseCharacters == true })
+        
+        guard let wrap = candidate, candidate != nil,
+              let chineseTitle = wrap else {
+            return title ?? name ?? original_title ?? original_name ?? "Unknown"
+        }
+        
+        return chineseTitle
+    }
 }
 
