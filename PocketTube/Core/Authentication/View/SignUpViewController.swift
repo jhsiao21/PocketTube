@@ -137,7 +137,7 @@ class SignUpViewController: UIViewController {
         view.addSubview(backButton)
         view.addSubview(titleLabel)
         view.addSubview(nameTextField)
-        view.addSubview(phoneNumberTextField)
+//        view.addSubview(phoneNumberTextField)
         view.addSubview(emailTextField)
         view.addSubview(emailValidationLabel)
         view.addSubview(passwordTextField)
@@ -158,12 +158,12 @@ class SignUpViewController: UIViewController {
             view.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor, constant: 40),
             nameTextField.heightAnchor.constraint(equalToConstant: 40),
             
-            phoneNumberTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 20),
-            phoneNumberTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
-            view.trailingAnchor.constraint(equalTo: phoneNumberTextField.trailingAnchor, constant: 40),
-            phoneNumberTextField.heightAnchor.constraint(equalToConstant: 40),
+//            phoneNumberTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 20),
+//            phoneNumberTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
+//            view.trailingAnchor.constraint(equalTo: phoneNumberTextField.trailingAnchor, constant: 40),
+//            phoneNumberTextField.heightAnchor.constraint(equalToConstant: 40),
                         
-            emailTextField.topAnchor.constraint(equalTo: phoneNumberTextField.bottomAnchor, constant: 20),
+            emailTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 20),
             emailTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
             view.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor, constant: 40),
             emailTextField.heightAnchor.constraint(equalToConstant: 40),
@@ -206,10 +206,10 @@ class SignUpViewController: UIViewController {
         if let email = emailTextField.text,
             let password = passwordTextField.text,
            let userName = nameTextField.text,
-           let phone = phoneNumberTextField.text,
+//           let phone = phoneNumberTextField.text,
            validEmail, validPassword {
             spinner.show(in: view)
-            AuthService.shared.createUser(withEmail: email, password: password, userName: userName, phone: phone ) { [unowned self] result in
+            AuthService.shared.createUser(withEmail: email, password: password, userName: userName) { [unowned self] result in
                 var message: String = ""
                 DispatchQueue.main.async {
                     self.spinner.dismiss()
@@ -217,7 +217,9 @@ class SignUpViewController: UIViewController {
                 switch result {
                 case .success(_):
                     message = "User was sucessfully created."
-                    self.showUIHint(message: message)
+                    self.showUIHint(message: message, handler: { _ in
+                        self.navigationController?.popViewController(animated: true)
+                    })
                 case .failure(let failure):
                     message = failure.localizedDescription
                     self.showUIAlert(message: message)

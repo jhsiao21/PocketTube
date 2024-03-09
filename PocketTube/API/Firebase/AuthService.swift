@@ -52,7 +52,7 @@ class AuthService {
     }
         
     /// create user data to firebase database
-    func createUser(withEmail email: String, password: String, userName: String, phone: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+    func createUser(withEmail email: String, password: String, userName: String, completion: @escaping (Result<Bool, Error>) -> Void) {
         
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
             guard let user = authResult?.user, error == nil else {
@@ -60,7 +60,7 @@ class AuthService {
                 return
             }
             
-            self.uploadUserData(email: email, userName: userName, phone: phone, id: user.uid) { result in
+            self.uploadUserData(email: email, userName: userName, id: user.uid) { result in
                 switch result {
                 case .success(_):
                     completion(.success(true))
@@ -71,8 +71,8 @@ class AuthService {
         }
     }
         
-    func uploadUserData(email: String, userName: String, phone: String, id: String, completion: @escaping (Result<Bool, Error>) -> Void) {
-        let user = User(userName: userName, email: email, phone: phone, id: id)
+    func uploadUserData(email: String, userName: String, id: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+        let user = User(userName: userName, email: email, id: id)
         guard let encodedUser = try? Firestore.Encoder().encode(user) else {
             completion(.failure(ServiceErrors.encodingError))
             return

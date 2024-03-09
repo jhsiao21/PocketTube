@@ -331,7 +331,7 @@ class LoginViewController: UIViewController {
                                 self.loginSuccess(email: email, name: firstName)
                             }
                             else { // user does not exists
-                                AuthService.shared.uploadUserData(email: email, userName: "\(firstName)", phone: "N/A", id: uid) { [unowned self] result in
+                                AuthService.shared.uploadUserData(email: email, userName: "\(firstName)", id: uid) { [unowned self] result in
                                     switch result {
                                     case .success(_):
                                         print("upload user data to firestore database success")
@@ -402,7 +402,7 @@ class LoginViewController: UIViewController {
                             self.loginSuccess(email: email, name: firstName)
                         }
                         else { // user does not exists
-                            AuthService.shared.uploadUserData(email: email, userName: "\(firstName)", phone: "N/A", id: uid) { [unowned self] result in
+                            AuthService.shared.uploadUserData(email: email, userName: "\(firstName)", id: uid) { [unowned self] result in
                                 switch result {
                                 case .success(_):
                                     print("upload user data to firestore database success")
@@ -561,7 +561,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                                 return
                             }
                             
-                            AuthService.shared.uploadUserData(email: email, userName: givenName, phone: "N/A", id: uid) { [unowned self] result in
+                            AuthService.shared.uploadUserData(email: email, userName: givenName, id: uid) { [unowned self] result in
                                 switch result {
                                 case .success(_):
                                     self?.loginSuccess(email: email, name: givenName)

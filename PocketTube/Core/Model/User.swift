@@ -12,7 +12,7 @@ import Foundation
 struct User: Identifiable, Codable {
     let userName: String
     let email: String
-    let phone: String
+//    let phone: String
     var profileImageUrl: String?
     let id: String
     

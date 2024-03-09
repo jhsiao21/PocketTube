@@ -18,8 +18,6 @@ class MainTabBarViewController: UITabBarController {
         let vc3 = UINavigationController(rootViewController: FavoritesViewController())
         let vc4 = UINavigationController(rootViewController: ProfileViewController())
         
-        
-        
         vc1.tabBarItem.image = UIImage(systemName: "house")
         vc2.tabBarItem.image = UIImage(systemName: "play.rectangle.on.rectangle")
         vc3.tabBarItem.image = UIImage(systemName: "heart.circle")
@@ -28,7 +26,7 @@ class MainTabBarViewController: UITabBarController {
         vc1.title = "首頁"
         vc2.title = "熱播新片"
         vc3.title = "口袋名單"
-        vc4.title = "帳號"
+        vc4.title = "個人頁面"
         
         //適應dark mode and light mode
         tabBar.tintColor = .label

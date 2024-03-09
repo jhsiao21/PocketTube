@@ -21,8 +21,8 @@ class Top10Cell: UITableViewCell {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.alignment = .top // 设置对齐方式
-        stackView.spacing = 8 // 设置视图之间的间隔
+        stackView.alignment = .top
+        stackView.spacing = 8
         
         return stackView
     }()
@@ -30,9 +30,9 @@ class Top10Cell: UITableViewCell {
     private let vStackView : UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical // 设置垂直方向布局
-        stackView.alignment = .trailing // 设置对齐方式为居中
-        stackView.spacing = 10 // 设置视图之间的间隔
+        stackView.axis = .vertical
+        stackView.alignment = .trailing
+        stackView.spacing = 10
         
         return stackView
     }()

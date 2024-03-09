@@ -37,6 +37,9 @@
 		02A2E4B92AA9F1AE0059292D /* PopularCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A2E4B82AA9F1AE0059292D /* PopularCell.swift */; };
 		02A2E4BB2AA9F3C10059292D /* Top10Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A2E4BA2AA9F3C10059292D /* Top10Cell.swift */; };
 		02BC7B832B39339900226DEC /* NaviBarConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC7B822B39339900226DEC /* NaviBarConfigView.swift */; };
+		02C3699C2B9C0EE400749465 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3699B2B9C0EE400749465 /* ProfileTableViewCell.swift */; };
+		02C3699F2B9C11D200749465 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3699E2B9C11D200749465 /* ProfileViewModel.swift */; };
+		02C369A12B9C8B0B00749465 /* AppInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C369A02B9C8B0B00749465 /* AppInfoViewController.swift */; };
 		02D22ABB2B7A1B6B005898B7 /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22ABA2B7A1B6B005898B7 /* UIViewController+Ext.swift */; };
 		02D22ABF2B7A5D76005898B7 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22ABE2B7A5D76005898B7 /* APIError.swift */; };
 		02D22B0F2B7E0D24005898B7 /* APIManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22B0E2B7E0D24005898B7 /* APIManagerProtocol.swift */; };
@@ -144,6 +147,10 @@
 		02A2E4B82AA9F1AE0059292D /* PopularCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularCell.swift; sourceTree = "<group>"; };
 		02A2E4BA2AA9F3C10059292D /* Top10Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Top10Cell.swift; sourceTree = "<group>"; };
 		02BC7B822B39339900226DEC /* NaviBarConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaviBarConfigView.swift; sourceTree = "<group>"; };
+		02C369982B9B7F2200749465 /* PocketTubeRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PocketTubeRelease.entitlements; sourceTree = "<group>"; };
+		02C3699B2B9C0EE400749465 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
+		02C3699E2B9C11D200749465 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		02C369A02B9C8B0B00749465 /* AppInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfoViewController.swift; sourceTree = "<group>"; };
 		02D22ABA2B7A1B6B005898B7 /* UIViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Ext.swift"; sourceTree = "<group>"; };
 		02D22ABE2B7A5D76005898B7 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		02D22B0E2B7E0D24005898B7 /* APIManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManagerProtocol.swift; sourceTree = "<group>"; };
@@ -318,6 +325,7 @@
 		02AAB5092B2D4A6C0056CE7E /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				02C369992B9C0E9200749465 /* Profile */,
 				02D22B582B89A59F005898B7 /* Favorite */,
 				02D22B4B2B88482B005898B7 /* Model */,
 				02D22B172B87421B005898B7 /* Authentication */,
@@ -416,6 +424,33 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		02C369992B9C0E9200749465 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				02C3699D2B9C11BA00749465 /* ViewModel */,
+				02C3699A2B9C0EAC00749465 /* View */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		02C3699A2B9C0EAC00749465 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				02C369A02B9C8B0B00749465 /* AppInfoViewController.swift */,
+				02C3699B2B9C0EE400749465 /* ProfileTableViewCell.swift */,
+				02D22B3D2B883AA8005898B7 /* ProfileViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		02C3699D2B9C11BA00749465 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				02C3699E2B9C11D200749465 /* ProfileViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		02D22ABC2B7A5D4F005898B7 /* API */ = {
 			isa = PBXGroup;
 			children = (
@@ -472,7 +507,6 @@
 				02D22B6A2B8C7226005898B7 /* LandingScreenViewController.swift */,
 				02D22B6E2B8C7613005898B7 /* SignUpViewController.swift */,
 				02D22B762B8C891B005898B7 /* LoginViewController.swift */,
-				02D22B3D2B883AA8005898B7 /* ProfileViewController.swift */,
 				02D22B792B8D836B005898B7 /* ForgotPasswordViewController.swift */,
 			);
 			path = View;
@@ -593,6 +627,7 @@
 		0A6209A52734603E00A88D71 /* PocketTube */ = {
 			isa = PBXGroup;
 			children = (
+				02C369982B9B7F2200749465 /* PocketTubeRelease.entitlements */,
 				02D22ABC2B7A5D4F005898B7 /* API */,
 				02AAB5092B2D4A6C0056CE7E /* Core */,
 				0A1942CD274A61C000B3FA93 /* Utils */,
@@ -769,6 +804,7 @@
 				02D22B672B8B74AA005898B7 /* MediaPreviewDelegate.swift in Sources */,
 				0A6209C02734618C00A88D71 /* SearchViewController.swift in Sources */,
 				02D22B572B89A406005898B7 /* Timestamp.swift in Sources */,
+				02C369A12B9C8B0B00749465 /* AppInfoViewController.swift in Sources */,
 				02D22B7C2B8D8683005898B7 /* ForgotPasswordViewModel.swift in Sources */,
 				02D22B4A2B884775005898B7 /* FirestoreConstants.swift in Sources */,
 				02A2E4B22AA825A40059292D /* CustomButton.swift in Sources */,
@@ -782,6 +818,7 @@
 				029825702AC3125200503EF0 /* Haptic.swift in Sources */,
 				02D22ABF2B7A5D76005898B7 /* APIError.swift in Sources */,
 				0AD9A100276047A900131EEF /* APIManager.swift in Sources */,
+				02C3699F2B9C11D200749465 /* ProfileViewModel.swift in Sources */,
 				02D22B732B8C8026005898B7 /* UITextField+Ext.swift in Sources */,
 				02D22B602B8A2F09005898B7 /* ItemViewModel.swift in Sources */,
 				021762AC2B9B33A200086F3E /* CustomCellHeaderView.swift in Sources */,
@@ -812,6 +849,7 @@
 				0A5AAA9D2769057B00149719 /* String+Ext.swift in Sources */,
 				02D22B652B8B706C005898B7 /* ShowAlertDelegate.swift in Sources */,
 				0AD8A1BE2786FDB000612F1E /* YoutubeSearchResponse.swift in Sources */,
+				02C3699C2B9C0EE400749465 /* ProfileTableViewCell.swift in Sources */,
 				0298256E2AB9E8C900503EF0 /* SearchTableViewCell.swift in Sources */,
 				026532452B907A8800E9B585 /* SearchResultType.swift in Sources */,
 				02D22ABB2B7A1B6B005898B7 /* UIViewController+Ext.swift in Sources */,
@@ -1031,8 +1069,8 @@
 				INFOPLIST_FILE = PocketTube/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1041,9 +1079,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Logan.PocketTube;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1052,7 +1093,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = PocketTube/PocketTube.entitlements;
+				CODE_SIGN_ENTITLEMENTS = PocketTube/PocketTubeRelease.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = S4URMM3RJV;
@@ -1060,19 +1102,23 @@
 				INFOPLIST_FILE = PocketTube/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Logan.PocketTube;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Logan.PocketTube.App;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

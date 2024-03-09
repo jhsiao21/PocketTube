@@ -17,10 +17,10 @@ extension UIViewController {
             self.present(alert, animated: true, completion: nil)
         }
     }
-    
-    func showUIHint(title: String = "提示", message: String, actionTitle: String = "確定") {
+        
+    func showUIHint(title: String = "提示", message: String, actionTitle: String = "確定", handler: ((UIAlertAction) -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: handler))
         DispatchQueue.main.async {
             self.present(alert, animated: true, completion: nil)
         }

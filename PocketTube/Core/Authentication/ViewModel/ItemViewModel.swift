@@ -14,6 +14,7 @@ enum ItemViewModelType {
 
 struct ItemViewModel {
     let viewModelType: ItemViewModelType
-    let title: String
+    let sectionTitle: String
+    let itemTitle: String
     let handler: (() -> Void)?
 }
