@@ -34,11 +34,6 @@ final class ProfileViewController: UIViewController {
     private var userName: String? = nil
     private var email: String? = nil
     
-//    private let headerView: UIView = {
-//        let view = UIView()
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        return view
-//    }()
     private var headerView : UIView?
     
     private var profileImageView: UIImageView = {
@@ -59,6 +54,7 @@ final class ProfileViewController: UIViewController {
         table.backgroundColor = .systemBackground
         table.register(ProfileTableViewCell.self, forCellReuseIdentifier: ProfileTableViewCell.identifier)
         table.translatesAutoresizingMaskIntoConstraints = false
+        table.showsVerticalScrollIndicator = false
         
         return table
     }()
@@ -67,9 +63,10 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
-        
+                
         tableView.register(ProfileTableViewCell.self, forCellReuseIdentifier: ProfileTableViewCell.identifier)
         
+        title = "個人頁面"
         
         layout()
         setupInfo()
