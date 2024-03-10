@@ -290,8 +290,9 @@ extension HotNewReleaseViewController: ContentActionButtonDelegate {
                 DispatchQueue.main.async {
                     self?.spinner.dismiss()
                 }
-                let videoId = (videoElement as VideoElement).id.videoId
-                guard let youtubeUrl = URL(string: "https://www.youtube.com/watch?v=\(videoId)") else {
+                
+                guard let videoId = (videoElement as VideoElement).id.videoId,
+                      let youtubeUrl = URL(string: "https://www.youtube.com/watch?v=\(videoId)") else {
                     return
                 }
                 let shareMsg = "我看到了一個超棒的影片！片名：\(mediaName)"
@@ -328,7 +329,7 @@ extension HotNewReleaseViewController: ContentActionButtonDelegate {
         
         spinner.show(in: view)
                 
-        DatabaseManager.shared.recordMedia(uid: uid, media: media) { [weak self] result in
+        DatabaseManager.shared.favoriteMedia(uid: uid, media: media) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.spinner.dismiss()

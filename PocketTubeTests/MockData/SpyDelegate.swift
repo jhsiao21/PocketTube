@@ -12,7 +12,7 @@ class SpyDelegate {
     private(set) var capturedData: [String : [Media]]?
     private(set) var capturedFData: [FMedia]?
     private(set) var capturedItem: [HotNewReleaseViewModelItem]?
-    private(set) var capturedSearchItem: [SearchResultViewModelItem]?
+    private(set) var capturedSearchData: [Media]?
     private(set) var capturedError: Error?
     
 }
@@ -53,12 +53,12 @@ extension SpyDelegate: FavoriteViewModelDelegate {
 
 // MARK: - SearchViewModelDelegate
 extension SpyDelegate: SearchViewModelDelegate {
-    func searchViewModel(didReceiveData data: [SearchResultViewModelItem]) {
-        capturedSearchItem = data
+    func searchViewModel(didReceiveData data: [Media]) {
+        capturedSearchData = data
     }
     
-    func searchViewModel(didReceiveSearchData data: [SearchResultViewModelItem]) {
-        capturedSearchItem = data
+    func searchViewModel(didReceiveSearchData data: [Media]) {
+        capturedSearchData = data
     }
     
     func searchViewModel(didReceiveError error: Error) {

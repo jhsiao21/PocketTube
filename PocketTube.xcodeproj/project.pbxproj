@@ -238,9 +238,9 @@
 		0265321B2B8F18F800E9B585 /* PocketTubeTests */ = {
 			isa = PBXGroup;
 			children = (
+				026532232B8F3A5A00E9B585 /* APITest */,
 				0265322D2B8F8A4400E9B585 /* ViewModelTest */,
 				0265322A2B8F419100E9B585 /* MockData */,
-				026532232B8F3A5A00E9B585 /* APITest */,
 				0265321C2B8F18F800E9B585 /* PocketTubeTests.swift */,
 			);
 			path = PocketTubeTests;
@@ -1062,6 +1062,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = PocketTube/PocketTube.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = S4URMM3RJV;
@@ -1110,7 +1111,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Logan.PocketTube.App;
+				PRODUCT_BUNDLE_IDENTIFIER = Logan.PocketTube.TW;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

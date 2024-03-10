@@ -11,9 +11,14 @@ final class APIManager {
         
     static let shared: APIManager = APIManager()
     
+    let urlSessionConfiguration = URLSessionConfiguration.default
+    
     init(){
         print("APICaller init()")
-    }    
+        
+        urlSessionConfiguration.timeoutIntervalForRequest = 30.0
+        urlSessionConfiguration.timeoutIntervalForResource = 30.0
+    }
 }
 
 extension APIManager : APIManagerProtocol {
@@ -264,7 +269,7 @@ extension APIManager : APIManagerProtocol {
     
     func searchMedia(with query: String, completion: @escaping (Result<[Media], Error>) -> Void) {
         
-        guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {return}
+        guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {return}
         guard let url = URL(string: "\(Constants.TmdbBaseURL)/3/search/movie?api_key=\(Constants.TmdbAPI_KEY)&query=\(query)") else {
             return
         }

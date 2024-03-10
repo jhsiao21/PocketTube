@@ -7,6 +7,7 @@
 
 import Foundation
 @testable import PocketTube
+typealias SearchResult = Result<[Media], Error>
 
 class SearchViewModelMockDataProvider: SearchViewModelDataProvider {
     private let searchResult: SearchResult

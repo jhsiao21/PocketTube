@@ -12,7 +12,7 @@ final class SearchViewModelTest: XCTestCase {
 
     func testInitAndNotNil() {
         // Arrange
-        let mockDataProvider = SearchViewModelMockDataProvider(result: .success(MockData.fakeSearchItems))
+        let mockDataProvider = SearchViewModelMockDataProvider(result: .success(MockData.fakeMedias))
         let sut = SearchViewModel(dataProvider: mockDataProvider)
         
         // Action
@@ -23,7 +23,7 @@ final class SearchViewModelTest: XCTestCase {
     
     func testFetchSuccess() {
         // Arrange
-        let mockDataProvider = SearchViewModelMockDataProvider(result: .success(MockData.fakeSearchItems))
+        let mockDataProvider = SearchViewModelMockDataProvider(result: .success(MockData.fakeMedias))
         let sut = SearchViewModel(dataProvider: mockDataProvider)
         
         //Spy去接sut.fetchDiscoverMovies()的callback結果
@@ -39,7 +39,7 @@ final class SearchViewModelTest: XCTestCase {
 
         // Assert
         waitForExpectations(timeout: 5) { error in
-            XCTAssertNotNil(spy.capturedSearchItem)
+            XCTAssertNotNil(spy.capturedSearchData)
             XCTAssertNil(spy.capturedError)
         }
     }
@@ -57,43 +57,43 @@ final class SearchViewModelTest: XCTestCase {
         sut.fetchDiscoverMovies()
         
         // Assert
-        XCTAssertNil(spy.capturedSearchItem)
+        XCTAssertNil(spy.capturedSearchData)
         XCTAssertNotNil(spy.capturedError)
     }
     
     func testSearchSuccess() {
         // Arrange
-        let mockDataProvider = SearchViewModelMockDataProvider(result: .success(MockData.fakeSearchItems))
+        let mockDataProvider = SearchViewModelMockDataProvider(result: .success(MockData.fakeMedias))
         let sut = SearchViewModel(dataProvider: mockDataProvider)
         
         //Spy去接sut.search()的callback結果
         let spy = SpyDelegate()
         sut.delegate = spy
-        let query = (MockData.fakeSearchItems[0] as? MoviesAndTVsItem)?.medias[0].displayTitle
+        let query = MockData.fakeMedias[0].displayTitle
         
         // Action
-        sut.search(with: query!)
+        sut.search(with: query)
         
         // Assert
-        XCTAssertEqual((spy.capturedSearchItem?[0] as? MoviesAndTVsItem)?.medias[0].displayTitle, query!)
+        XCTAssertEqual(spy.capturedSearchData?[0].displayTitle, query)
         XCTAssertNil(spy.capturedError)
     }
 
     func testSearchFail() {
         // Arrange
-        let mockDataProvider = SearchViewModelMockDataProvider(result: .success(MockData.fakeSearchItems))
+        let mockDataProvider = SearchViewModelMockDataProvider(result: .success(MockData.fakeMedias))
         let sut = SearchViewModel(dataProvider: mockDataProvider)
         
         //Spy去接sut.search()的callback結果
         let spy = SpyDelegate()
         sut.delegate = spy
-        let query = (MockData.fakeSearchItems[0] as? MoviesAndTVsItem)?.medias[0].displayTitle
+        let query = MockData.fakeMedias[0].displayTitle //指定query內容是第一筆假資料
         
         // Action
-        sut.search(with: query!)
+        sut.search(with: query)
         
         // Assert
-        XCTAssertNotEqual((spy.capturedSearchItem?[0] as? MoviesAndTVsItem)?.medias[1].displayTitle, query!)
+        XCTAssertNotEqual(spy.capturedSearchData?[1].displayTitle, query) //期望不相等：第二筆假資料displayTitle比對假資料第一筆displayTitle
         XCTAssertNil(spy.capturedError)
     }
 }

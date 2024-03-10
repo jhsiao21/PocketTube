@@ -239,7 +239,7 @@ extension HomeViewController: ContentActionButtonDelegate {
         
         spinner.show(in: view)
                 
-        DatabaseManager.shared.recordMedia(uid: uid, media: media) { [weak self] result in
+        DatabaseManager.shared.favoriteMedia(uid: uid, media: media) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.spinner.dismiss()

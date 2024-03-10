@@ -29,14 +29,15 @@ extension DatabaseManager: DatabaseManagerProtocol {
         return safeEmail
     }
     
-    func recordMedia(uid: String, media: FMedia, completion: @escaping (Result<FavoriteResponse, Error>) -> Void) {
+    /// add media to Pocket
+    func favoriteMedia(uid: String, media: FMedia, completion: @escaping (Result<FavoriteResponse, Error>) -> Void) {
         guard let mediaData = try? Firestore.Encoder().encode(media) else { return }
         
         //指定文檔ID
         let documentRef = FirestoreConstants.MediaCollection.document(media.mId)
        
         // 先檢查media是否已經存在，用caption, uid判斷
-        self.mediaExists(with: media.caption, uid: uid) { result in
+        self.isFavoriteMediaExists(with: media.caption, uid: uid) { result in
                     switch result {
                     case .success(let exist):
                         if exist {
@@ -87,7 +88,7 @@ extension DatabaseManager: DatabaseManagerProtocol {
     }
     
     /// 依據caption跟ownerUid判斷media是否存在
-    func mediaExists(with caption: String, uid: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+    func isFavoriteMediaExists(with caption: String, uid: String, completion: @escaping (Result<Bool, Error>) -> Void) {
         let query = FirestoreConstants.MediaCollection
             .whereField("caption", isEqualTo: caption)
             .whereField("ownerUid", isEqualTo: uid)
