@@ -158,7 +158,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let media = searchController.isActive ? viewModel.searchedItems[indexPath.section] : viewModel.defaultItems[indexPath.row]
+        let media = searchController.isActive ? viewModel.searchedItems[indexPath.row] : viewModel.defaultItems[indexPath.row]
                 
         previewMedia(mediaName: media.displayTitle, mediaOverview: media.overview)
         

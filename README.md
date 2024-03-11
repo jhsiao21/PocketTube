@@ -1,5 +1,5 @@
 ## About
-This app is built upon TMDB (The Movie Database) as its foundation, offering users the ability to browse a variety of movie and TV show information. It utilizes Firebase for login authentication, allowing users to register or directly log in using their Facebook or Google accounts. The backend database is powered by Firestore Database, enabling users to save and collect movies they are interested in.
+This app is built upon TMDB (The Movie Database) as its foundation, offering users the ability to browse a variety of movie and TV show information. It utilizes Firebase for login authentication, allowing users to register or directly log in with Facebook, Google and Apple. The backend database is powered by Firestore Database, enabling users to save and collect movies they are interested in.
 
 Due to copyright concerns, the app uses YouTube trailers for video content, while the text and image data of the movies are sourced from TMDB. 
 
@@ -23,7 +23,7 @@ The following content includes technical details, feature introductions, and dem
 ![](images/LogIn.png)
 ![](images/SignUp.png)
 
-[Demo video](https://www.youtube.com/watch?v=OS2JBtEoAFg)
+[Demo video](https://youtu.be/hojQ0-4yL6A)
 
 ### Home
 
@@ -41,7 +41,7 @@ The following content includes technical details, feature introductions, and dem
 
 ![](images/Search.png)
 
-[Demo video](https://www.youtube.com/watch?v=BQcOcP1j3bY)
+[Demo video](https://youtu.be/oYRjc9Gm1ug)
 
 ## Build
 1. Drag your own GoogleService-Info.plist into the project.

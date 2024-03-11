@@ -12,6 +12,7 @@ import FirebaseAuth
 import FBSDKLoginKit
 import SDWebImage
 import MessageUI
+import JGProgressHUD
 
 private enum ProfileSection: Int, CaseIterable {
     case info, support, logout
@@ -35,6 +36,7 @@ final class ProfileViewController: UIViewController {
     private var email: String? = nil
     
     private var headerView : UIView?
+    private let spinner = JGProgressHUD(style: .dark)
     
     private var profileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -332,25 +334,30 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         
         actionSheet.addAction(UIAlertAction(title: "Take Photo",
                                             style: .default,
-                                            handler: { _ in
-            self.presentCamera()
+                                            handler: { [weak self] _ in
+            self?.presentCamera()
         }))
         
         actionSheet.addAction(UIAlertAction(title: "Chose Photo",
                                             style: .default,
-                                            handler: { _ in
-            self.presentPhotoPicker()
+                                            handler: { [weak self] _ in
+            self?.presentPhotoPicker()
         }))
         
         present(actionSheet, animated: true)
     }
     
     func presentCamera() {
-        let vc = UIImagePickerController()
-        vc.sourceType = .camera
-        vc.delegate = self
-        vc.allowsEditing = true
-        present(vc, animated: true)
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let vc = UIImagePickerController()
+            vc.sourceType = .camera
+            vc.delegate = self
+            vc.allowsEditing = true
+            self.spinner.dismiss()
+            present(vc, animated: true)
+        } else {
+            showUIAlert(message: "Camera is unavailable on this device.")
+        }
     }
     
     func presentPhotoPicker() {

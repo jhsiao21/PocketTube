@@ -26,7 +26,7 @@ class AppInfoViewController: UIViewController {
     
     private let content: UILabel = {
         let label = UILabel()
-        label.text = "This app is built upon TMDB (The Movie Database) as its foundation, offering users the ability to browse a variety of movie and TV show information. It utilizes Firebase for login authentication, allowing users to register or directly log in using their Facebook or Google accounts.\n\nThe backend database is powered by Firestore Database, enabling users to save and collect movies they are interested in.\nDue to copyright concerns, the app uses YouTube trailers for video content, while the text and image data of the movies are sourced from TMDB."
+        label.text = "This app is built upon TMDB (The Movie Database) as its foundation, offering users the ability to browse a variety of movie and TV show information. It utilizes Firebase for login authentication, allowing users to register or directly log in with their Facebook, Google and Apple.\n\nThe backend database is powered by Firestore Database, enabling users to save and collect movies they are interested in.\nDue to copyright concerns, the app uses YouTube trailers for video content, while the text and image data of the movies are sourced from TMDB."
         label.textColor = .label
         label.textAlignment = .left
         label.numberOfLines = 0
