@@ -44,5 +44,6 @@ The following content includes technical details, feature introductions, and dem
 [Demo video](https://youtu.be/oYRjc9Gm1ug)
 
 ## Build
-1. Drag your own GoogleService-Info.plist into the project.
-2. Replace your FacebookAppID and FacebookClientToken in Info.plist file.
+1. Reference [Firebase Auth Quickstart](https://github.com/firebase/quickstart-ios/tree/main/authentication#firebase-auth-quickstart) to setup Firebase for signing in with Facebook, Google, and Apple.
+2. Drag your own GoogleService-Info.plist into the project.
+3. Replace your FacebookAppID and FacebookClientToken in Info.plist file.
