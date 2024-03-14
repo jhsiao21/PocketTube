@@ -13,7 +13,7 @@ The following content includes technical details, feature introductions, and dem
 * Application of TableView, CustomTableViewCell, CollectionView, and SearchBar
 * Protocol-oriented programming
 * Closure
-* Firebase
+* Firebase Authentication
 * Testable API class and view model for Unit Test
 
 ## Introduction
@@ -43,7 +43,7 @@ The following content includes technical details, feature introductions, and dem
 
 [Demo video](https://youtu.be/oYRjc9Gm1ug)
 
-## Build
-1. Reference [Firebase Auth Quickstart](https://github.com/firebase/quickstart-ios/tree/main/authentication#firebase-auth-quickstart) to setup Firebase for signing in with Facebook, Google, and Apple.
-2. Drag your own GoogleService-Info.plist into the project.
-3. Replace your FacebookAppID and FacebookClientToken in Info.plist file.
+## Quick start
+1. Due to security concerns, please drag your own GoogleService-Info.plist into the project, which can be downloaded from Firebase console.
+2. You can refer to [Add Firebase to your Apple project](https://firebase.google.com/docs/ios/setup#prerequisites) for instructions on setting up Firebase and downloading your own GoogleService-Info.plist.
+3. Also, replace your FacebookAppID and FacebookClientToken in Info.plist file for signing in with Facebook.
