@@ -93,7 +93,8 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
         
         let media = medias[indexPath.row]
         
-        contentActionButtonDelegate?.didTappedPlayBtn(mediaName: "\(media.displayTitle)", mediaOverview: media.overview)
+//        contentActionButtonDelegate?.didTappedPlayBtn(mediaName: "\(media.displayTitle)", mediaOverview: media.overview)
+        contentActionButtonDelegate?.didTappedPlayBtn(media: media)
     }
     
     // 長按觸發

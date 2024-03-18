@@ -10,5 +10,5 @@ import UIKit
 protocol ContentActionButtonDelegate : AnyObject {
     func didTappedShareBtn(mediaName: String, image: UIImage)
     func didTappedWatchListBtn(uid: String, media: FMedia)
-    func didTappedPlayBtn(mediaName: String, mediaOverview: String?)
+    func didTappedPlayBtn(media: Media)
 }

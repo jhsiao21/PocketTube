@@ -254,12 +254,9 @@ class AdHeaderUIView: UIView {
     @objc private func playBtnTapped() {
         print("playBtnTapped")
                 
-        guard let mediaTitle = media?.displayTitle,
-              let mediaOverview = media?.overview else {
-            return
-        }
-                
-        contentActionButtonDelegate?.didTappedPlayBtn(mediaName: mediaTitle, mediaOverview: mediaOverview)
+        guard let media = media else { return }
+                        
+        contentActionButtonDelegate?.didTappedPlayBtn(media: media)
     }
     
     private func configureHeroHeaderView() {

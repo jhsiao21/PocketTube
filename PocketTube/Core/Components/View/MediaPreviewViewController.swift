@@ -8,7 +8,11 @@
 import UIKit
 import WebKit
 
-class MediaPreviewViewController: UIViewController, UIScrollViewDelegate {
+protocol MediaPreviewView: BaseView {}
+
+class MediaPreviewViewController: UIViewController, UIScrollViewDelegate, MediaPreviewView {
+    
+    private let mediaModel: YoutubePreviewModel
     
     private let verticalStackView: UIStackView = {
         let stackView = UIStackView()
@@ -71,13 +75,27 @@ class MediaPreviewViewController: UIViewController, UIScrollViewDelegate {
     @objc private func closeButtonTapped() {
         dismiss(animated: true, completion: nil)
     }
-
+    
+    init(mediaModel: YoutubePreviewModel) {
+        self.mediaModel = mediaModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         scrollView.delegate = self
                 
         layout()
+        
+        DispatchQueue.main.async {
+            self.show()
+        }
+        
     }
     
     func layout() {
@@ -109,11 +127,11 @@ class MediaPreviewViewController: UIViewController, UIScrollViewDelegate {
         
     }
     
-    public func configure(with model: YoutubePreviewModel) {
-        titleLabel.text = model.title
-        overviewLabel.text = model.titleOverview
+    public func show() {
+        titleLabel.text = self.mediaModel.title
+        overviewLabel.text = self.mediaModel.titleOverview
         
-        guard let videoId = model.youtubeView.id.videoId,
+        guard let videoId = self.mediaModel.youtubeView.id.videoId,
               let url = URL(string: "https://www.youtube.com/embed/\(videoId)") else {
             return
         }

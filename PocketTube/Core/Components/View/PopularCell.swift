@@ -297,11 +297,8 @@ class PopularCell: UITableViewCell {
     @objc private func playBtnTapped() {
         print("playBtnTapped")
                 
-        guard let mediaTitle = media?.displayTitle,
-              let mediaOverview = media?.overview else {
-            return
-        }
+        guard let media = media else { return }
                 
-        contentActionButtonDelegate?.didTappedPlayBtn(mediaName: mediaTitle, mediaOverview: mediaOverview)
+        contentActionButtonDelegate?.didTappedPlayBtn(media: media)
     }
 }
