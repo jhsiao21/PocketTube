@@ -1,10 +1,3 @@
-//
-//  SectionType.swift
-//  PocketTube
-//
-//  Created by LoganMacMini on 2024/2/29.
-//
-
 import Foundation
 
 enum SectionType: Int, Codable {

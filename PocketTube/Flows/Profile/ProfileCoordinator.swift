@@ -1,10 +1,3 @@
-//
-//  ProfileCoordinator.swift
-//  PocketTube
-//
-//  Created by LoganMacMini on 2024/3/18.
-//
-
 import UIKit
 import FBSDKLoginKit
 import GoogleSignIn
@@ -73,13 +66,9 @@ extension ProfileCoordinator {
                         let result = await ProfileViewModel.deleteAccount()
                         DispatchQueue.main.async {
                             if result {
-                                self.showUIHint(message: "Bye bye!") { _ in
-                                    self.showLandingScreenView()
-                                    
-//                                        let vc = LandingScreenViewController()
-//                                        let nav = UINavigationController(rootViewController: vc)
-//                                        nav.modalPresentationStyle = .fullScreen
-//                                        self.present(nav, animated: true)
+                                self.showUIHint(message: "Bye Bye!") { _ in
+                                    self.removeDependency(self)
+                                    self.finishFlow?()
                                 }
                             } else {
                                 self.showUIAlert(message: "Delete account failed.")
@@ -96,13 +85,6 @@ extension ProfileCoordinator {
         
         
         router.setRootModule(profileView)
-    }
-    
-    func showLandingScreenView() {
-        let landingScreenView = factory.makeLandingScreenViewController()
-        let nav = UINavigationController(rootViewController: landingScreenView)
-        nav.modalPresentationStyle = .fullScreen
-        router.present(nav, animated: true)
     }
     
     func showUIHint(title: String = "提示", message: String, actionTitle: String = "確定", handler: ((UIAlertAction) -> Void)? = nil) {

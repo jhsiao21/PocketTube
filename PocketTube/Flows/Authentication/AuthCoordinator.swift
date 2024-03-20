@@ -1,10 +1,3 @@
-//
-//  AuthCoordinator.swift
-//  PocketTube
-//
-//  Created by LoganMacMini on 2024/3/18.
-//
-
 import UIKit
 
 final class AuthCoordinator: BaseCoordinator {
@@ -34,7 +27,7 @@ extension AuthCoordinator {
         }
         
         landingScreenView.onSignUpButtonTap = { [unowned self] in
-            self.showSignUpView()
+            self.runSignUpFlow()
         }
         
         router.setRootModule(landingScreenView)
@@ -43,16 +36,51 @@ extension AuthCoordinator {
     func showLoginView() {
         let loginView = factory.makeLoginView()
         
-        loginView.onCompleteAuth = { [unowned self] in
-            print("onCompleteAuth")
-            finishFlow?()
+        loginView.onCompleteAuth = { [unowned self] email, name in
+            self.recordUserInfo(email: email, name: name)
+            self.finishFlow?()
+        }
+        
+        loginView.onTransitToPersonal = { [unowned self] email, name in
+            self.runPersonalInfoFlow(email: email, name: name)            
+        }
+        
+        loginView.onTransitToForgotPWD = { [unowned self] in
+            let forgotPwdView = factory.makeForgotPasswordView()
+            router.push(forgotPwdView, hideBottomBar: true)
         }
         
         router.push(loginView)
     }
     
-    func showSignUpView() {
-        let signUpView = factory.makeSignUpView()
-        router.push(signUpView)
+    func runSignUpFlow() {
+        let coordinator = SignUpCoordinator(factory: factory, coordinatorFactory: coordinatorFactory, router: router)
+        
+        coordinator.finishFlow = { [unowned self] in
+            self.removeDependency(coordinator)
+            self.showLoginView()    //註冊後，跳轉登入頁面
+        }
+        
+        addDependency(coordinator)
+        coordinator.start()
+    }
+    
+    func runPersonalInfoFlow(email: String?, name: String?) {
+        let coordinator = PersonalInfoCoordinator(factory: factory, coordinatorFactory: coordinatorFactory, router: router)
+        
+        coordinator.finishFlow = { [unowned self] in
+            self.removeDependency(coordinator)            
+            self.finishFlow?()  //結束AuthCoordinator，這時已是登入狀態會跳轉到主頁
+        }
+        
+        addDependency(coordinator)
+        coordinator.start(email: email, name: name)
+    }
+    
+    func recordUserInfo(email: String, name: String) {
+        UserDefaults.standard.set(email, forKey: "email")
+        UserDefaults.standard.set("\(name)", forKey: "name")
+        
+        NotificationCenter.default.post(name: .didRefresh, object: nil)
     }
 }

@@ -1,11 +1,3 @@
-//
-//  SceneFactory.swift
-//  Ptt
-//
-//  Created by 賴彥宇 on 2020/12/12.
-//  Copyright © 2020 Ptt. All rights reserved.
-//
-
 import Foundation
 import UIKit
 
@@ -36,14 +28,14 @@ final class SceneFactory: AuthSceneFactoryProtocol,
         return landingScreenViewController
     }
     
-    func makeLandingScreenViewController() -> UIViewController {
-        let landingScreenViewController = LandingScreenViewController()
-        return landingScreenViewController
-    }
-
-    func makePersonalInfoView(name: String?, email: String?) -> PersonalInfoView {
+    func makePersonalInfoView(email: String?, name: String?) -> PersonalInfoView {
         let personalInfoViewController = PersonalInfoViewController(name: name, email: email)
         return personalInfoViewController
+    }
+    
+    func makeForgotPasswordView() -> ForgotPasswordView {
+        let forgotPasswordViewController = ForgotPasswordViewController()
+        return forgotPasswordViewController
     }
 
     func makeHomeView() -> HomeView {

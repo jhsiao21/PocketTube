@@ -1,18 +1,9 @@
-//
-//  ForgotPasswordViewController.swift
-//  Netflix Clone
-//
-//  Created by LoganMacMini on 2024/2/27.
-//
-
 import UIKit
 import JGProgressHUD
 
-protocol ForgotPasswordView {
-    
-}
+protocol ForgotPasswordView: BaseView { }
 
-class ForgotPasswordViewController: UIViewController {
+class ForgotPasswordViewController: UIViewController, ForgotPasswordView {
 
     private let spinner = JGProgressHUD(style: .dark)
     
@@ -143,5 +134,4 @@ extension ForgotPasswordViewController {
     private static let textFieldFont = UIFont.systemFont(ofSize: 16)
     private static let textFieldColor = UIColor(red: 176/255, green: 179/255, blue: 198/255, alpha: 1)
     private static let textFieldBorderColor = UIColor(red: 176/255, green: 179/255, blue: 198/255, alpha: 1)
-    
 }

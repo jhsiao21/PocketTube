@@ -1,10 +1,3 @@
-//
-//  HomeCoordinator.swift
-//  PocketTube
-//
-//  Created by LoganMacMini on 2024/3/17.
-//
-
 import UIKit
 
 class HomeCoordinator: BaseCoordinator {
@@ -46,7 +39,7 @@ extension HomeCoordinator {
         
         homeView.onSearchButtonTap = { [unowned self] in
             self.runSearchFlow()
-        }        
+        }
         
         router.setRootModule(homeView)
     }

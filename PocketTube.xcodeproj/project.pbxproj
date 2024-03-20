@@ -62,6 +62,8 @@
 		02A2E4B62AA8C0EF0059292D /* HotNewReleaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A2E4B52AA8C0EF0059292D /* HotNewReleaseViewModel.swift */; };
 		02A2E4B92AA9F1AE0059292D /* PopularCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A2E4B82AA9F1AE0059292D /* PopularCell.swift */; };
 		02A2E4BB2AA9F3C10059292D /* Top10Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A2E4BA2AA9F3C10059292D /* Top10Cell.swift */; };
+		02B9EF932BA9CD9C00925226 /* PersonalInfoCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B9EF922BA9CD9C00925226 /* PersonalInfoCoordinator.swift */; };
+		02B9EF952BAA943700925226 /* SignUpCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B9EF942BAA943700925226 /* SignUpCoordinator.swift */; };
 		02BC7B832B39339900226DEC /* NaviBarConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC7B822B39339900226DEC /* NaviBarConfigView.swift */; };
 		02C3699C2B9C0EE400749465 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3699B2B9C0EE400749465 /* ProfileTableViewCell.swift */; };
 		02C3699F2B9C11D200749465 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3699E2B9C11D200749465 /* ProfileViewModel.swift */; };
@@ -201,6 +203,8 @@
 		02A2E4B52AA8C0EF0059292D /* HotNewReleaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotNewReleaseViewModel.swift; sourceTree = "<group>"; };
 		02A2E4B82AA9F1AE0059292D /* PopularCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularCell.swift; sourceTree = "<group>"; };
 		02A2E4BA2AA9F3C10059292D /* Top10Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Top10Cell.swift; sourceTree = "<group>"; };
+		02B9EF922BA9CD9C00925226 /* PersonalInfoCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoCoordinator.swift; sourceTree = "<group>"; };
+		02B9EF942BAA943700925226 /* SignUpCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpCoordinator.swift; sourceTree = "<group>"; };
 		02BC7B822B39339900226DEC /* NaviBarConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaviBarConfigView.swift; sourceTree = "<group>"; };
 		02C369982B9B7F2200749465 /* PocketTubeRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PocketTubeRelease.entitlements; sourceTree = "<group>"; };
 		02C3699B2B9C0EE400749465 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
@@ -500,16 +504,8 @@
 			children = (
 				02D22B612B8AEADD005898B7 /* Protocol */,
 				02AAB50F2B2D4B690056CE7E /* View */,
-				02AAB50E2B2D4B660056CE7E /* ViewModel */,
 			);
 			path = Components;
-			sourceTree = "<group>";
-		};
-		02AAB50E2B2D4B660056CE7E /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		02AAB50F2B2D4B690056CE7E /* View */ = {
@@ -634,6 +630,8 @@
 				02D22B402B883BFA005898B7 /* ViewModel */,
 				02D22B3F2B883BEA005898B7 /* View */,
 				022A35432BA7E42A00DA85AB /* AuthCoordinator.swift */,
+				02B9EF942BAA943700925226 /* SignUpCoordinator.swift */,
+				02B9EF922BA9CD9C00925226 /* PersonalInfoCoordinator.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -942,6 +940,7 @@
 				022A350F2BA723A400DA85AB /* TabBarPage.swift in Sources */,
 				02D22B572B89A406005898B7 /* Timestamp.swift in Sources */,
 				02C369A12B9C8B0B00749465 /* AppInfoViewController.swift in Sources */,
+				02B9EF952BAA943700925226 /* SignUpCoordinator.swift in Sources */,
 				02D22B7C2B8D8683005898B7 /* ForgotPasswordViewModel.swift in Sources */,
 				022A35312BA7283E00DA85AB /* AuthSceneFactoryProtocol.swift in Sources */,
 				022A35192BA7273C00DA85AB /* Router.swift in Sources */,
@@ -1002,6 +1001,7 @@
 				0A5AAA9D2769057B00149719 /* String+Ext.swift in Sources */,
 				022A351B2BA7273C00DA85AB /* Presentable.swift in Sources */,
 				022A35342BA72EAD00DA85AB /* HomeCoordinator.swift in Sources */,
+				02B9EF932BA9CD9C00925226 /* PersonalInfoCoordinator.swift in Sources */,
 				02D22B652B8B706C005898B7 /* ShowAlertDelegate.swift in Sources */,
 				0AD8A1BE2786FDB000612F1E /* YoutubeSearchResponse.swift in Sources */,
 				02C3699C2B9C0EE400749465 /* ProfileTableViewCell.swift in Sources */,

@@ -1,10 +1,3 @@
-//
-//  Haptic.swift
-//  Netflix Clone
-//
-//  Created by LoganMacMini on 2023/9/26.
-//
-
 import Foundation
 import UIKit
 

@@ -1,10 +1,3 @@
-//
-//  FavoritesCoordinator.swift
-//  PocketTube
-//
-//  Created by LoganMacMini on 2024/3/18.
-//
-
 import Foundation
 import UIKit
 

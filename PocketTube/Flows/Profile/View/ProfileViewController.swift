@@ -1,10 +1,3 @@
-//
-//  ProfileViewController.swift
-//  Netflix Clone
-//
-//  Created by LoganMacMini on 2024/1/25.
-//
-
 import UIKit
 import FirebaseAuth
 import GoogleSignIn
@@ -288,69 +281,8 @@ extension ProfileViewController: UITableViewDelegate {
             switch cellType {
             case .SignOut:
                 onSignOutTap?()
-                
-//                let actionSheet = UIAlertController(title: "Do you want to sign out?",
-//                                                    message: "",
-//                                                    preferredStyle: .actionSheet)
-//                actionSheet.addAction(UIAlertAction(title: "Confirm", style: .destructive, handler: { [unowned self] _ in
-//                    
-//                    // remove name and email from UserDefault
-//                    UserDefaults.standard.setValue(nil, forKey: "name")
-//                    UserDefaults.standard.setValue(nil, forKey: "email")
-//                    
-//                    // Facebook log out
-//                    FBSDKLoginKit.LoginManager().logOut()
-//                    
-//                    // Google log out
-//                    GIDSignIn.sharedInstance.signOut()
-//                    
-//                    do {
-//                        try FirebaseAuth.Auth.auth().signOut()
-//                        
-//                        self.showLandingScreenView?()
-//                        
-//                        let vc = LandingScreenViewController()
-//                        let nav = UINavigationController(rootViewController: vc)
-//                        nav.modalPresentationStyle = .fullScreen
-//                        self.present(nav, animated: true)
-//                    }
-//                    catch {
-//                        print("Failed to log out")
-//                    }
-//                }))
-//                
-//                actionSheet.addAction(UIAlertAction(title: "Cancel",
-//                                                    style: .cancel,
-//                                                    handler: nil))
-//                
-//                present(actionSheet, animated: true)
             case .Delete:
-                
                 onDeleteAccountTap?()
-                
-//                let actionSheet = UIAlertController(title: "Deleting your account is permanent. Do you want to delete your account?", message: "", preferredStyle: .actionSheet)
-//                actionSheet.addAction(UIAlertAction(title: "Delete Account", style: .destructive, handler: { [unowned self] _ in
-//                        Task {
-//                            let result = await self.viewModel.deleteAccount()
-//                            DispatchQueue.main.async {
-//                                if result {
-//                                    self.showUIHint(message: "Bye bye!") { _ in
-//                                        self.showLandingScreenView?()
-//                                        
-////                                        let vc = LandingScreenViewController()
-////                                        let nav = UINavigationController(rootViewController: vc)
-////                                        nav.modalPresentationStyle = .fullScreen
-////                                        self.present(nav, animated: true)
-//                                    }
-//                                } else {
-//                                    self.showUIAlert(message: "Delete account failed.")
-//                                }
-//                            }
-//                        }
-//                    }))
-//                
-//                actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-//                present(actionSheet, animated: true)
             }
         }
     }

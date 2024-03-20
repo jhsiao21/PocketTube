@@ -1,10 +1,3 @@
-//
-//  ItemViewModel.swift
-//  Netflix Clone
-//
-//  Created by LoganMacMini on 2024/2/24.
-//
-
 import Foundation
 
 enum ItemViewModelType {

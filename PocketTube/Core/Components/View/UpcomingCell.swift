@@ -1,10 +1,3 @@
-//
-//  HotNewReleaseTableViewCell.swift
-//  Netflix Clone
-//
-//  Created by LoganMacMini on 2023/8/18.
-//
-
 import UIKit
 
 class UpcomingCell: UITableViewCell {

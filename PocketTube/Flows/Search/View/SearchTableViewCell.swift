@@ -1,10 +1,3 @@
-//
-//  MoviesAndTvsCell.swift
-//  Netflix Clone
-//
-//  Created by LoganMacMini on 2023/9/19.
-//
-
 import UIKit
 
 class SearchTableViewCell: UITableViewCell {

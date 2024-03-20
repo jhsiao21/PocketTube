@@ -1,10 +1,3 @@
-//
-//  TitleCollectionViewCell.swift
-//  Netflix Clone
-//
-//  Created by Amr Hossam on 16/12/2021.
-//
-
 import UIKit
 import SDWebImage
 

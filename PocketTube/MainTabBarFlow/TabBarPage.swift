@@ -1,11 +1,3 @@
-//
-//  TabBarPage.swift
-//  Ptt
-//
-//  Created by 賴彥宇 on 2021/1/9.
-//  Copyright © 2021 Ptt. All rights reserved.
-//
-
 import UIKit
 
 enum TabBarPage {

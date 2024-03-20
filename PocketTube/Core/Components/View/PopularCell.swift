@@ -1,10 +1,3 @@
-//
-//  Popular.swift
-//  Netflix Clone
-//
-//  Created by LoganMacMini on 2023/9/7.
-//
-
 import UIKit
 import Firebase
 import FirebaseAuth

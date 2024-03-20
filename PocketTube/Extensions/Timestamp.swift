@@ -1,10 +1,3 @@
-//
-//  Timestamp.swift
-//  Threads
-//
-//  Created by Stephan Dowless on 7/20/23.
-//
-
 import Firebase
 import Foundation
 

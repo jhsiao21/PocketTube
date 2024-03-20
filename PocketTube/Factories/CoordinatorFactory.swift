@@ -1,15 +1,7 @@
-//
-//  CoordinatorFactory.swift
-//  Ptt
-//
-//  Created by 賴彥宇 on 2020/11/22.
-//  Copyright © 2020 Ptt. All rights reserved.
-//
-
 import UIKit
 
 final class CoordinatorFactory: CoordinatorFactoryProtocol {
-
+        
     func makeTabbarCoordinator() -> (coordinator: Coordinatorable, toPresent: Presentable?) {
         let controller = TabBarController()
         let coordinator = TabBarCoordinator(tabBarView: controller, coordinatorFactory: CoordinatorFactory())
@@ -60,6 +52,22 @@ final class CoordinatorFactory: CoordinatorFactoryProtocol {
         let coordinator = ProfileCoordinator(factory: SceneFactory(),
                                              coordinatorFactory: CoordinatorFactory(),
                                              router: router(navigationController))
+        return coordinator
+    }
+    
+    func makePersonalInfoCoordinator(
+        navigationController: UINavigationController?) -> Coordinatorable {
+        let coordinator = PersonalInfoCoordinator(factory: SceneFactory(),
+                                          coordinatorFactory: CoordinatorFactory(),
+                                          router: router(navigationController))
+        return coordinator
+    }
+    
+    func makeForgotPasswordCoordinator(
+        navigationController: UINavigationController?) -> Coordinatorable {
+        let coordinator = PersonalInfoCoordinator(factory: SceneFactory(),
+                                          coordinatorFactory: CoordinatorFactory(),
+                                          router: router(navigationController))
         return coordinator
     }
 }

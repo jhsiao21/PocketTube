@@ -1,10 +1,3 @@
-//
-//  LoginViewController.swift
-//  Netflix Clone
-//
-//  Created by LoganMacMini on 2024/1/25.
-//
-
 import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
@@ -16,12 +9,19 @@ import AuthenticationServices
 import CryptoKit
 
 protocol LoginView: BaseView {
-    var onCompleteAuth: (() -> Void)? { get set }
+    var onCompleteAuth: ((String, String) -> Void)? { get set }
+    var onTransitToPersonal: ((String?, String?) -> Void)? { get set }
+    var onTransitToForgotPWD: (() -> Void)? { get set }
 }
 
 class LoginViewController: UIViewController, LoginView {
-    var onCompleteAuth: (() -> Void)?
+    var onCompleteAuth: ((String, String) -> Void)?
+    var onTransitToPersonal: ((String?, String?) -> Void)?
+    var onTransitToForgotPWD: (() -> Void)?
     
+    private var validEmail = false
+    private var validPassword = false
+        
     private let spinner = JGProgressHUD(style: .dark)
     
     var backButton: UIButton = {
@@ -73,6 +73,26 @@ class LoginViewController: UIViewController, LoginView {
         textField.clipsToBounds = true
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
+    }()
+    
+    private let emailValidationLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.textColor = .red
+        label.font = .systemFont(ofSize: 14, weight: .medium)
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let passwordValidationLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.textColor = .red
+        label.font = .systemFont(ofSize: 14, weight: .medium)
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     var forgotButton: UIButton = {
@@ -148,8 +168,9 @@ class LoginViewController: UIViewController, LoginView {
         super.viewDidLoad()
         view.backgroundColor = LoginViewController.backgroundColor
         
-        self.hideKeyboardWhenTappedAround()
+        hideKeyboardWhenTappedAround()
         layout()
+        setupTextField()
         emailTextField.delegate = self
         passwordTextField.delegate = self
     }
@@ -158,7 +179,9 @@ class LoginViewController: UIViewController, LoginView {
         view.addSubview(backButton)
         view.addSubview(titleLabel)
         view.addSubview(emailTextField)
+        view.addSubview(emailValidationLabel)
         view.addSubview(passwordTextField)
+        view.addSubview(passwordValidationLabel)
         view.addSubview(forgotButton)
         view.addSubview(loginButton)
         view.addSubview(separatorLabel)
@@ -180,13 +203,21 @@ class LoginViewController: UIViewController, LoginView {
             emailTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 40.5),
             emailTextField.heightAnchor.constraint(equalToConstant: 55),
             
+            emailValidationLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 0),
+            emailValidationLabel.leadingAnchor.constraint(equalTo: emailTextField.leadingAnchor),
+            emailValidationLabel.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor),
+            
             view.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor, constant: 25),
             passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
             passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 24),
             passwordTextField.heightAnchor.constraint(equalToConstant: 55),
             
+            passwordValidationLabel.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 0),
+            passwordValidationLabel.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor),
+            passwordValidationLabel.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor),
+            
             view.trailingAnchor.constraint(equalTo: forgotButton.trailingAnchor, constant: 30),
-            forgotButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 10),
+            forgotButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 20),
             forgotButton.heightAnchor.constraint(equalToConstant: 32),
             
             view.trailingAnchor.constraint(equalTo: loginButton.trailingAnchor, constant: 50),
@@ -232,14 +263,23 @@ class LoginViewController: UIViewController, LoginView {
     }
     
     @objc func didTapForgotButton() {
-        let forgotPwdVC = ForgotPasswordViewController()
-        self.navigationController?.pushViewController(forgotPwdVC, animated: true)
+        onTransitToForgotPWD?()        
     }
     
     @objc func didTapLoginButton() {
         spinner.show(in: view)
         
-        guard let email = emailTextField.text, let password = passwordTextField.text else { return }
+        guard let email = emailTextField.text,
+              let password = passwordTextField.text,
+              validEmail, validPassword  else 
+        {
+            DispatchQueue.main.async {
+                self.spinner.dismiss()
+            }
+            
+            self.showUIAlert(message: "Something went wrong. Please check email or password.")
+            return
+        }
         AuthService.shared.login(email: email, password: password) { [unowned self] result in
             switch result {
             case .success(_):
@@ -249,8 +289,7 @@ class LoginViewController: UIViewController, LoginView {
                     }
                     switch result {
                     case .success(let user):
-                        guard let user = user as? User else { return }                        
-                        self.loginSuccess(email: user.email, name: user.userName)
+                        self.onCompleteAuth?(user.email, user.userName)
                     case .failure(let error):
                         self.showUIAlert(message: error.localizedDescription)
                     }
@@ -331,20 +370,12 @@ class LoginViewController: UIViewController, LoginView {
                             }
                             
                             if let user = user, error == nil {
-                                // user exists
+                                // user exists （後續登入）
                                 print("user data: \(user)")
-                                self.loginSuccess(email: email, name: firstName)
-                            }
-                            else { // user does not exists
-                                AuthService.shared.uploadUserData(email: email, userName: "\(firstName)", id: uid) { [unowned self] result in
-                                    switch result {
-                                    case .success(_):
-                                        print("upload user data to firestore database success")
-                                        self.loginSuccess(email: email, name: firstName)
-                                    case .failure(let failure):
-                                        self.showUIAlert(message: failure.localizedDescription)
-                                    }
-                                }
+                                self.onCompleteAuth?(user.email, user.userName)
+                            } else {
+                                // user does not exists
+                                self.onTransitToPersonal?(email, firstName)
                             }
                         }
                     case .failure(let error):
@@ -402,20 +433,12 @@ class LoginViewController: UIViewController, LoginView {
                         }
                         
                         if let user = user, error == nil {
-                            // user exists
+                            // user exists （後續登入）
                             print("user data: \(user)")
-                            self.loginSuccess(email: email, name: firstName)
-                        }
-                        else { // user does not exists
-                            AuthService.shared.uploadUserData(email: email, userName: "\(firstName)", id: uid) { [unowned self] result in
-                                switch result {
-                                case .success(_):
-                                    print("upload user data to firestore database success")
-                                    self.loginSuccess(email: email, name: firstName)
-                                case .failure(let failure):
-                                    self.showUIAlert(message: failure.localizedDescription)
-                                }
-                            }
+                            self.onCompleteAuth?(user.email, user.userName)
+                        } else {
+                            // user does not exists
+                            self.onTransitToPersonal?(email, firstName)
                         }
                     }
                 case .failure(let error):
@@ -477,13 +500,39 @@ extension LoginViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    func loginSuccess(email: String, name: String) {
-        UserDefaults.standard.set(email, forKey: "email")
-        UserDefaults.standard.set("\(name)", forKey: "name")
+    // MARK: Format Check
+    private func setupTextField() {
+        emailTextField.textValidation { [weak self] text in
+            guard let strongSelf = self else {
+                return
+            }
+            let isValidEmail = text.emailValidation()
+            strongSelf.emailValidationLabel.isHidden = false
+            if isValidEmail {
+                self?.emailValidationLabel.text = ""
+                strongSelf.validEmail = true
+            }
+            else {
+                self?.emailValidationLabel.text = "Email is not valid"
+                strongSelf.validEmail = false
+            }
+        }
         
-        NotificationCenter.default.post(name: .didRefresh, object: nil)
-        self.navigationController?.dismiss(animated: true, completion: nil)
-        onCompleteAuth?()
+        passwordTextField.textValidation { [weak self] text in
+            guard let strongSelf = self else {
+                return
+            }
+            let isValidPassword = text.passwordValidation()
+            self?.passwordValidationLabel.isHidden = false
+            if isValidPassword {
+                self?.passwordValidationLabel.text = ""
+                strongSelf.validPassword = true
+            }
+            else {
+                self?.passwordValidationLabel.text = "At least 8 characters"
+                strongSelf.validPassword = false
+            }
+        }
     }
 }
 
@@ -543,10 +592,10 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                 return
             }
                        
-            AuthService.shared.login(credential: OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)) { [weak self] result in
+            AuthService.shared.login(credential: OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)) { [unowned self] result in
                 
                 DispatchQueue.main.async {
-                    self?.spinner.dismiss()
+                    self.spinner.dismiss()
                 }
                 
                 switch result {
@@ -555,39 +604,16 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                     guard let uid = Auth.auth().currentUser?.uid else { return }
                     UserService.fetchUser(withUid: uid) { user, error in
                         if let user = user, error == nil {
-                            // user exists （後續登入）
+                            // user exists（後續登入）
                             print("user data: \(user)")
-                            self?.loginSuccess(email: user.email, name: user.userName)
+                            self.onCompleteAuth?(user.email, user.userName)
                         } else {
-                            // 首次登入，上傳user data
-                            
-//                            guard let email = appleIDCredential.email else {
-//                                self?.showUIAlert(message: "Unable to get email from AppleIDCredential")
-//                                return
-//                            }
-                            
-                            
-                            if let email = appleIDCredential.email,
-                                let givenName = appleIDCredential.fullName?.givenName {
-                                let personalInfoVC = PersonalInfoViewController(name: givenName, email: email)
-                                self?.navigationController?.pushViewController(personalInfoVC, animated: true)
-                            } else {
-                                let personalInfoVC = PersonalInfoViewController(name: nil, email: nil)
-                                self?.navigationController?.pushViewController(personalInfoVC, animated: true)
-                            }
-                            
-//                            AuthService.shared.uploadUserData(email: email, userName: givenName, id: uid) { [unowned self] result in
-//                                switch result {
-//                                case .success(_):
-//                                    self?.loginSuccess(email: email, name: givenName)
-//                                case .failure(let failure):
-//                                    self?.showUIAlert(message: failure.localizedDescription)
-//                                }
-//                            }
+                            // 首次登入
+                            self.onTransitToPersonal?(appleIDCredential.email, appleIDCredential.fullName?.givenName)
                         }
                     }
                 case .failure(let error):
-                    self?.showUIAlert(message: error.localizedDescription)
+                    self.showUIAlert(message: error.localizedDescription)
                 }
             }
         }

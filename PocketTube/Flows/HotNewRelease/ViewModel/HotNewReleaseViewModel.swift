@@ -1,10 +1,3 @@
-//
-//  HotNewReleaseViewModel.swift
-//  Netflix Clone
-//
-//  Created by LoganMacMini on 2023/9/6.
-//
-
 import Foundation
 
 protocol HotNewReleaseViewModelDelegate: AnyObject {

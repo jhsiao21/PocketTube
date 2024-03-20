@@ -1,10 +1,3 @@
-//
-//  FirestoreConstants.swift
-//  Threads
-//
-//  Created by Stephan Dowless on 7/16/23.
-//
-
 import Firebase
 
 struct FirestoreConstants {

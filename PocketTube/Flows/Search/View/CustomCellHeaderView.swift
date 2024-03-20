@@ -1,10 +1,3 @@
-//
-//  CustomCellHeaderView.swift
-//  PocketTube
-//
-//  Created by LoganMacMini on 2024/3/8.
-//
-
 import UIKit
 
 class CustomCellHeaderView: UIView {

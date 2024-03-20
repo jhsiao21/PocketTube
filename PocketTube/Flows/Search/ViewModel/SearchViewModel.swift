@@ -1,10 +1,3 @@
-//
-//  SearchViewModel.swift
-//  Netflix Clone
-//
-//  Created by LoganMacMini on 2023/9/18.
-//
-
 import Foundation
 import UIKit
 

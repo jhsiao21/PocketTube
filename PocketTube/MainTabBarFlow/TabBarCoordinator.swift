@@ -1,11 +1,3 @@
-//
-//  TabBarCoordinator.swift
-//  Ptt
-//
-//  Created by 賴彥宇 on 2020/11/22.
-//  Copyright © 2020 Ptt. All rights reserved.
-//
-
 import UIKit
 
 protocol TabBarCoordinatorProtocol {
@@ -64,7 +56,7 @@ private extension TabBarCoordinator {
         /// Assign page's controllers
         tabBarView.setViewControllers(tabControllers, animated: true)
         /// Let set index
-        tabBarView.selectedIndex = TabBarPage.favorite.pageOrderNumber
+        tabBarView.selectedIndex = TabBarPage.home.pageOrderNumber
     }
 
     func getTabController(_ page: TabBarPage) -> UINavigationController {

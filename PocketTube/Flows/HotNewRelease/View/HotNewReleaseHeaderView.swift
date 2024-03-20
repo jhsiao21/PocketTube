@@ -1,10 +1,3 @@
-//
-//  HotNewReleaseHeaderView.swift
-//  Netflix Clone
-//
-//  Created by LoganMacMini on 2023/8/17.
-//
-
 import UIKit
 
 protocol LinkedBtnTappedDelegate: AnyObject {

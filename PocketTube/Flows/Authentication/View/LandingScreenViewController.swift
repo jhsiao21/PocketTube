@@ -1,10 +1,3 @@
-//
-//  LandingScreenViewController.swift
-//  Netflix Clone
-//
-//  Created by LoganMacMini on 2024/2/26.
-//
-
 import UIKit
 
 protocol LandingScreenView: BaseView {
@@ -69,14 +62,11 @@ class LandingScreenViewController: UIViewController, LandingScreenView {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
-    
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.mainThemeBackgroundColor
-//        view.backgroundColor = UIColor.white
         layout()
     }
     
@@ -124,14 +114,10 @@ class LandingScreenViewController: UIViewController, LandingScreenView {
     
     @objc private func didTapLoginButton() {
         onLogInButtonTap?()
-//        let loginVC = LoginViewController()
-//        self.navigationController?.pushViewController(loginVC, animated: true)
     }
     
     @objc private func didTapSignUpButton() {
         onSignUpButtonTap?()
-//        let signUpVC = SignUpViewController()
-//        self.navigationController?.pushViewController(signUpVC, animated: true)
     }
 }
 

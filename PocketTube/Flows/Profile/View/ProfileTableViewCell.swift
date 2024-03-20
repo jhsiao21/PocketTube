@@ -1,10 +1,3 @@
-//
-//  ProfileTableViewCell.swift
-//  PocketTube
-//
-//  Created by LoganMacMini on 2024/3/9.
-//
-
 import UIKit
 
 class ProfileTableViewCell: UITableViewCell {

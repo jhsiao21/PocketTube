@@ -1,10 +1,3 @@
-//
-//  Top10.swift
-//  Netflix Clone
-//
-//  Created by LoganMacMini on 2023/9/7.
-//
-
 import UIKit
 import FirebaseAuth
 import Firebase

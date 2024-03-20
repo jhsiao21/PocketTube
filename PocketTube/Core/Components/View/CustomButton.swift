@@ -1,10 +1,3 @@
-//
-//  CustomButton.swift
-//  Netflix Clone
-//
-//  Created by LoganMacMini on 2023/9/6.
-//
-
 import UIKit
 
 class CustomButton: UIButton {

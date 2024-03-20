@@ -1,19 +1,12 @@
-//
-//  ATCClassicSignUpViewController.swift
-//  DashboardApp
-//
-//  Created by Florian Marcu on 8/10/18.
-//  Copyright © 2018 Instamobile. All rights reserved.
-//
-
 import UIKit
 import JGProgressHUD
 
 protocol SignUpView: BaseView {
-    
+    var onCompleteSignUp: (() -> Void)? { get set }
 }
 
 class SignUpViewController: UIViewController, SignUpView {
+    var onCompleteSignUp: (() -> Void)?
     
     private let spinner = JGProgressHUD(style: .dark)
     private var validEmail = false
@@ -50,22 +43,7 @@ class SignUpViewController: UIViewController, SignUpView {
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
-    
-    private var phoneNumberTextField: ATCTextField = {
-        let textField = ATCTextField()
-        textField.configure(color: SignUpViewController.textFieldColor,
-                            font: SignUpViewController.textFieldFont,
-                            cornerRadius: 40/2,
-                            borderColor: SignUpViewController.textFieldBorderColor,
-                            backgroundColor: .secondarySystemBackground,
-                            borderWidth: 1.0)
-        textField.placeholder = "Phone Number"
-        textField.keyboardType = .phonePad
-        textField.clipsToBounds = true
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
-    }()
-    
+        
     private var passwordTextField: ATCTextField = {
         let textField = ATCTextField()
         textField.configure(color: SignUpViewController.textFieldColor,
@@ -115,10 +93,10 @@ class SignUpViewController: UIViewController, SignUpView {
         return label
     }()
     
-    private var signUpButton: UIButton = {
+    private var createAccountButton: UIButton = {
         let button = UIButton()
         button.setTitle("Create Account", for: .normal)
-        button.addTarget(self, action: #selector(didTapSignUpButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapCreateAccountButton), for: .touchUpInside)
         button.configure(color: SignUpViewController.backgroundColor,
                          font: SignUpViewController.buttonFont,
                                cornerRadius: 40/2,
@@ -141,12 +119,11 @@ class SignUpViewController: UIViewController, SignUpView {
         view.addSubview(backButton)
         view.addSubview(titleLabel)
         view.addSubview(nameTextField)
-//        view.addSubview(phoneNumberTextField)
         view.addSubview(emailTextField)
         view.addSubview(emailValidationLabel)
         view.addSubview(passwordTextField)
         view.addSubview(passwordValidationLabel)
-        view.addSubview(signUpButton)
+        view.addSubview(createAccountButton)
         
         NSLayoutConstraint.activate([
             backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
@@ -161,11 +138,6 @@ class SignUpViewController: UIViewController, SignUpView {
             nameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
             view.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor, constant: 40),
             nameTextField.heightAnchor.constraint(equalToConstant: 40),
-            
-//            phoneNumberTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 20),
-//            phoneNumberTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
-//            view.trailingAnchor.constraint(equalTo: phoneNumberTextField.trailingAnchor, constant: 40),
-//            phoneNumberTextField.heightAnchor.constraint(equalToConstant: 40),
                         
             emailTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 20),
             emailTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
@@ -185,10 +157,10 @@ class SignUpViewController: UIViewController, SignUpView {
             passwordValidationLabel.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor),
             passwordValidationLabel.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor),
             
-            view.trailingAnchor.constraint(equalTo: signUpButton.trailingAnchor, constant: 60),
-            signUpButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 60),
-            signUpButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 50),
-            signUpButton.heightAnchor.constraint(equalToConstant: 40),
+            view.trailingAnchor.constraint(equalTo: createAccountButton.trailingAnchor, constant: 60),
+            createAccountButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 60),
+            createAccountButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 50),
+            createAccountButton.heightAnchor.constraint(equalToConstant: 40),
         ])
     }
 
@@ -205,12 +177,11 @@ class SignUpViewController: UIViewController, SignUpView {
         self.navigationController?.popViewController(animated: true)
     }
 
-    @objc func didTapSignUpButton() {
+    @objc func didTapCreateAccountButton() {
                 
         if let email = emailTextField.text,
             let password = passwordTextField.text,
            let userName = nameTextField.text,
-//           let phone = phoneNumberTextField.text,
            validEmail, validPassword {
             spinner.show(in: view)
             AuthService.shared.createUser(withEmail: email, password: password, userName: userName) { [unowned self] result in
@@ -220,9 +191,9 @@ class SignUpViewController: UIViewController, SignUpView {
                 }
                 switch result {
                 case .success(_):
-                    message = "User was sucessfully created."
+                    message = "Sign Up successful!"
                     self.showUIHint(message: message, handler: { _ in
-                        self.navigationController?.popViewController(animated: true)
+                        self.onCompleteSignUp?()
                     })
                 case .failure(let failure):
                     message = failure.localizedDescription

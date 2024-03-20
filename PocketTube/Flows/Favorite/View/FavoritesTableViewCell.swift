@@ -1,10 +1,3 @@
-//
-//  TitleTableViewCell.swift
-//  Netflix Clone
-//
-//  Created by Amr Hossam on 24/12/2021.
-//
-
 import UIKit
 
 class FavoritesTableViewCell: UITableViewCell {

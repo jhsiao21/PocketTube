@@ -1,10 +1,3 @@
-//
-//  ContentActionButtonDelegate.swift
-//  Netflix Clone
-//
-//  Created by LoganMacMini on 2024/2/25.
-//
-
 import UIKit
 
 protocol ContentActionButtonDelegate : AnyObject {

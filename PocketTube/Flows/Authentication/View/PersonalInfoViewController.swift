@@ -1,18 +1,12 @@
-//
-//  PersonalInfoViewController.swift
-//  PocketTube
-//
-//  Created by LoganMacMini on 2024/3/15.
-//
-
 import UIKit
 import FirebaseAuth
 
 protocol PersonalInfoView: BaseView {
-    
+    var onCompleteAuth: ((String, String) -> Void)? { get set }
 }
 
 final class PersonalInfoViewController: UIViewController, PersonalInfoView {
+    var onCompleteAuth: ((String, String) -> Void)?
     
     private var name: String?
     private var email: String?
@@ -53,27 +47,29 @@ final class PersonalInfoViewController: UIViewController, PersonalInfoView {
     @objc func didTapAddAccountButton() {
         print("didTapAddAccountButton")
         
-        guard let uid = Auth.auth().currentUser?.uid,
-              let name = nameTextField.text,
-              let email = email else {
-            self.showUIAlert(message: "Can not get user name.")
+        guard let name = nameTextField.text else {
+            self.showUIAlert(message: "Please enter a user name.")
             return
         }
         
-        print("uid: \(Auth.auth().currentUser?.uid)")
-        print("name: \(name)")
-        print("email: \(email)")
+        guard let uid = Auth.auth().currentUser?.uid else {
+            self.showUIAlert(message: "Can not get user uid.")
+            return
+        }
+        
+        guard let email = Auth.auth().currentUser?.email else {
+            self.showUIAlert(message: "Can not get user email.")
+            return
+        }
         
         AuthService.shared.uploadUserData(email: email, userName: name, id: uid) { [unowned self] result in
             switch result {
             case .success(_):
-                self.loginSuccess(email: email, name: name)
+                self.onCompleteAuth?(email, name)
             case .failure(let failure):
                 self.showUIAlert(message: failure.localizedDescription)
             }
         }
-        
-        self.navigationController?.popViewController(animated: true)
     }
     
     init(name: String?, email: String?) {
@@ -89,13 +85,16 @@ final class PersonalInfoViewController: UIViewController, PersonalInfoView {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        hideKeyboardWhenTappedAround()
         layout()
-    }
-    
-    override func viewDidLayoutSubviews() {
+        
         if let name = self.name {
             nameTextField.text = name
         }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        
     }
     
     private func layout() {
@@ -134,13 +133,4 @@ extension PersonalInfoViewController {
     private static let titleFont = UIFont.boldSystemFont(ofSize: 30)
     private static let textFieldFont = UIFont.systemFont(ofSize: 16)
     private static let buttonFont = UIFont.boldSystemFont(ofSize: 20)
-    
-    func loginSuccess(email: String, name: String) {
-        UserDefaults.standard.set(email, forKey: "email")
-        UserDefaults.standard.set("\(name)", forKey: "name")
-        
-        NotificationCenter.default.post(name: .didRefresh, object: nil)
-        let home = HomeViewController()
-        self.navigationController?.pushViewController(home, animated: true)
-    }
 }

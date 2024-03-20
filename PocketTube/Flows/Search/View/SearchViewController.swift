@@ -1,10 +1,3 @@
-//
-//  SearchViewController.swift
-//  Netflix Clone
-//
-//  Created by LoganMacMini on 09/11/2023.
-//
-
 import UIKit
 import JGProgressHUD
 

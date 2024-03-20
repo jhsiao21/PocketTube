@@ -1,10 +1,3 @@
-//
-//  User.swift
-//  Threads
-//
-//  Created by Stephan Dowless on 7/12/23.
-//
-
 import FirebaseFirestoreSwift
 import Firebase
 import Foundation

@@ -1,10 +1,3 @@
-//
-//  ForgotPasswordViewModel.swift
-//  Netflix Clone
-//
-//  Created by LoganMacMini on 2024/2/27.
-//
-
 import Foundation
 
 struct ForgotPasswordViewModel {

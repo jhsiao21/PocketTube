@@ -1,10 +1,3 @@
-//
-//  NaviBarConfiguration.swift
-//  Netflix Clone
-//
-//  Created by LoganMacMini on 2023/12/25.
-//
-
 import UIKit
 
 protocol SearchViewControllerPresentDelegate: AnyObject {

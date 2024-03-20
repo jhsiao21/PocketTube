@@ -1,10 +1,3 @@
-//
-//  AuthenticationViewModel.swift
-//  PocketTube
-//
-//  Created by LoganMacMini on 2024/3/13.
-//
-
 import Foundation
 import FirebaseAuth
 
