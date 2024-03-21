@@ -1,5 +1,4 @@
 import UIKit
-import JGProgressHUD
 
 extension UIViewController {
     
@@ -19,30 +18,6 @@ extension UIViewController {
         }
     }
     
-    
-//    func previewMedia(mediaName: String, mediaOverview: String?) {
-//        let spinner = JGProgressHUD(style: .dark)
-//        spinner.show(in: view)
-//        APIManager.shared.fetchYouTubeMedia(with: "\(mediaName) trailer") { [weak self] result in
-//            DispatchQueue.main.async {
-//                spinner.dismiss()
-//            }
-//            switch result {
-//            case .success(let videoElement):
-//                
-//                guard let mediaOverview = mediaOverview else {
-//                    return
-//                }
-//                
-//                let viewModel = YoutubePreviewModel(title: mediaName, youtubeView: videoElement, titleOverview: mediaOverview)
-//                self?.presnt(model: viewModel)
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//                self?.showUIAlert(message: error.localizedDescription)
-//            }
-//        }
-//    }
-    
     func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
@@ -51,5 +26,6 @@ extension UIViewController {
 
     @objc func dismissKeyboard() {
         view.endEditing(true)
+        print("dissmissKeyboard()")
     }
 }

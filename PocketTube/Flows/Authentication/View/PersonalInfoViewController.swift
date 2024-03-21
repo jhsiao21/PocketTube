@@ -10,7 +10,7 @@ final class PersonalInfoViewController: UIViewController, PersonalInfoView {
     
     private var name: String?
     private var email: String?
-
+    
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.text = "完成個人資訊"
@@ -28,6 +28,7 @@ final class PersonalInfoViewController: UIViewController, PersonalInfoView {
                             borderWidth: 1.0)
         textField.placeholder = "Enter a user name"
         textField.clipsToBounds = true
+        textField.returnKeyType = .done
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -84,13 +85,12 @@ final class PersonalInfoViewController: UIViewController, PersonalInfoView {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        hideKeyboardWhenTappedAround()
+        
+        self.hideKeyboardWhenTappedAround()
         layout()
         
-        if let name = self.name {
-            nameTextField.text = name
-        }
+        nameTextField.delegate = self
+        nameTextField.text = self.name ?? ""
     }
     
     override func viewDidLayoutSubviews() {
@@ -108,7 +108,7 @@ final class PersonalInfoViewController: UIViewController, PersonalInfoView {
             
             nameLabel.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
             nameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                        
+            
             nameTextField.topAnchor.constraint(equalToSystemSpacingBelow: nameLabel.bottomAnchor, multiplier: 3),
             nameTextField.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: nameTextField.trailingAnchor, multiplier: 2),
@@ -121,7 +121,18 @@ final class PersonalInfoViewController: UIViewController, PersonalInfoView {
             addAccountBtn.heightAnchor.constraint(equalToConstant: 55),
         ])
     }
-    
+}
+
+// MARK: - UITextField Delegate，按下return的觸發
+extension PersonalInfoViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if textField == nameTextField {
+            nameTextField.resignFirstResponder()
+        }
+        
+        return true
+    }
 }
 
 extension PersonalInfoViewController {

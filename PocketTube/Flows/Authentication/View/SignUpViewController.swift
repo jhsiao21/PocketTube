@@ -110,7 +110,7 @@ class SignUpViewController: UIViewController, SignUpView {
         super.viewDidLoad()
         view.backgroundColor = SignUpViewController.backgroundColor
 
-        self.hideKeyboardWhenTappedAround()
+        hideKeyboardWhenTappedAround()
         layout()
         setupTextField()
     }

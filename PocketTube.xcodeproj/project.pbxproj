@@ -112,7 +112,15 @@
 		02D22B822B8DD0CD005898B7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 02D22B812B8DD0CD005898B7 /* GoogleService-Info.plist */; };
 		02D274F52A8DD53000E95072 /* HotNewReleaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D274F42A8DD53000E95072 /* HotNewReleaseViewController.swift */; };
 		02D274F72A8E4B4C00E95072 /* HotNewReleaseHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D274F62A8E4B4C00E95072 /* HotNewReleaseHeaderView.swift */; };
+		02E6DB612BAB2BF1005EBE3E /* ApplicationCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E6DB602BAB2BF1005EBE3E /* ApplicationCoordinatorTests.swift */; };
+		02E6DB6E2BAB2C47005EBE3E /* RouterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E6DB6A2BAB2C47005EBE3E /* RouterMock.swift */; };
+		02E6DB6F2BAB2C47005EBE3E /* BaseCoordinatorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E6DB6C2BAB2C47005EBE3E /* BaseCoordinatorTest.swift */; };
+		02E6DB712BAB2C7D005EBE3E /* AuthCoordinatorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E6DB702BAB2C7D005EBE3E /* AuthCoordinatorTest.swift */; };
+		02E6DB752BAC3624005EBE3E /* MockAuthSceneFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E6DB742BAC3624005EBE3E /* MockAuthSceneFactory.swift */; };
 		02E9DC1D2BA4395A008240F2 /* PersonalInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E9DC1C2BA4395A008240F2 /* PersonalInfoViewController.swift */; };
+		02F3730C2BAC37D100231A29 /* MockCoordinatorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3730B2BAC37D100231A29 /* MockCoordinatorFactory.swift */; };
+		02F3730E2BAC38F700231A29 /* MockCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3730D2BAC38F700231A29 /* MockCoordinator.swift */; };
+		02F373102BAC3ABC00231A29 /* MockRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3730F2BAC3ABC00231A29 /* MockRouter.swift */; };
 		0A1942D0274A620100B3FA93 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1942CF274A620100B3FA93 /* TableViewCell.swift */; };
 		0A5AAA9D2769057B00149719 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5AAA9C2769057B00149719 /* String+Ext.swift */; };
 		0A5AAAA7276AE1D500149719 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5AAAA6276AE1D500149719 /* CollectionViewCell.swift */; };
@@ -120,7 +128,6 @@
 		0A5AAAAC276AE2E600149719 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0A5AAAAB276AE2E600149719 /* SDWebImageMapKit */; };
 		0A6209A72734603E00A88D71 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6209A62734603E00A88D71 /* AppDelegate.swift */; };
 		0A6209A92734603E00A88D71 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6209A82734603E00A88D71 /* SceneDelegate.swift */; };
-		0A6209AB2734603E00A88D71 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6209AA2734603E00A88D71 /* MainTabBarViewController.swift */; };
 		0A6209B02734603E00A88D71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A6209AF2734603E00A88D71 /* Assets.xcassets */; };
 		0A6209B32734603E00A88D71 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A6209B12734603E00A88D71 /* LaunchScreen.storyboard */; };
 		0A6209BC2734615B00A88D71 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6209BB2734615B00A88D71 /* HomeViewController.swift */; };
@@ -137,6 +144,13 @@
 
 /* Begin PBXContainerItemProxy section */
 		0265321E2B8F18F800E9B585 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0A62099B2734603D00A88D71 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A6209A22734603E00A88D71;
+			remoteInfo = PocketTube;
+		};
+		02E6DB622BAB2BF1005EBE3E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0A62099B2734603D00A88D71 /* Project object */;
 			proxyType = 1;
@@ -244,14 +258,22 @@
 		02D22B812B8DD0CD005898B7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		02D274F42A8DD53000E95072 /* HotNewReleaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotNewReleaseViewController.swift; sourceTree = "<group>"; };
 		02D274F62A8E4B4C00E95072 /* HotNewReleaseHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotNewReleaseHeaderView.swift; sourceTree = "<group>"; };
+		02E6DB5E2BAB2BF1005EBE3E /* ApplicationCoordinatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ApplicationCoordinatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		02E6DB602BAB2BF1005EBE3E /* ApplicationCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationCoordinatorTests.swift; sourceTree = "<group>"; };
+		02E6DB6A2BAB2C47005EBE3E /* RouterMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouterMock.swift; sourceTree = "<group>"; };
+		02E6DB6C2BAB2C47005EBE3E /* BaseCoordinatorTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseCoordinatorTest.swift; sourceTree = "<group>"; };
+		02E6DB702BAB2C7D005EBE3E /* AuthCoordinatorTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthCoordinatorTest.swift; sourceTree = "<group>"; };
+		02E6DB742BAC3624005EBE3E /* MockAuthSceneFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAuthSceneFactory.swift; sourceTree = "<group>"; };
 		02E9DC1C2BA4395A008240F2 /* PersonalInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoViewController.swift; sourceTree = "<group>"; };
+		02F3730B2BAC37D100231A29 /* MockCoordinatorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCoordinatorFactory.swift; sourceTree = "<group>"; };
+		02F3730D2BAC38F700231A29 /* MockCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCoordinator.swift; sourceTree = "<group>"; };
+		02F3730F2BAC3ABC00231A29 /* MockRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRouter.swift; sourceTree = "<group>"; };
 		0A1942CF274A620100B3FA93 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		0A5AAA9C2769057B00149719 /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		0A5AAAA6276AE1D500149719 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		0A6209A32734603E00A88D71 /* PocketTube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketTube.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A6209A62734603E00A88D71 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0A6209A82734603E00A88D71 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		0A6209AA2734603E00A88D71 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
 		0A6209AF2734603E00A88D71 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0A6209B22734603E00A88D71 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0A6209B42734603E00A88D71 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -269,6 +291,13 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		026532172B8F18F800E9B585 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		02E6DB5B2BAB2BF1005EBE3E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -711,6 +740,53 @@
 			path = Protocol;
 			sourceTree = "<group>";
 		};
+		02E6DB5F2BAB2BF1005EBE3E /* ApplicationCoordinatorTests */ = {
+			isa = PBXGroup;
+			children = (
+				02E6DB722BAC35FB005EBE3E /* Mock */,
+				02E6DB602BAB2BF1005EBE3E /* ApplicationCoordinatorTests.swift */,
+				02E6DB6B2BAB2C47005EBE3E /* Parent */,
+				02E6DB682BAB2C47005EBE3E /* Router */,
+				02E6DB672BAB2C1A005EBE3E /* AuthFlow */,
+			);
+			path = ApplicationCoordinatorTests;
+			sourceTree = "<group>";
+		};
+		02E6DB672BAB2C1A005EBE3E /* AuthFlow */ = {
+			isa = PBXGroup;
+			children = (
+				02E6DB702BAB2C7D005EBE3E /* AuthCoordinatorTest.swift */,
+			);
+			path = AuthFlow;
+			sourceTree = "<group>";
+		};
+		02E6DB682BAB2C47005EBE3E /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				02E6DB6A2BAB2C47005EBE3E /* RouterMock.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		02E6DB6B2BAB2C47005EBE3E /* Parent */ = {
+			isa = PBXGroup;
+			children = (
+				02E6DB6C2BAB2C47005EBE3E /* BaseCoordinatorTest.swift */,
+			);
+			path = Parent;
+			sourceTree = "<group>";
+		};
+		02E6DB722BAC35FB005EBE3E /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				02E6DB742BAC3624005EBE3E /* MockAuthSceneFactory.swift */,
+				02F3730B2BAC37D100231A29 /* MockCoordinatorFactory.swift */,
+				02F3730D2BAC38F700231A29 /* MockCoordinator.swift */,
+				02F3730F2BAC3ABC00231A29 /* MockRouter.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
 		0A1942CC274A61A100B3FA93 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -747,6 +823,7 @@
 				021762AA2B9ABC0400086F3E /* PocketTube.entitlements */,
 				0A6209A52734603E00A88D71 /* PocketTube */,
 				0265321B2B8F18F800E9B585 /* PocketTubeTests */,
+				02E6DB5F2BAB2BF1005EBE3E /* ApplicationCoordinatorTests */,
 				0A6209A42734603E00A88D71 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -756,6 +833,7 @@
 			children = (
 				0A6209A32734603E00A88D71 /* PocketTube.app */,
 				0265321A2B8F18F800E9B585 /* PocketTubeTests.xctest */,
+				02E6DB5E2BAB2BF1005EBE3E /* ApplicationCoordinatorTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -783,7 +861,6 @@
 		0A6209BA2734614400A88D71 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				0A6209AA2734603E00A88D71 /* MainTabBarViewController.swift */,
 				022A350C2BA723A400DA85AB /* TabBarController.swift */,
 				022A350A2BA723A400DA85AB /* TabBarView.swift */,
 			);
@@ -809,6 +886,24 @@
 			name = PocketTubeTests;
 			productName = PocketTubeTests;
 			productReference = 0265321A2B8F18F800E9B585 /* PocketTubeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		02E6DB5D2BAB2BF1005EBE3E /* ApplicationCoordinatorTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 02E6DB642BAB2BF1005EBE3E /* Build configuration list for PBXNativeTarget "ApplicationCoordinatorTests" */;
+			buildPhases = (
+				02E6DB5A2BAB2BF1005EBE3E /* Sources */,
+				02E6DB5B2BAB2BF1005EBE3E /* Frameworks */,
+				02E6DB5C2BAB2BF1005EBE3E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				02E6DB632BAB2BF1005EBE3E /* PBXTargetDependency */,
+			);
+			name = ApplicationCoordinatorTests;
+			productName = ApplicationCoordinatorTests;
+			productReference = 02E6DB5E2BAB2BF1005EBE3E /* ApplicationCoordinatorTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		0A6209A22734603E00A88D71 /* PocketTube */ = {
@@ -856,6 +951,10 @@
 						CreatedOnToolsVersion = 15.0.1;
 						TestTargetID = 0A6209A22734603E00A88D71;
 					};
+					02E6DB5D2BAB2BF1005EBE3E = {
+						CreatedOnToolsVersion = 15.0.1;
+						TestTargetID = 0A6209A22734603E00A88D71;
+					};
 					0A6209A22734603E00A88D71 = {
 						CreatedOnToolsVersion = 13.0;
 					};
@@ -883,12 +982,20 @@
 			targets = (
 				0A6209A22734603E00A88D71 /* PocketTube */,
 				026532192B8F18F800E9B585 /* PocketTubeTests */,
+				02E6DB5D2BAB2BF1005EBE3E /* ApplicationCoordinatorTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		026532182B8F18F800E9B585 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		02E6DB5C2BAB2BF1005EBE3E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -928,6 +1035,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		02E6DB5A2BAB2BF1005EBE3E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				02E6DB6E2BAB2C47005EBE3E /* RouterMock.swift in Sources */,
+				02F3730C2BAC37D100231A29 /* MockCoordinatorFactory.swift in Sources */,
+				02E6DB612BAB2BF1005EBE3E /* ApplicationCoordinatorTests.swift in Sources */,
+				02E6DB6F2BAB2C47005EBE3E /* BaseCoordinatorTest.swift in Sources */,
+				02E6DB752BAC3624005EBE3E /* MockAuthSceneFactory.swift in Sources */,
+				02F3730E2BAC38F700231A29 /* MockCoordinator.swift in Sources */,
+				02F373102BAC3ABC00231A29 /* MockRouter.swift in Sources */,
+				02E6DB712BAB2C7D005EBE3E /* AuthCoordinatorTest.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0A62099F2734603E00A88D71 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -953,7 +1075,6 @@
 				02D22B6B2B8C7227005898B7 /* LandingScreenViewController.swift in Sources */,
 				0206F71A2AAA222100044687 /* TvGenre.swift in Sources */,
 				022A352B2BA7283E00DA85AB /* HomeSceneFactoryProtocol.swift in Sources */,
-				0A6209AB2734603E00A88D71 /* MainTabBarViewController.swift in Sources */,
 				0A1942D0274A620100B3FA93 /* TableViewCell.swift in Sources */,
 				029825702AC3125200503EF0 /* Haptic.swift in Sources */,
 				02D22ABF2B7A5D76005898B7 /* APIError.swift in Sources */,
@@ -1041,6 +1162,11 @@
 			target = 0A6209A22734603E00A88D71 /* PocketTube */;
 			targetProxy = 0265321E2B8F18F800E9B585 /* PBXContainerItemProxy */;
 		};
+		02E6DB632BAB2BF1005EBE3E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0A6209A22734603E00A88D71 /* PocketTube */;
+			targetProxy = 02E6DB622BAB2BF1005EBE3E /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1096,6 +1222,55 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Logan.Lab.PocketTubeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PocketTube.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PocketTube";
+			};
+			name = Release;
+		};
+		02E6DB652BAB2BF1005EBE3E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S4URMM3RJV;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Logan.Lab.ApplicationCoordinatorTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PocketTube.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PocketTube";
+			};
+			name = Debug;
+		};
+		02E6DB662BAB2BF1005EBE3E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S4URMM3RJV;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Logan.Lab.ApplicationCoordinatorTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -1295,6 +1470,15 @@
 			buildConfigurations = (
 				026532212B8F18F800E9B585 /* Debug */,
 				026532222B8F18F800E9B585 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		02E6DB642BAB2BF1005EBE3E /* Build configuration list for PBXNativeTarget "ApplicationCoordinatorTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				02E6DB652BAB2BF1005EBE3E /* Debug */,
+				02E6DB662BAB2BF1005EBE3E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
