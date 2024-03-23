@@ -11,10 +11,8 @@ import Foundation
 final class MockCoordinator: Coordinatorable {
 
     var finishFlow: (() -> Void)?
-    var startCalled = false
     
     func start() {
-        startCalled = true
     }
     
 }

@@ -9,13 +9,13 @@ import AuthenticationServices
 import CryptoKit
 
 protocol LoginView: BaseView {
-    var onCompleteAuth: ((String, String) -> Void)? { get set }
+    var onCompleteAuth: ((String, String, String?) -> Void)? { get set }
     var onTransitToPersonal: ((String?, String?) -> Void)? { get set }
     var onTransitToForgotPWD: (() -> Void)? { get set }
 }
 
 class LoginViewController: UIViewController, LoginView {
-    var onCompleteAuth: ((String, String) -> Void)?
+    var onCompleteAuth: ((String, String, String?) -> Void)?
     var onTransitToPersonal: ((String?, String?) -> Void)?
     var onTransitToForgotPWD: (() -> Void)?
     
@@ -289,7 +289,7 @@ class LoginViewController: UIViewController, LoginView {
                     }
                     switch result {
                     case .success(let user):
-                        self.onCompleteAuth?(user.email, user.userName)
+                        self.onCompleteAuth?(user.email, user.userName, nil)
                     case .failure(let error):
                         self.showUIAlert(message: error.localizedDescription)
                     }
@@ -372,7 +372,7 @@ class LoginViewController: UIViewController, LoginView {
                             if let user = user, error == nil {
                                 // user exists （後續登入）
                                 print("user data: \(user)")
-                                self.onCompleteAuth?(user.email, user.userName)
+                                self.onCompleteAuth?(user.email, user.userName, pictureUrl)
                             } else {
                                 // user does not exists
                                 self.onTransitToPersonal?(email, firstName)
@@ -416,7 +416,8 @@ class LoginViewController: UIViewController, LoginView {
             }
                         
             guard let email = user.profile?.email,
-                  let firstName = user.profile?.givenName else {
+                  let firstName = user.profile?.givenName,
+                  let profileURL = user.profile?.imageURL(withDimension: 500)?.absoluteString else {
                 self.showUIAlert(message: "Unable to get email and givenName from Google.")
                 return
             }
@@ -435,7 +436,7 @@ class LoginViewController: UIViewController, LoginView {
                         if let user = user, error == nil {
                             // user exists （後續登入）
                             print("user data: \(user)")
-                            self.onCompleteAuth?(user.email, user.userName)
+                            self.onCompleteAuth?(user.email, user.userName, profileURL)
                         } else {
                             // user does not exists
                             self.onTransitToPersonal?(email, firstName)
@@ -606,7 +607,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                         if let user = user, error == nil {
                             // user exists（後續登入）
                             print("user data: \(user)")
-                            self.onCompleteAuth?(user.email, user.userName)
+                            self.onCompleteAuth?(user.email, user.userName, nil)
                         } else {
                             // 首次登入
                             self.onTransitToPersonal?(appleIDCredential.email, appleIDCredential.fullName?.givenName)

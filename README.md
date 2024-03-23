@@ -17,6 +17,10 @@ The following content includes technical details, feature introductions, and dem
 * Testable API class and view model for Unit Test
 
 ## Introduction
+
+### System flow
+![](images/SystemFlow.PocketTube.png)
+
 ### Authentication
 
 ![](images/Authentication.png)

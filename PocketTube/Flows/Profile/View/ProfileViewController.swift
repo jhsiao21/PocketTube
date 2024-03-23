@@ -81,42 +81,29 @@ final class ProfileViewController: UIViewController, ProfileView {
             self?.tableView.reloadData()
         }
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         
-//        validateAuth() //Register後跳回此視圖時，會再次觸發viewDidAppear來執行這行
-    }
-    
-//    private func validateAuth() {
-//        if FirebaseAuth.Auth.auth().currentUser == nil {
-//            let vc = LandingScreenViewController()
-//            let nav = UINavigationController(rootViewController: vc)
-//            nav.modalPresentationStyle = .fullScreen
-//            present(nav, animated: false)
-//            
-//        }
-//        else {
-//            
-//        }
-//    }
-    
     private func setupProfileImage() {
         guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
             return
-        }
+        }        
         
-        let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
-        let fileName = safeEmail + "_profile_picture.png"
-        let path = "profile_images/\(fileName)"
-        
-        StorageManager.shared.downloadURL(for: path) { [weak self] result in
-            switch result {
-            case .success(let url):
-                self?.profileImageView.sd_setImage(with: url, completed: nil)
-            case .failure(let failure):
-                self?.profileImageView.image = UIImage(systemName: "person.circle")?.withTintColor(.gray, renderingMode: .alwaysTemplate)
-                print("Failed to get download url: \(failure)")
+        if let profileURL = UserDefaults.standard.value(forKey: "profileURL") as? String {
+            let url = URL(string: profileURL)
+            self.profileImageView.sd_setImage(with: url, completed: nil)
+            
+        } else {
+            let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
+            let fileName = safeEmail + "_profile_picture.png"
+            let path = "profile_images/\(fileName)"
+            
+            StorageManager.shared.downloadURL(for: path) { [weak self] result in
+                switch result {
+                case .success(let url):
+                    self?.profileImageView.sd_setImage(with: url, completed: nil)
+                case .failure(let failure):
+                    self?.profileImageView.image = UIImage(systemName: "person.circle")?.withTintColor(.gray, renderingMode: .alwaysTemplate)
+                    print("Failed to get download url: \(failure)")
+                }
             }
         }
     }

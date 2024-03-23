@@ -36,8 +36,8 @@ extension AuthCoordinator {
     func showLoginView() {
         let loginView = factory.makeLoginView()
         
-        loginView.onCompleteAuth = { [unowned self] email, name in
-            self.recordUserInfo(email: email, name: name)
+        loginView.onCompleteAuth = { [unowned self] email, name, profileURL in
+            self.recordUserInfo(email: email, name: name, profileURL: profileURL)
             self.finishFlow?()
         }
         
@@ -77,10 +77,10 @@ extension AuthCoordinator {
         coordinator.start(email: email, name: name)
     }
     
-    func recordUserInfo(email: String, name: String) {
+    func recordUserInfo(email: String, name: String, profileURL: String?) {
         UserDefaults.standard.set(email, forKey: "email")
-        UserDefaults.standard.set("\(name)", forKey: "name")
-        
+        UserDefaults.standard.set(name, forKey: "name")
+        UserDefaults.standard.set(profileURL, forKey: "profileURL")
         NotificationCenter.default.post(name: .didRefresh, object: nil)
     }
 }
