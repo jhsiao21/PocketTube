@@ -19,7 +19,7 @@ The following content includes technical details, feature introductions, and dem
 ## Introduction
 
 ### System flow
-![](images/System Flow.PocketTube.png)
+![](images/SystemFlow.PocketTube.png)
 
 ### Authentication
 
