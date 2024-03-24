@@ -61,6 +61,7 @@ private extension TabBarCoordinator {
         navController.tabBarItem = UITabBarItem(title: page.pageTitleValue,
                                                 image: page.pageIconImage,
                                                 tag: page.pageOrderNumber)
+        
         switch page {
         case .home:
             let coordinator = coordinatorFactory.makeHomeCoordinator(

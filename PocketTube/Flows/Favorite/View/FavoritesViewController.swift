@@ -56,6 +56,11 @@ class FavoritesViewController: UIViewController, FavoritesView {
         super.viewDidLayoutSubviews()
         favoritesTable.frame = view.bounds
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isTranslucent = false
+    }
 }
 
 extension FavoritesViewController: FavoriteViewModelDelegate {

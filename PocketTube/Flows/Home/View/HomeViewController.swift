@@ -80,6 +80,12 @@ class HomeViewController: UIViewController, HomeView {
         
         //只有一個UITableView，所以設定frame為view.bounds
         homeFeedTable.frame = view.bounds
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isTranslucent = false
     }
     
     override func viewDidAppear(_ animated: Bool) {

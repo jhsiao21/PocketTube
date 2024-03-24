@@ -10,5 +10,17 @@ final class TabBarController: UITabBarController, UITabBarControllerDelegate, Ta
                 controller.navigationBar.prefersLargeTitles = true
             }
         }
+        
+        if #available(iOS 13.0, *) {
+            let tabBarAppearance = UITabBarAppearance()
+            tabBarAppearance.configureWithOpaqueBackground() // 使用不透明背景
+            tabBarAppearance.backgroundColor = .systemBackground
+            
+            UITabBar.appearance().standardAppearance = tabBarAppearance
+            if #available(iOS 15.0, *) {
+                UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+            }
+        }
+
     }
 }

@@ -85,7 +85,7 @@ final class ProfileViewController: UIViewController, ProfileView {
     private func setupProfileImage() {
         guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
             return
-        }        
+        }
         
         if let profileURL = UserDefaults.standard.value(forKey: "profileURL") as? String {
             let url = URL(string: profileURL)
@@ -158,6 +158,10 @@ final class ProfileViewController: UIViewController, ProfileView {
         profileImageView.addGestureRecognizer(gesture)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isTranslucent = false
+    }
 }
     
 // MARK: - UITableViewDataSource

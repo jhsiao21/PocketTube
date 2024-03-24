@@ -95,7 +95,7 @@ class AuthCoordinatorTest: XCTestCase {
         let loginOutput = mockRouter.navigationStack.first as! LoginViewController
         
         // 2. Action
-        loginOutput.onCompleteAuth?("test@example.com", "Tester")
+        loginOutput.onCompleteAuth?("test@example.com", "Tester", nil)
         
         // 3. Assert
         XCTAssertTrue(self.mockRouter.navigationStack.last is HomeViewController, "Expected to switch to HomeViewController")

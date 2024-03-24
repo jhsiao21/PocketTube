@@ -83,13 +83,11 @@ class HotNewReleaseViewController: UIViewController, HotNewReleaseView {
         
     @objc func searchButtonTapped() {
         onSearchButtonTap?()
-//        DispatchQueue.main.async {
-//            let vc = SearchViewController.shared
-//            
-//            //按下搜尋後隱藏標籤列
-//            vc.hidesBottomBarWhenPushed = true
-//            self.navigationController?.pushViewController(vc, animated: true)
-//        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isTranslucent = false
     }
 }
 
