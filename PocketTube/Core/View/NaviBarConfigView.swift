@@ -1,12 +1,14 @@
 import UIKit
 
-protocol SearchViewControllerPresentDelegate: AnyObject {
-    func pushSearchVC()
+protocol NaviBarDelegate: AnyObject {
+    func airPlayBtnTap()
+    func searchBtnTap()
+    func userIconBtnTap()
 }
 
 class NaviBarConfigView: UIView {
     
-    weak var pushSearchViewDelegate: SearchViewControllerPresentDelegate?
+    weak var naviBarDelegate: NaviBarDelegate?
         
     private let hStackView : UIStackView = {
         let stackView = UIStackView()
@@ -127,24 +129,16 @@ class NaviBarConfigView: UIView {
     
     @objc func airplayButtonTapped() {
         print("airplay button is pressed")
+        naviBarDelegate?.airPlayBtnTap()
     }
         
     @objc func searchButtonTapped() {
-        
-        pushSearchViewDelegate?.pushSearchVC()
-        
-//        DispatchQueue.main.async {
-//            let vc = SearchViewController.shared
-//            
-//            //按下搜尋後隱藏標籤列
-//            vc.hidesBottomBarWhenPushed = true
-//            UINavigationController().pushViewController(vc, animated: true)
-//            self?.navigationController?.pushViewController(vc, animated: true)
-//        }
+        print("search button is pressed")
+        naviBarDelegate?.searchBtnTap()
     }
     
     @objc func userButtonTapped() {
         print("user button is pressed")
+        naviBarDelegate?.userIconBtnTap()
     }
-
 }

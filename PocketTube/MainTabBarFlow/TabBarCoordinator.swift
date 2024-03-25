@@ -66,14 +66,20 @@ private extension TabBarCoordinator {
         case .home:
             let coordinator = coordinatorFactory.makeHomeCoordinator(
                 navigationController: navController
-            )
+            ) as! HomeCoordinator
             addDependency(coordinator)
+            coordinator.onUserIconTap = { [weak self] in
+                self?.selectPage(.profile)
+            }
             coordinator.start()
         case .hotNewRelease:
             let coordinator = coordinatorFactory.makeHotNewReleaseCoordinator(
                 navigationController: navController
-            )
+            ) as! HotNewReleaseCoordinator
             addDependency(coordinator)
+            coordinator.transitToProfileView = { [weak self] in
+                self?.selectPage(.profile)
+            }
             coordinator.start()
         case .favorite:
             let coordinator = coordinatorFactory.makeFavoritesCoordinator(

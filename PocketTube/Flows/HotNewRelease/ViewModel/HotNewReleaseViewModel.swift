@@ -1,8 +1,11 @@
 import Foundation
+import UIKit
 
 protocol HotNewReleaseViewModelDelegate: AnyObject {
     func hotNewReleaseViewModel(didReceiveItem item: [HotNewReleaseViewModelItem])
-    
+    func hotNewReleaseViewModel(didFavoriteMediaResponse response: FavoriteResponse)
+    func hotNewReleaseViewModel(didShareMedia name: String, youtubeUrl: URL, posterImg: UIImage)
+    func hotNewReleaseViewModel(didPlayMedia model: YoutubePreviewModel)
     func hotNewReleaseViewModel(didReceiveError error: Error)
 }
 
@@ -18,7 +21,8 @@ protocol HotNewReleaseViewModelItem {
 }
 
 final class HotNewReleaseViewModel {
-    
+    var isLoading: ((Bool) -> Void)?
+    var onMediaSelected: ((Media) -> Void)?
     private let dataProvider: HotNewReleaseViewModelDataProvider
     weak var delegate: HotNewReleaseViewModelDelegate?
     var items: [HotNewReleaseViewModelItem] = []
@@ -28,6 +32,8 @@ final class HotNewReleaseViewModel {
     }
     
     func fetchData() {
+        isLoading?(true)
+        
         dataProvider.fetchMediaData { [weak self] result in
             switch result {
             case .success(let item):
@@ -35,6 +41,68 @@ final class HotNewReleaseViewModel {
             case .failure(let error):
                 self?.delegate?.hotNewReleaseViewModel(didReceiveError: error)
             }
+            self?.isLoading?(false)
+        }
+    }
+}
+
+// MARK: - ContentActionButton Delegate
+extension HotNewReleaseViewModel: ContentActionButtonDelegate {
+    func didTappedShareBtn(mediaName: String, image: UIImage) {
+        
+        isLoading?(true)
+        
+        APIManager.shared.fetchYouTubeMedia(with: "\(mediaName) trailer") { [weak self] result in
+            switch result {
+            case .success(let videoElement):
+                guard let videoId = (videoElement as VideoElement).id.videoId,
+                      let youtubeUrl = URL(string: "https://www.youtube.com/watch?v=\(videoId)") else {
+                    return
+                }
+                self?.delegate?.hotNewReleaseViewModel(didShareMedia: mediaName, youtubeUrl: youtubeUrl, posterImg: image)
+            case .failure(let error):
+                print(error.localizedDescription)
+                self?.delegate?.hotNewReleaseViewModel(didReceiveError: error)
+            }
+            self?.isLoading?(false)
+        }        
+    }
+    
+    func didTappedWatchListBtn(uid: String, media: FMedia) {
+        Haptic.shared.vibrate(feedbackStyle: .light)
+        
+        isLoading?(true)
+        
+        DatabaseManager.shared.favoriteMedia(uid: uid, media: media) { [weak self] result in
+            switch result {
+            case .success(let response):
+                switch response {
+                case .exists:
+                    self?.delegate?.hotNewReleaseViewModel(didFavoriteMediaResponse: .exists)
+                case .added:
+                    self?.delegate?.hotNewReleaseViewModel(didFavoriteMediaResponse: .added)
+                    NotificationCenter.default.post(name: .didFavorite, object: nil)
+                }
+            case .failure(let failure):
+                print(failure.localizedDescription)
+                self?.delegate?.hotNewReleaseViewModel(didReceiveError: failure)
+            }
+            self?.isLoading?(false)
+        }
+    }
+    
+    func didTappedPlayBtn(media: Media) {
+        isLoading?(true)
+        
+        APIManager.shared.fetchYouTubeMedia(with: "\(media.displayTitle) trailer") { [weak self] result in
+            switch result {
+            case .success(let videoElement):
+                let model = YoutubePreviewModel(title: media.displayTitle, youtubeView: videoElement, titleOverview: media.overview ?? "")
+                self?.delegate?.hotNewReleaseViewModel(didPlayMedia: model)
+            case .failure(let error):
+                self?.delegate?.hotNewReleaseViewModel(didReceiveError: error)
+            }
+            self?.isLoading?(false)
         }
     }
 }

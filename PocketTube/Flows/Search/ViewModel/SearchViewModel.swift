@@ -5,6 +5,7 @@ protocol SearchViewModelDelegate: AnyObject {
     func searchViewModel(didReceiveData data: [Media])
     func searchViewModel(didReceiveSearchData data: [Media])
     func searchViewModel(didReceiveError error: Error)
+    func searchViewModel(didPlayMedia model: YoutubePreviewModel)
 }
 
 protocol SearchViewModelDataProvider {
@@ -23,6 +24,7 @@ class SearchViewModel {
     
     weak var delegate: SearchViewModelDelegate?
     private let dataProvider: SearchViewModelDataProvider
+    var isLoading: ((Bool) -> Void)?
     
     var defaultItems: [Media] = []
     var searchedItems: [Media] = []
@@ -33,6 +35,8 @@ class SearchViewModel {
     
     // MARK: - API request
     func fetchDiscoverMovies() {
+        isLoading?(true)
+        
         dataProvider.fetchDiscoverMedia { [weak self] result in
             switch result {
             case .success(let data):
@@ -40,10 +44,13 @@ class SearchViewModel {
             case .failure(let failure):
                 self?.delegate?.searchViewModel(didReceiveError: failure)
             }
+            self?.isLoading?(false)
         }
     }
     
     func search(with mediaName: String) {
+        isLoading?(true)
+        
         dataProvider.searchFor(with: mediaName) { [weak self] result in
             switch result {
             case .success(let data):
@@ -51,6 +58,23 @@ class SearchViewModel {
             case .failure(let error):
                 self?.delegate?.searchViewModel(didReceiveError: error)
             }
+            self?.isLoading?(false)
+        }
+    }
+    
+    func fetchMedia(media: Media) {
+        isLoading?(true)
+        
+        APIManager.shared.fetchYouTubeMedia(with: "\(media.displayTitle) trailer") { [weak self] result in
+            
+            switch result {
+            case .success(let videoElement):
+                let model = YoutubePreviewModel(title: media.displayTitle, youtubeView: videoElement, titleOverview: media.overview ?? "")
+                self?.delegate?.searchViewModel(didPlayMedia: model)
+            case .failure(let error):
+                self?.delegate?.searchViewModel(didReceiveError: error)
+            }
+            self?.isLoading?(false)
         }
     }
 }

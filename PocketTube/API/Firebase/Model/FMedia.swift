@@ -23,7 +23,16 @@ struct FMedia: Codable, Hashable, Equatable {
 //    }
 }
 
-enum FavoriteResponse {
+enum FavoriteResponse: CaseIterable {
     case exists
     case added
+    
+    var caseDescription: String {
+        switch self {
+        case .added:
+            return "已加入"
+        case .exists:
+            return "已存在"
+        }
+    }
 }

@@ -15,7 +15,7 @@ final class DatabaseManager {
     
     /// Shared instance of class
     public static let shared = DatabaseManager()
-    
+        
     init() {}
     
     private let database = Database.database().reference()

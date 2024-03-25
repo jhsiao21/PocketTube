@@ -1,5 +1,5 @@
 import Foundation
 
 protocol ShowAlertDelegate: AnyObject {
-    func showAlert(msg: String)
+    func showAlert(error: Error)
 }

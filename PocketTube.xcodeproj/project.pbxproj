@@ -100,7 +100,6 @@
 		02D22B602B8A2F09005898B7 /* ItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22B5F2B8A2F09005898B7 /* ItemViewModel.swift */; };
 		02D22B632B8AEB00005898B7 /* ContentActionButtonDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22B622B8AEB00005898B7 /* ContentActionButtonDelegate.swift */; };
 		02D22B652B8B706C005898B7 /* ShowAlertDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22B642B8B706C005898B7 /* ShowAlertDelegate.swift */; };
-		02D22B672B8B74AA005898B7 /* MediaPreviewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22B662B8B74AA005898B7 /* MediaPreviewDelegate.swift */; };
 		02D22B6B2B8C7227005898B7 /* LandingScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22B6A2B8C7226005898B7 /* LandingScreenViewController.swift */; };
 		02D22B6D2B8C7586005898B7 /* UIButton+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22B6C2B8C7585005898B7 /* UIButton+Ext.swift */; };
 		02D22B6F2B8C7613005898B7 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22B6E2B8C7613005898B7 /* SignUpViewController.swift */; };
@@ -246,7 +245,6 @@
 		02D22B5F2B8A2F09005898B7 /* ItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemViewModel.swift; sourceTree = "<group>"; };
 		02D22B622B8AEB00005898B7 /* ContentActionButtonDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentActionButtonDelegate.swift; sourceTree = "<group>"; };
 		02D22B642B8B706C005898B7 /* ShowAlertDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowAlertDelegate.swift; sourceTree = "<group>"; };
-		02D22B662B8B74AA005898B7 /* MediaPreviewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPreviewDelegate.swift; sourceTree = "<group>"; };
 		02D22B6A2B8C7226005898B7 /* LandingScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingScreenViewController.swift; sourceTree = "<group>"; };
 		02D22B6C2B8C7585005898B7 /* UIButton+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Ext.swift"; sourceTree = "<group>"; };
 		02D22B6E2B8C7613005898B7 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -496,8 +494,10 @@
 		02AAB5092B2D4A6C0056CE7E /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				02D8F1272BB1ADCA003948D6 /* ViewModel */,
+				02AAB50F2B2D4B690056CE7E /* View */,
+				02D22B612B8AEADD005898B7 /* Protocol */,
 				02D22B4B2B88482B005898B7 /* Model */,
-				02AAB50D2B2D4B5B0056CE7E /* Components */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -526,15 +526,6 @@
 				0A6209BB2734615B00A88D71 /* HomeViewController.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		02AAB50D2B2D4B5B0056CE7E /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				02D22B612B8AEADD005898B7 /* Protocol */,
-				02AAB50F2B2D4B690056CE7E /* View */,
-			);
-			path = Components;
 			sourceTree = "<group>";
 		};
 		02AAB50F2B2D4B690056CE7E /* View */ = {
@@ -706,8 +697,8 @@
 		02D22B582B89A59F005898B7 /* Favorite */ = {
 			isa = PBXGroup;
 			children = (
-				02D22B5A2B89A5B1005898B7 /* ViewModel */,
 				02D22B592B89A5AA005898B7 /* View */,
+				02D22B5A2B89A5B1005898B7 /* ViewModel */,
 				022A353D2BA7D9B400DA85AB /* FavoritesCoordinator.swift */,
 			);
 			path = Favorite;
@@ -735,9 +726,15 @@
 			children = (
 				02D22B622B8AEB00005898B7 /* ContentActionButtonDelegate.swift */,
 				02D22B642B8B706C005898B7 /* ShowAlertDelegate.swift */,
-				02D22B662B8B74AA005898B7 /* MediaPreviewDelegate.swift */,
 			);
 			path = Protocol;
+			sourceTree = "<group>";
+		};
+		02D8F1272BB1ADCA003948D6 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		02E6DB5F2BAB2BF1005EBE3E /* ApplicationCoordinatorTests */ = {
@@ -1056,7 +1053,6 @@
 			files = (
 				0A7C94D527764E8C0072AE85 /* FavoritesTableViewCell.swift in Sources */,
 				02D22B522B88C83D005898B7 /* ImageUploader.swift in Sources */,
-				02D22B672B8B74AA005898B7 /* MediaPreviewDelegate.swift in Sources */,
 				0A6209C02734618C00A88D71 /* SearchViewController.swift in Sources */,
 				022A35422BA7E05700DA85AB /* MediaPreviewSceneProtocol.swift in Sources */,
 				022A350F2BA723A400DA85AB /* TabBarPage.swift in Sources */,

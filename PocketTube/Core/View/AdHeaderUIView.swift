@@ -264,11 +264,11 @@ class AdHeaderUIView: UIView {
                     let url = URL(string: "https://image.tmdb.org/t/p/w500/\(posterUrl)")
                     self?.posterImageView.sd_setImage(with: url, completed: nil)
                 } else {
-                    self?.showAlertDelegate?.showAlert(msg: APIError.failedToGetData.errorDescription)
+                    self?.showAlertDelegate?.showAlert(error: APIError.failedToGetData)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
-                self?.showAlertDelegate?.showAlert(msg: error.localizedDescription)
+                self?.showAlertDelegate?.showAlert(error: error)
             }
         }
     }

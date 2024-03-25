@@ -22,19 +22,8 @@ extension FavoritesCoordinator {
     func showFavoritesView() {
         let favoritesView = factory.makeFavoritesView()
         
-        favoritesView.onMediaSelected = { [weak self] media in
-            
-            APIManager.shared.fetchYouTubeMedia(with: "\(media.caption) trailer") { result in
-                
-                switch result {
-                case .success(let videoElement):
-                    let model = YoutubePreviewModel(title: media.caption, youtubeView: videoElement, titleOverview: media.overview ?? "")
-                    self?.showMediaPreviewView(with: model)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                    //self?.showUIAlert(message: error.localizedDescription)
-                }
-            }
+        favoritesView.onMediaSelected = { [weak self] model in
+            self?.showMediaPreviewView(with: model)
         }
         
         router.setRootModule(favoritesView)

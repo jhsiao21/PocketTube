@@ -2,11 +2,11 @@ import UIKit
 import JGProgressHUD
 
 protocol SearchView: BaseView {
-    var onMediaSelected: ((Media) -> Void)? { get set }
+    var onMediaSelected: ((YoutubePreviewModel) -> Void)? { get set }
 }
 
 final class SearchViewController: UIViewController, SearchView {
-    var onMediaSelected: ((Media) -> Void)?
+    var onMediaSelected: ((YoutubePreviewModel) -> Void)?
     
     private lazy var viewModel : SearchViewModel = {
         let vm = SearchViewModel(dataProvider: APIManager.shared)
@@ -33,7 +33,16 @@ final class SearchViewController: UIViewController, SearchView {
         layout()
         setupTableView()
         
-        spinner.show(in: view)
+        viewModel.isLoading = { [unowned self] isLoading in
+            DispatchQueue.main.async {
+                if isLoading {
+                    self.spinner.show(in: self.view)
+                } else {
+                    self.spinner.dismiss()
+                }
+            }
+        }
+        
         viewModel.fetchDiscoverMovies()
     }
     
@@ -73,12 +82,15 @@ final class SearchViewController: UIViewController, SearchView {
     }
 }
 
-// MARK: - SearchViewModelDelegate
+// MARK: - SearchViewModel Delegate
 extension SearchViewController: SearchViewModelDelegate {
+    func searchViewModel(didPlayMedia model: YoutubePreviewModel) {
+        onMediaSelected?(model)
+    }
+    
     func searchViewModel(didReceiveData data: [Media]) {
         viewModel.defaultItems = data
         DispatchQueue.main.async {
-            self.spinner.dismiss()
             self.tableView.reloadData()
         }
     }
@@ -87,16 +99,12 @@ extension SearchViewController: SearchViewModelDelegate {
         viewModel.searchedItems = data
         let _ = print("searchedItems: \(viewModel.searchedItems.count)")
         DispatchQueue.main.async {
-            self.spinner.dismiss()
             self.tableView.reloadData()
         }
     }
     
     func searchViewModel(didReceiveError error: Error) {
-        DispatchQueue.main.async {
-            self.spinner.dismiss()
-            self.showUIAlert(message: error.localizedDescription)
-        }        
+        viewModel.delegate?.searchViewModel(didReceiveError: error)
     }
 }
 
@@ -158,8 +166,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         
         let media = searchController.isActive ? viewModel.searchedItems[indexPath.row] : viewModel.defaultItems[indexPath.row]
         
-        onMediaSelected?(media)
-//        previewMedia(mediaName: media.displayTitle, mediaOverview: media.overview)
+        viewModel.fetchMedia(media: media)
         
         //選取時此列會以灰色來突出顯示，並保持在被選取狀態
         //加入取消列的選取

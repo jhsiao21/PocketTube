@@ -22,19 +22,8 @@ extension SearchCoordinator {
     func showSearchView() {
         let searchView = factory.makeSearchView()
         
-        searchView.onMediaSelected = { [unowned self] media in
-            
-            APIManager.shared.fetchYouTubeMedia(with: "\(media.displayTitle) trailer") { result in
-                
-                switch result {
-                case .success(let videoElement):
-                    let model = YoutubePreviewModel(title: media.displayTitle, youtubeView: videoElement, titleOverview: media.overview ?? "")
-                    self.showMediaPreviewView(with: model)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                    //self?.showUIAlert(message: error.localizedDescription)
-                }
-            }
+        searchView.onMediaSelected = { [unowned self] model in
+            self.showMediaPreviewView(with: model)
         }
         
         router.push(searchView, animated: true, hideBottomBar: true) { [weak self] in

@@ -377,10 +377,8 @@ extension ProfileViewController: MFMailComposeViewControllerDelegate {
             present(vc, animated: true)
         }
         else {
-            print("Mail services are not available")
-            
+            print("Mail services are not available")            
         }
-        
     }
     
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {

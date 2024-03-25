@@ -3,13 +3,17 @@ import FirebaseAuth
 import JGProgressHUD
 
 protocol HomeView: BaseView {
+    var onAirPlayButtonTap: (() -> Void)? { get set }
     var onSearchButtonTap: (() -> Void)? { get set }
-    var onMediaSelected: ((Media) -> Void)? { get set }
+    var onUserIconButtonTap: (() -> Void)? { get set }
+    var onMediaPlay: ((YoutubePreviewModel) -> Void)? { get set }
 }
 
 class HomeViewController: UIViewController, HomeView {
+    var onAirPlayButtonTap: (() -> Void)?
     var onSearchButtonTap: (() -> Void)?
-    var onMediaSelected: ((Media) -> Void)?
+    var onUserIconButtonTap: (() -> Void)?
+    var onMediaPlay: ((YoutubePreviewModel) -> Void)?
     
     private lazy var viewModel: HomeViewModel = {
         let vm = HomeViewModel(dataProvider: APIManager.shared)
@@ -39,9 +43,18 @@ class HomeViewController: UIViewController, HomeView {
         homeFeedTable.delegate = self
         homeFeedTable.dataSource = self
         tabBarController?.delegate = self
-        naviBarConfigView.pushSearchViewDelegate = self
+        naviBarConfigView.naviBarDelegate = self
         
-        spinner.show(in: view)
+        viewModel.isLoading = { [unowned self] isLoading in
+            DispatchQueue.main.async {
+                if isLoading {
+                    self.spinner.show(in: self.view)
+                } else {
+                    self.spinner.dismiss()
+                }
+            }
+        }
+        
         viewModel.fetchData()
         
         /// 監聽didRefresh通知
@@ -62,16 +75,11 @@ class HomeViewController: UIViewController, HomeView {
         //表格視圖頭部設置AdHeaderUIView
         advertisingView = AdHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 500))
         advertisingView?.showAlertDelegate = self
-        advertisingView?.contentActionButtonDelegate = self
+        advertisingView?.contentActionButtonDelegate = viewModel
         homeFeedTable.tableHeaderView = advertisingView
         
         NSLayoutConstraint.activate([
-            naviBarConfigView.widthAnchor.constraint(equalToConstant: view.bounds.width),
-            
-//            homeFeedTable.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//            homeFeedTable.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//            homeFeedTable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-//            homeFeedTable.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            naviBarConfigView.widthAnchor.constraint(equalToConstant: view.bounds.width)
         ])
     }
         
@@ -80,7 +88,6 @@ class HomeViewController: UIViewController, HomeView {
         
         //只有一個UITableView，所以設定frame為view.bounds
         homeFeedTable.frame = view.bounds
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -95,15 +102,25 @@ class HomeViewController: UIViewController, HomeView {
 
 // MARK: - HomeViewModel Delegate
 extension HomeViewController: HomeViewModelDelegate {
+    func homeViewModel(didPlayMedia model: YoutubePreviewModel) {
+        onMediaPlay?(model)
+    }
+    
+    func homeViewModel(didShareMedia name: String, youtubeUrl: URL, posterImg: UIImage) {
+        // there's no share function in home view
+    }
+    
+    func homeViewModel(didFavoriteMediaResponse response: FavoriteResponse) {
+        showUIHint(message: response.caseDescription)
+    }
+    
     func homeViewModel(didReceiveData mediaData: [String : [Media]]) {
         viewModel.mediaData = mediaData
-        self.spinner.dismiss()
         self.homeFeedTable.reloadData()
     }
     
     func homeViewModel(didReceiveError error: Error) {
-        self.spinner.dismiss()
-        showUIAlert(message: error.localizedDescription)
+        viewModel.delegate?.homeViewModel(didReceiveError: error)
     }
 }
 
@@ -131,7 +148,7 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         
-        cell.contentActionButtonDelegate = self
+        cell.contentActionButtonDelegate = viewModel
         cell.configure(with: media)
         print("cell section:\(indexPath.section)")
                         
@@ -165,14 +182,6 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-//MARK: - Media Preview delegate
-extension HomeViewController: MediaPreviewDelegate {
-       
-    func didPreview(mediaName: String, mediaOverview: String?) {
-//        previewMedia(mediaName: mediaName, mediaOverview: mediaOverview)
-    }
-}
-
 //MARK: - TabBarController delegate
 extension HomeViewController : UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
@@ -180,57 +189,28 @@ extension HomeViewController : UITabBarControllerDelegate {
     }
 }
 // MARK: - 搜尋按鈕按下的觸發
-extension HomeViewController: SearchViewControllerPresentDelegate {
+extension HomeViewController: NaviBarDelegate {
+    func airPlayBtnTap() {
+        onAirPlayButtonTap?()
+    }
+    
+    func searchBtnTap() {
+        onSearchButtonTap?()
+    }
+    
+    func userIconBtnTap() {
+        onUserIconButtonTap?()
+    }
     
     func pushSearchVC() {
         onSearchButtonTap?()
     }
 }
 
-// MARK: - Content Action Button Delegate
-extension HomeViewController: ContentActionButtonDelegate {
-    func didTappedShareBtn(mediaName: String, image: UIImage) {
-        print("didTappedShareBtn")
-    }
-    
-    func didTappedWatchListBtn(uid: String, media: FMedia) {
-        Haptic.shared.vibrate(feedbackStyle: .light)
-        
-        spinner.show(in: view)
-                
-        DatabaseManager.shared.favoriteMedia(uid: uid, media: media) { [weak self] result in
-            switch result {
-            case .success(let response):
-                self?.spinner.dismiss()
-                var msg = ""
-                switch response {
-                case .exists:
-                    msg = "已經存在！"
-                    print(msg)
-                case .added:
-                    msg = "加入成功！"
-                    print(msg)
-                }
-                NotificationCenter.default.post(name: .didFavorite, object: nil)
-                self?.showUIHint(message: msg)
-            case .failure(let failure):
-                self?.spinner.dismiss()
-                print(failure.localizedDescription)
-                self?.showUIAlert(message: failure.localizedDescription)
-            }
-        }
-    }
-    
-    func didTappedPlayBtn(media: Media) {
-        onMediaSelected?(media)
-    }
-}
-
 // MARK: - Show alert delegate
 extension HomeViewController: ShowAlertDelegate {
-    func showAlert(msg: String) {
-        showUIAlert(message: msg)
-        print(msg)
+    func showAlert(error: Error) {
+        viewModel.delegate?.homeViewModel(didReceiveError: error)
+        print(error.localizedDescription)
     }
 }
-

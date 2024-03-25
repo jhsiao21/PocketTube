@@ -1,6 +1,7 @@
 import UIKit
 
 class HomeCoordinator: BaseCoordinator {
+    var onUserIconTap: (() -> Void)?
     
     private let factory: HomeSceneFactoryProtocol
     private let coordinatorFactory: CoordinatorFactoryProtocol
@@ -17,29 +18,26 @@ class HomeCoordinator: BaseCoordinator {
     }
 }
 
-extension HomeCoordinator {
+extension HomeCoordinator {    
     
     func showHomeView() {
         let homeView = factory.makeHomeView()
         
-        homeView.onMediaSelected = { [weak self] media in
-            
-            APIManager.shared.fetchYouTubeMedia(with: "\(media.displayTitle) trailer") { result in
-                
-                switch result {
-                case .success(let videoElement):
-                    let model = YoutubePreviewModel(title: media.displayTitle, youtubeView: videoElement, titleOverview: media.overview ?? "")
-                    self?.showMediaPreviewView(with: model)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                    //self?.showUIAlert(message: error.localizedDescription)
-                }
-            }
+        homeView.onAirPlayButtonTap = { [unowned self] in
+            self.showUIHint(message: "Coming soon")
         }
         
         homeView.onSearchButtonTap = { [unowned self] in
             self.runSearchFlow()
         }
+        
+        homeView.onUserIconButtonTap = { [unowned self] in
+            self.onUserIconTap?()
+        }
+        
+        homeView.onMediaPlay = { [unowned self] model in
+            showMediaPreviewView(with: model)
+        }        
         
         router.setRootModule(homeView)
     }
@@ -64,5 +62,23 @@ extension HomeCoordinator {
         
         addDependency(coordinator)
         coordinator.start()
+    }
+}
+
+extension HomeCoordinator {
+    func showUIAlert(title: String = "錯誤", message: String, actionTitle: String = "確定") {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: nil))
+        DispatchQueue.main.async {
+            self.router.present(alert)
+        }
+    }
+        
+    func showUIHint(title: String = "提示", message: String, actionTitle: String = "確定", handler: ((UIAlertAction) -> Void)? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: handler))
+        DispatchQueue.main.async {
+            self.router.present(alert)
+        }
     }
 }

@@ -2,11 +2,11 @@ import UIKit
 import JGProgressHUD
 
 protocol FavoritesView: BaseView {
-    var onMediaSelected: ((FMedia) -> Void)? { get set }
+    var onMediaSelected: ((YoutubePreviewModel) -> Void)? { get set }
 }
 
 class FavoritesViewController: UIViewController, FavoritesView {
-    var onMediaSelected: ((FMedia) -> Void)?
+    var onMediaSelected: ((YoutubePreviewModel) -> Void)?
     
     private lazy var viewModel : FavoritesViewModel = {
         let vm = FavoritesViewModel(dataProvider: DatabaseManager.shared)
@@ -33,7 +33,16 @@ class FavoritesViewController: UIViewController, FavoritesView {
         favoritesTable.delegate = self
         favoritesTable.dataSource = self
         
-        spinner.show(in: view)
+        viewModel.isLoading = { [unowned self] isLoading in
+            DispatchQueue.main.async {
+                if isLoading {
+                    self.spinner.show(in: self.view)
+                } else {
+                    self.spinner.dismiss()
+                }
+            }
+        }
+        
         viewModel.fetchData()
         
         setupNotificationObservers()
@@ -63,16 +72,18 @@ class FavoritesViewController: UIViewController, FavoritesView {
     }
 }
 
+// MARK: - FavoriteViewModel Delegate
 extension FavoritesViewController: FavoriteViewModelDelegate {
+    func favoriteViewModel(didPlayMedia model: YoutubePreviewModel) {
+        onMediaSelected?(model)
+    }    
     
     func favoriteViewModel(didReceiveData data: [FMedia]) {
         viewModel.medias = data
-        self.spinner.dismiss()
         self.favoritesTable.reloadData()
     }
     
     func favoriteViewModel(didReceiveError error: Error) {
-        self.spinner.dismiss()
         self.showUIAlert(message: error.localizedDescription)
     }
 }
@@ -125,8 +136,6 @@ extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource {
         
         let media = viewModel.medias[indexPath.row]
         
-        onMediaSelected?(media)
-        
-//        previewMedia(mediaName: media.caption, mediaOverview: media.overview)
+        viewModel.fetchMedia(media: media)
     }
 }

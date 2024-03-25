@@ -2,13 +2,19 @@ import UIKit
 import JGProgressHUD
 
 protocol HotNewReleaseView: BaseView {
+    var onAirPlayButtonTap: (() -> Void)? { get set }
     var onSearchButtonTap: (() -> Void)? { get set }
-    var onMediaSelected: ((Media) -> Void)? { get set }
+    var onUserIconButtonTap: (() -> Void)? { get set }
+    var onMediaShare: ((String, URL, UIImage) -> Void)? { get set }
+    var onMediaPlay: ((YoutubePreviewModel) -> Void)? { get set }
 }
 
 class HotNewReleaseViewController: UIViewController, HotNewReleaseView {
+    var onAirPlayButtonTap: (() -> Void)?
     var onSearchButtonTap: (() -> Void)?
-    var onMediaSelected: ((Media) -> Void)?
+    var onUserIconButtonTap: (() -> Void)?
+    var onMediaShare: ((String, URL, UIImage) -> Void)?
+    var onMediaPlay: ((YoutubePreviewModel) -> Void)?
     
     private let naviBarConfigView = NaviBarConfigView()
     private let hotNewReleaseHeaderView = HotNewReleaseHeaderView()
@@ -29,9 +35,18 @@ class HotNewReleaseViewController: UIViewController, HotNewReleaseView {
         layout()
         setupTableView()
         
-        naviBarConfigView.pushSearchViewDelegate = self
+        naviBarConfigView.naviBarDelegate = self
+                
+        viewModel.isLoading = { [unowned self] isLoading in
+            DispatchQueue.main.async {
+                if isLoading {
+                    self.spinner.show(in: self.view)
+                } else {
+                    self.spinner.dismiss()
+                }
+            }
+        }
         
-        spinner.show(in: view)
         viewModel.fetchData()
     }
     
@@ -80,10 +95,6 @@ class HotNewReleaseViewController: UIViewController, HotNewReleaseView {
         let indexPath = IndexPath(row: 0, section: sectionIndex)
         tableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
-        
-    @objc func searchButtonTapped() {
-        onSearchButtonTap?()
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -93,15 +104,25 @@ class HotNewReleaseViewController: UIViewController, HotNewReleaseView {
 
 // MARK: - HotNewReleaseViewModel Delegate
 extension HotNewReleaseViewController: HotNewReleaseViewModelDelegate {
+    func hotNewReleaseViewModel(didPlayMedia model: YoutubePreviewModel) {
+        onMediaPlay?(model)
+    }    
+    
+    func hotNewReleaseViewModel(didShareMedia name: String, youtubeUrl: URL, posterImg: UIImage) {
+        onMediaShare?(name, youtubeUrl, posterImg)
+    }
+    
+    func hotNewReleaseViewModel(didFavoriteMediaResponse response:FavoriteResponse) {
+        self.showUIHint(message: response.caseDescription)
+    }
+    
     func hotNewReleaseViewModel(didReceiveItem data: [HotNewReleaseViewModelItem]) {
         viewModel.items = data
-        self.spinner.dismiss()
         self.tableView.reloadData()
     }
     
     func hotNewReleaseViewModel(didReceiveError error: Error) {
-        self.spinner.dismiss()
-        self.showUIAlert(message: error.localizedDescription)
+        viewModel.delegate?.hotNewReleaseViewModel(didReceiveError: error)
     }
 }
 
@@ -120,8 +141,6 @@ extension HotNewReleaseViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
                 
         let item = viewModel.items[indexPath.section]
-//        print("indexPath.section: \(indexPath.section)")
-//        hotNewReleaseHeaderView.linkToSelectionBtn(sectionIdx: indexPath.section)
                 
         switch item.type {
             
@@ -129,7 +148,7 @@ extension HotNewReleaseViewController: UITableViewDelegate, UITableViewDataSourc
             if let item = item as? HotNewReleaseViewModelPopularItem, let cell = tableView.dequeueReusableCell(withIdentifier: PopularCell.identifier, for: indexPath) as? PopularCell {
                 let media = item.medias[indexPath.row]
                 cell.configure(media)
-                cell.contentActionButtonDelegate = self
+                cell.contentActionButtonDelegate = viewModel
                 
                 return cell
             }
@@ -138,7 +157,7 @@ extension HotNewReleaseViewController: UITableViewDelegate, UITableViewDataSourc
                 
                 let media = item.medias[indexPath.row]
                 cell.configure(with: media)
-                cell.contentActionButtonDelegate = self
+                cell.contentActionButtonDelegate = viewModel
                 
                 return cell
             }
@@ -147,7 +166,7 @@ extension HotNewReleaseViewController: UITableViewDelegate, UITableViewDataSourc
                 
                 let media = item.medias[indexPath.row]
                 cell.configure(with: media, index: indexPath.row)
-                cell.contentActionButtonDelegate = self
+                cell.contentActionButtonDelegate = viewModel
                 
                 return cell
             }
@@ -156,7 +175,7 @@ extension HotNewReleaseViewController: UITableViewDelegate, UITableViewDataSourc
                 
                 let media = item.medias[indexPath.row]
                 cell.configure(with: media, index: indexPath.row)
-                cell.contentActionButtonDelegate = self
+                cell.contentActionButtonDelegate = viewModel
                 
                 return cell
             }
@@ -202,11 +221,10 @@ extension HotNewReleaseViewController: UITableViewDelegate, UITableViewDataSourc
         NSLayoutConstraint.activate([
             icon.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 10),
             icon.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            icon.widthAnchor.constraint(equalToConstant: 28), // 調整 icon 的寬度
-            icon.heightAnchor.constraint(equalToConstant: 28) // 調整 icon 的高度
+            icon.widthAnchor.constraint(equalToConstant: 28),
+            icon.heightAnchor.constraint(equalToConstant: 28)
         ])
         
-        // 添加 label 的约束
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 5),
             label.centerYAnchor.constraint(equalTo: icon.centerYAnchor)
@@ -242,15 +260,9 @@ extension HotNewReleaseViewController: UITableViewDelegate, UITableViewDataSourc
             }
         }
         
-//        guard let mediaTitle = media?.displayTitle else {
-//            return
-//        }
-        
         guard let media = media else { return }
         
-        onMediaSelected?(media)
-        
-//        previewMedia(mediaName: mediaTitle, mediaOverview: media.overview)
+        viewModel.didTappedPlayBtn(media: media)
                 
         //選取時此列會以灰色來突出顯示，並保持在被選取狀態
         //加入取消列的選取
@@ -258,6 +270,7 @@ extension HotNewReleaseViewController: UITableViewDelegate, UITableViewDataSourc
     }
 }
 
+// MARK: - LinkedBtnTapped Delegate
 extension HotNewReleaseViewController: LinkedBtnTappedDelegate  {
     
     func buttonIsPressed(tag: Int) {
@@ -269,94 +282,17 @@ extension HotNewReleaseViewController: LinkedBtnTappedDelegate  {
     }
 }
 
-// MARK: - 搜尋按鈕按下的觸發
-extension HotNewReleaseViewController : SearchViewControllerPresentDelegate {
+// MARK: - NaviBar Delegate
+extension HotNewReleaseViewController : NaviBarDelegate {
+    func airPlayBtnTap() {
+        onAirPlayButtonTap?()
+    }
     
-    func pushSearchVC() {
+    func searchBtnTap() {
         onSearchButtonTap?()
-//        DispatchQueue.main.async {
-//            let vc = SearchViewController.shared
-//            vc.hidesBottomBarWhenPushed = true
-//            self.navigationController?.pushViewController(vc, animated: true)
-//        }
-    }
-}
-
-// MARK: - ContentActionButton Delegate
-extension HotNewReleaseViewController: ContentActionButtonDelegate {
-    func didTappedShareBtn(mediaName: String, image: UIImage) {
-        spinner.show(in: view)
-        
-        APIManager.shared.fetchYouTubeMedia(with: "\(mediaName) trailer") { [weak self] result in
-
-            switch result {
-            case .success(let videoElement):
-                DispatchQueue.main.async {
-                    self?.spinner.dismiss()
-                }
-                
-                guard let videoId = (videoElement as VideoElement).id.videoId,
-                      let youtubeUrl = URL(string: "https://www.youtube.com/watch?v=\(videoId)") else {
-                    return
-                }
-                let shareMsg = "我看到了一個超棒的影片！片名：\(mediaName)"
-                let activityVC = UIActivityViewController(activityItems: [shareMsg, image, youtubeUrl], applicationActivities: nil)
-                
-                activityVC.completionWithItemsHandler = {(activityType: UIActivity.ActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) in
-
-                    if let error = error {
-                        self?.showUIAlert(message: error.localizedDescription)
-                        return
-                    }
-                    
-                    if completed {
-                        self?.showUIHint(message: "Share success")
-                    }
-                }
-                
-                DispatchQueue.main.async {
-                    self?.present(activityVC, animated: true, completion: nil)
-                }                
-                
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self?.spinner.dismiss()
-                }
-                print(error.localizedDescription)
-                self?.showUIAlert(message: error.localizedDescription)
-            }
-        }
     }
     
-    func didTappedWatchListBtn(uid: String, media: FMedia) {
-        Haptic.shared.vibrate(feedbackStyle: .light)
-        
-        spinner.show(in: view)
-                
-        DatabaseManager.shared.favoriteMedia(uid: uid, media: media) { [weak self] result in
-            switch result {
-            case .success(let response):
-                self?.spinner.dismiss()
-                var msg = ""
-                switch response {
-                case .exists:
-                    msg = "已經存在！"
-                    print(msg)
-                case .added:
-                    msg = "加入成功！"
-                    print(msg)
-                }
-                NotificationCenter.default.post(name: .didFavorite, object: nil)
-                self?.showUIHint(message: msg)
-            case .failure(let failure):
-                self?.spinner.dismiss()
-                print(failure.localizedDescription)
-                self?.showUIAlert(message: failure.localizedDescription)
-            }
-        }
-    }
-    
-    func didTappedPlayBtn(media: Media) {
-        onMediaSelected?(media)
+    func userIconBtnTap() {
+        onUserIconButtonTap?()
     }
 }

@@ -1,6 +1,7 @@
 import UIKit
 
 class HotNewReleaseCoordinator: BaseCoordinator {
+    var transitToProfileView: (() -> Void)?
     
     private let factory: HotNewReleaseSceneFactoryProtocol
     private let coordinatorFactory: CoordinatorFactoryProtocol
@@ -22,23 +23,24 @@ extension HotNewReleaseCoordinator {
     func showHotNewReleaseView() {
         let hotNewReleaseView = factory.makeHotNewReleaseView()
         
-        hotNewReleaseView.onMediaSelected = { [weak self] media in
-                        
-            APIManager.shared.fetchYouTubeMedia(with: "\(media.displayTitle) trailer") { result in
-                
-                switch result {
-                case .success(let videoElement):
-                    let model = YoutubePreviewModel(title: media.displayTitle, youtubeView: videoElement, titleOverview: media.overview ?? "")
-                    self?.showMediaPreviewView(with: model)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                    //self?.showUIAlert(message: error.localizedDescription)
-                }
-            }
+        hotNewReleaseView.onAirPlayButtonTap = { [unowned self] in
+            self.showUIHint(message: "Coming soon")
         }
         
         hotNewReleaseView.onSearchButtonTap = { [unowned self] in
             self.runSearchFlow()
+        }
+        
+        hotNewReleaseView.onUserIconButtonTap = { [unowned self] in
+            self.transitToProfileView?()
+        }
+        
+        hotNewReleaseView.onMediaShare = { [unowned self] name, youtubeUrl, posterImg in
+            self.share(name: name, youtubeUrl: youtubeUrl, posterImg: posterImg)
+        }
+        
+        hotNewReleaseView.onMediaPlay = { [unowned self] model in
+            self.showMediaPreviewView(with: model)
         }
         
         router.setRootModule(hotNewReleaseView)
@@ -64,5 +66,44 @@ extension HotNewReleaseCoordinator {
         
         addDependency(coordinator)
         coordinator.start()
+    }
+}
+
+extension HotNewReleaseCoordinator {
+    func showUIAlert(title: String = "錯誤", message: String, actionTitle: String = "確定") {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: nil))
+        DispatchQueue.main.async {
+            self.router.present(alert)
+        }
+    }
+        
+    func showUIHint(title: String = "提示", message: String, actionTitle: String = "確定", handler: ((UIAlertAction) -> Void)? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: handler))
+        DispatchQueue.main.async {
+            self.router.present(alert)
+        }
+    }
+    
+    func share(name: String, youtubeUrl: URL, posterImg: UIImage) {
+        let shareMsg = "我看到了一個超棒的影片！片名：\(name)"
+        let activityVC = UIActivityViewController(activityItems: [shareMsg, posterImg, youtubeUrl], applicationActivities: nil)
+        
+        activityVC.completionWithItemsHandler = {(activityType: UIActivity.ActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) in
+
+            if let error = error {
+                self.showUIAlert(message: error.localizedDescription)
+                return
+            }
+            
+            if completed {
+                self.showUIHint(message: "Share success")
+            }
+        }
+        
+        DispatchQueue.main.async {
+            self.router.present(activityVC, animated: true)
+        }
     }
 }
