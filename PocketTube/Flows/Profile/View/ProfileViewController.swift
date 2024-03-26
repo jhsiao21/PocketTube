@@ -83,7 +83,7 @@ final class ProfileViewController: UIViewController, ProfileView {
     }
         
     private func setupProfileImage() {
-        guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
+        guard let uid = Auth.auth().currentUser?.uid as? String else {
             return
         }
         
@@ -92,9 +92,7 @@ final class ProfileViewController: UIViewController, ProfileView {
             self.profileImageView.sd_setImage(with: url, completed: nil)
             
         } else {
-            let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
-            let fileName = safeEmail + "_profile_picture.png"
-            let path = "profile_images/\(fileName)"
+            let path = "profile_images/\(uid)-pic.png"
             
             StorageManager.shared.downloadURL(for: path) { [weak self] result in
                 switch result {
@@ -344,17 +342,19 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         self.profileImageView.image = selectedImage
         
         guard let data = selectedImage.pngData(),
-              let email = UserDefaults.standard.value(forKey: "email") as? String else {
+              let uid = Auth.auth().currentUser?.uid as? String else {
             return
         }
-        let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
-        let fileName = "\(safeEmail)_profile_picture.png"
+        
+        let fileName = "\(uid)-pic.png"
                 
         StorageManager.shared.uploadProfilePicture(with: data,
                                                    fileName: fileName) { result in
             switch result {
             case .success(let downloadUrl):
                 print(downloadUrl)
+                //上傳照片成功後，發送通知
+                NotificationCenter.default.post(name: .didRefresh, object: nil)
             case .failure(let error):
                 print("Storage manager error: \(error)")
             }

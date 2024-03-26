@@ -1,4 +1,5 @@
 import UIKit
+import FirebaseAuth
 
 protocol NaviBarDelegate: AnyObject {
     func airPlayBtnTap()
@@ -14,7 +15,7 @@ class NaviBarConfigView: UIView {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = 15
-        stackView.alignment = .lastBaseline
+        stackView.alignment = .bottom
         stackView.distribution = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -78,7 +79,7 @@ class NaviBarConfigView: UIView {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
                 
-        button.setImage(UIImage(named: "userIcon")?.withRenderingMode(.alwaysOriginal), for: .normal)
+//        button.setImage(UIImage(named: "userIcon")?.withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(userButtonTapped), for: .touchUpInside)
         button.tintColor = .clear //因為是用圖片
         
@@ -93,6 +94,12 @@ class NaviBarConfigView: UIView {
         print("NaviBarConfigView init()")
         style()
         layout()
+        setupProfileImage()
+        
+        /// 監聽didRefresh通知
+        NotificationCenter.default.addObserver(forName: .didRefresh, object: nil, queue: nil) { [weak self] _ in
+            self?.setupProfileImage()
+        }
     }
     
     private func style() {
@@ -115,6 +122,36 @@ class NaviBarConfigView: UIView {
             hStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
             hStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
         ])
+    }
+    
+    private func setupProfileImage() {
+        guard let uid = Auth.auth().currentUser?.uid as? String else {
+            return
+        }
+        
+        if let profileURL = UserDefaults.standard.value(forKey: "profileURL") as? String {
+            let url = URL(string: profileURL)
+            let profileImg = UIImageView()
+            profileImg.sd_setImage(with: url, placeholderImage: UIImage(named: "userIcon")) { [weak self] image, error, _, _ in
+                self?.userButton.setImage(profileImg.image, for: .normal)
+            }
+        } else {
+            let path = "profile_images/\(uid)-pic.png"
+            
+            StorageManager.shared.downloadURL(for: path) { [weak self] result in
+                
+                switch result {
+                case .success(let url):
+                    let profileImg = UIImageView()
+                    profileImg.sd_setImage(with: url) { [weak self] image, error, _, _ in
+                        self?.userButton.setImage(profileImg.image, for: .normal)
+                    }
+                case .failure(let failure):
+                    print("Failed to get download url: \(failure)")
+                    self?.userButton.setImage(UIImage(named: "userIcon"), for: .normal)
+                }
+            }
+        }
     }
     
     override func layoutSubviews() {

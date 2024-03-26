@@ -7,6 +7,8 @@ protocol HotNewReleaseView: BaseView {
     var onUserIconButtonTap: (() -> Void)? { get set }
     var onMediaShare: ((String, URL, UIImage) -> Void)? { get set }
     var onMediaPlay: ((YoutubePreviewModel) -> Void)? { get set }
+    var onRemindeMeButtonTap: (() -> Void)? { get set }
+    var onInfoButtonTap: (() -> Void)? { get set }
 }
 
 class HotNewReleaseViewController: UIViewController, HotNewReleaseView {
@@ -15,6 +17,8 @@ class HotNewReleaseViewController: UIViewController, HotNewReleaseView {
     var onUserIconButtonTap: (() -> Void)?
     var onMediaShare: ((String, URL, UIImage) -> Void)?
     var onMediaPlay: ((YoutubePreviewModel) -> Void)?
+    var onRemindeMeButtonTap: (() -> Void)?
+    var onInfoButtonTap: (() -> Void)?
     
     private let naviBarConfigView = NaviBarConfigView()
     private let hotNewReleaseHeaderView = HotNewReleaseHeaderView()
@@ -104,6 +108,14 @@ class HotNewReleaseViewController: UIViewController, HotNewReleaseView {
 
 // MARK: - HotNewReleaseViewModel Delegate
 extension HotNewReleaseViewController: HotNewReleaseViewModelDelegate {
+    func hotNewReleaseViewModel(didRemindeMe media: Media?) {
+        onRemindeMeButtonTap?()
+    }
+    
+    func hotNewReleaseViewModel(didMediaInfo media: Media?) {
+        onInfoButtonTap?()
+    }
+    
     func hotNewReleaseViewModel(didPlayMedia model: YoutubePreviewModel) {
         onMediaPlay?(model)
     }    

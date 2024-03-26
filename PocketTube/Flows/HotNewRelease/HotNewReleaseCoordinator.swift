@@ -43,6 +43,14 @@ extension HotNewReleaseCoordinator {
             self.showMediaPreviewView(with: model)
         }
         
+        hotNewReleaseView.onRemindeMeButtonTap = { [unowned self] in
+            self.showUIHint(message: "Coming soon")
+        }
+        
+        hotNewReleaseView.onInfoButtonTap = { [unowned self] in
+            self.showUIHint(message: "Coming soon")
+        }
+        
         router.setRootModule(hotNewReleaseView)
     }
     

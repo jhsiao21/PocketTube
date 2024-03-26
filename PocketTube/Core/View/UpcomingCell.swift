@@ -292,9 +292,11 @@ class UpcomingCell: UITableViewCell {
     
     @objc private func remindMeBtnTapped() {
         print("remindMeBtnTapped")
+        contentActionButtonDelegate?.didTappedRemindeMeBtn()
     }
     
     @objc private func infoBtnTapped() {
         print("infoBtnTapped")
+        contentActionButtonDelegate?.didTappedInfoBtn()
     }
 }

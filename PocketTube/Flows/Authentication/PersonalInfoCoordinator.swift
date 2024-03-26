@@ -33,6 +33,7 @@ extension PersonalInfoCoordinator {
     func recordUserInfo(email: String, name: String) {
         UserDefaults.standard.set(email, forKey: "email")
         UserDefaults.standard.set("\(name)", forKey: "name")
+        UserDefaults.standard.set(nil, forKey: "profileURL")
         
         NotificationCenter.default.post(name: .didRefresh, object: nil)
     }

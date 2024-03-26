@@ -6,6 +6,8 @@ protocol HotNewReleaseViewModelDelegate: AnyObject {
     func hotNewReleaseViewModel(didFavoriteMediaResponse response: FavoriteResponse)
     func hotNewReleaseViewModel(didShareMedia name: String, youtubeUrl: URL, posterImg: UIImage)
     func hotNewReleaseViewModel(didPlayMedia model: YoutubePreviewModel)
+    func hotNewReleaseViewModel(didRemindeMe media: Media?)
+    func hotNewReleaseViewModel(didMediaInfo media: Media?)
     func hotNewReleaseViewModel(didReceiveError error: Error)
 }
 
@@ -48,6 +50,15 @@ final class HotNewReleaseViewModel {
 
 // MARK: - ContentActionButton Delegate
 extension HotNewReleaseViewModel: ContentActionButtonDelegate {
+    
+    func didTappedRemindeMeBtn() {
+        delegate?.hotNewReleaseViewModel(didRemindeMe: nil)
+    }
+    
+    func didTappedInfoBtn() {
+        delegate?.hotNewReleaseViewModel(didMediaInfo: nil)
+    }
+    
     func didTappedShareBtn(mediaName: String, image: UIImage) {
         
         isLoading?(true)

@@ -41,6 +41,14 @@ final class HomeViewModel  {
 
 // MARK: - Content Action Button Delegate
 extension HomeViewModel: ContentActionButtonDelegate {
+    func didTappedRemindeMeBtn() {
+        // there's no ReminderMe in HomeView
+    }
+    
+    func didTappedInfoBtn() {
+        // there's no InfoBtn in HomeView
+    }
+    
     func didTappedShareBtn(mediaName: String, image: UIImage) {
         // there's no share function in HomeView
     }
