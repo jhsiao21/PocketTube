@@ -17,8 +17,6 @@ final class DatabaseManager {
     public static let shared = DatabaseManager()
         
     init() {}
-    
-    private let database = Database.database().reference()
 }
 
 extension DatabaseManager: DatabaseManagerProtocol {
@@ -127,6 +125,7 @@ extension DatabaseManager: DatabaseManagerProtocol {
                 let medias = snapshot.documents.compactMap { document -> FMedia? in
                     try? document.data(as: FMedia.self)
                 }
+                
                 completion(.success(medias))
             }
         }

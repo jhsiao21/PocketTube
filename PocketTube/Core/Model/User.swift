@@ -1,4 +1,3 @@
-import FirebaseFirestoreSwift
 import Firebase
 import Foundation
 

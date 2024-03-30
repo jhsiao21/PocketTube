@@ -32,11 +32,11 @@ final class SearchViewController: UIViewController, SearchView {
         style()
         layout()
         setupTableView()
-        
+                
         viewModel.isLoading = { [unowned self] isLoading in
             DispatchQueue.main.async {
                 if isLoading {
-                    self.spinner.show(in: self.view)
+                    self.spinner.show(in: view)
                 } else {
                     self.spinner.dismiss()
                 }
@@ -44,6 +44,15 @@ final class SearchViewController: UIViewController, SearchView {
         }
         
         viewModel.fetchDiscoverMovies()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        searchController.isActive = true
+        DispatchQueue.main.async {
+            self.searchController.searchBar.becomeFirstResponder()
+        }
     }
     
     private func style() {
@@ -104,7 +113,7 @@ extension SearchViewController: SearchViewModelDelegate {
     }
     
     func searchViewModel(didReceiveError error: Error) {
-        viewModel.delegate?.searchViewModel(didReceiveError: error)
+        self.showUIAlert(message: error.localizedDescription)
     }
 }
 

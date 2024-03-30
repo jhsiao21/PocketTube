@@ -48,7 +48,7 @@ class HomeViewController: UIViewController, HomeView {
         viewModel.isLoading = { [unowned self] isLoading in
             DispatchQueue.main.async {
                 if isLoading {
-                    self.spinner.show(in: self.view)
+                    self.spinner.show(in: view)
                 } else {
                     self.spinner.dismiss()
                 }
@@ -120,7 +120,7 @@ extension HomeViewController: HomeViewModelDelegate {
     }
     
     func homeViewModel(didReceiveError error: Error) {
-        viewModel.delegate?.homeViewModel(didReceiveError: error)
+        self.showUIAlert(message: error.localizedDescription)
     }
 }
 

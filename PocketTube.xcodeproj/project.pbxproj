@@ -62,6 +62,14 @@
 		02A2E4B62AA8C0EF0059292D /* HotNewReleaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A2E4B52AA8C0EF0059292D /* HotNewReleaseViewModel.swift */; };
 		02A2E4B92AA9F1AE0059292D /* PopularCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A2E4B82AA9F1AE0059292D /* PopularCell.swift */; };
 		02A2E4BB2AA9F3C10059292D /* Top10Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A2E4BA2AA9F3C10059292D /* Top10Cell.swift */; };
+		02B94C332BB85573000CE84D /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 02B94C322BB85573000CE84D /* FirebaseAuth */; };
+		02B94C352BB85573000CE84D /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 02B94C342BB85573000CE84D /* FirebaseDatabase */; };
+		02B94C372BB85573000CE84D /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 02B94C362BB85573000CE84D /* FirebaseFirestore */; };
+		02B94C392BB85573000CE84D /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 02B94C382BB85573000CE84D /* FirebaseStorage */; };
+		02B94C3C2BB85598000CE84D /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 02B94C3B2BB85598000CE84D /* SDWebImage */; };
+		02B94C3F2BB855E2000CE84D /* JGProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 02B94C3E2BB855E2000CE84D /* JGProgressHUD */; };
+		02B94C422BB856C8000CE84D /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 02B94C412BB856C8000CE84D /* FacebookLogin */; };
+		02B94C452BB85718000CE84D /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 02B94C442BB85718000CE84D /* GoogleSignIn */; };
 		02B9EF932BA9CD9C00925226 /* PersonalInfoCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B9EF922BA9CD9C00925226 /* PersonalInfoCoordinator.swift */; };
 		02B9EF952BAA943700925226 /* SignUpCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B9EF942BAA943700925226 /* SignUpCoordinator.swift */; };
 		02BC7B832B39339900226DEC /* NaviBarConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC7B822B39339900226DEC /* NaviBarConfigView.swift */; };
@@ -73,16 +81,6 @@
 		02D22ABB2B7A1B6B005898B7 /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22ABA2B7A1B6B005898B7 /* UIViewController+Ext.swift */; };
 		02D22ABF2B7A5D76005898B7 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22ABE2B7A5D76005898B7 /* APIError.swift */; };
 		02D22B0F2B7E0D24005898B7 /* APIManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22B0E2B7E0D24005898B7 /* APIManagerProtocol.swift */; };
-		02D22B142B7EFEE7005898B7 /* JGProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 02D22B132B7EFEE7005898B7 /* JGProgressHUD */; };
-		02D22B1C2B875F2E005898B7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 02D22B1B2B875F2E005898B7 /* FirebaseAuth */; };
-		02D22B1E2B875F2E005898B7 /* FirebaseAuthCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 02D22B1D2B875F2E005898B7 /* FirebaseAuthCombine-Community */; };
-		02D22B202B875F2E005898B7 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 02D22B1F2B875F2E005898B7 /* FirebaseDatabase */; };
-		02D22B222B875F2E005898B7 /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 02D22B212B875F2E005898B7 /* FirebaseDatabaseSwift */; };
-		02D22B242B875F2E005898B7 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 02D22B232B875F2E005898B7 /* FirebaseFirestore */; };
-		02D22B262B875F2E005898B7 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 02D22B252B875F2E005898B7 /* FirebaseFirestoreSwift */; };
-		02D22B282B875F2E005898B7 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 02D22B272B875F2E005898B7 /* FirebaseStorage */; };
-		02D22B332B8769F4005898B7 /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 02D22B322B8769F4005898B7 /* FacebookLogin */; };
-		02D22B362B876AC4005898B7 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 02D22B352B876AC4005898B7 /* GoogleSignIn */; };
 		02D22B382B876DC4005898B7 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22B372B876DC4005898B7 /* DatabaseManager.swift */; };
 		02D22B3A2B8771F8005898B7 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22B392B8771F8005898B7 /* UIView+Extension.swift */; };
 		02D22B3C2B8777A0005898B7 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22B3B2B8777A0005898B7 /* UIColor+Ext.swift */; };
@@ -123,8 +121,6 @@
 		0A1942D0274A620100B3FA93 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1942CF274A620100B3FA93 /* TableViewCell.swift */; };
 		0A5AAA9D2769057B00149719 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5AAA9C2769057B00149719 /* String+Ext.swift */; };
 		0A5AAAA7276AE1D500149719 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5AAAA6276AE1D500149719 /* CollectionViewCell.swift */; };
-		0A5AAAAA276AE2E600149719 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 0A5AAAA9276AE2E600149719 /* SDWebImage */; };
-		0A5AAAAC276AE2E600149719 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0A5AAAAB276AE2E600149719 /* SDWebImageMapKit */; };
 		0A6209A72734603E00A88D71 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6209A62734603E00A88D71 /* AppDelegate.swift */; };
 		0A6209A92734603E00A88D71 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6209A82734603E00A88D71 /* SceneDelegate.swift */; };
 		0A6209B02734603E00A88D71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A6209AF2734603E00A88D71 /* Assets.xcassets */; };
@@ -306,18 +302,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02D22B222B875F2E005898B7 /* FirebaseDatabaseSwift in Frameworks */,
-				02D22B202B875F2E005898B7 /* FirebaseDatabase in Frameworks */,
-				0A5AAAAC276AE2E600149719 /* SDWebImageMapKit in Frameworks */,
-				02D22B282B875F2E005898B7 /* FirebaseStorage in Frameworks */,
-				02D22B142B7EFEE7005898B7 /* JGProgressHUD in Frameworks */,
-				02D22B362B876AC4005898B7 /* GoogleSignIn in Frameworks */,
-				02D22B332B8769F4005898B7 /* FacebookLogin in Frameworks */,
-				0A5AAAAA276AE2E600149719 /* SDWebImage in Frameworks */,
-				02D22B242B875F2E005898B7 /* FirebaseFirestore in Frameworks */,
-				02D22B1C2B875F2E005898B7 /* FirebaseAuth in Frameworks */,
-				02D22B1E2B875F2E005898B7 /* FirebaseAuthCombine-Community in Frameworks */,
-				02D22B262B875F2E005898B7 /* FirebaseFirestoreSwift in Frameworks */,
+				02B94C422BB856C8000CE84D /* FacebookLogin in Frameworks */,
+				02B94C332BB85573000CE84D /* FirebaseAuth in Frameworks */,
+				02B94C352BB85573000CE84D /* FirebaseDatabase in Frameworks */,
+				02B94C3C2BB85598000CE84D /* SDWebImage in Frameworks */,
+				02B94C3F2BB855E2000CE84D /* JGProgressHUD in Frameworks */,
+				02B94C372BB85573000CE84D /* FirebaseFirestore in Frameworks */,
+				02B94C392BB85573000CE84D /* FirebaseStorage in Frameworks */,
+				02B94C452BB85718000CE84D /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -871,6 +863,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 026532202B8F18F800E9B585 /* Build configuration list for PBXNativeTarget "PocketTubeTests" */;
 			buildPhases = (
+				BD3BD6C0CD5D6921836D80AB /* [CP] Check Pods Manifest.lock */,
 				026532162B8F18F800E9B585 /* Sources */,
 				026532172B8F18F800E9B585 /* Frameworks */,
 				026532182B8F18F800E9B585 /* Resources */,
@@ -917,18 +910,14 @@
 			);
 			name = PocketTube;
 			packageProductDependencies = (
-				0A5AAAA9276AE2E600149719 /* SDWebImage */,
-				0A5AAAAB276AE2E600149719 /* SDWebImageMapKit */,
-				02D22B132B7EFEE7005898B7 /* JGProgressHUD */,
-				02D22B1B2B875F2E005898B7 /* FirebaseAuth */,
-				02D22B1D2B875F2E005898B7 /* FirebaseAuthCombine-Community */,
-				02D22B1F2B875F2E005898B7 /* FirebaseDatabase */,
-				02D22B212B875F2E005898B7 /* FirebaseDatabaseSwift */,
-				02D22B232B875F2E005898B7 /* FirebaseFirestore */,
-				02D22B252B875F2E005898B7 /* FirebaseFirestoreSwift */,
-				02D22B272B875F2E005898B7 /* FirebaseStorage */,
-				02D22B322B8769F4005898B7 /* FacebookLogin */,
-				02D22B352B876AC4005898B7 /* GoogleSignIn */,
+				02B94C322BB85573000CE84D /* FirebaseAuth */,
+				02B94C342BB85573000CE84D /* FirebaseDatabase */,
+				02B94C362BB85573000CE84D /* FirebaseFirestore */,
+				02B94C382BB85573000CE84D /* FirebaseStorage */,
+				02B94C3B2BB85598000CE84D /* SDWebImage */,
+				02B94C3E2BB855E2000CE84D /* JGProgressHUD */,
+				02B94C412BB856C8000CE84D /* FacebookLogin */,
+				02B94C442BB85718000CE84D /* GoogleSignIn */,
 			);
 			productName = "Netflix Clone";
 			productReference = 0A6209A32734603E00A88D71 /* PocketTube.app */;
@@ -967,11 +956,11 @@
 			);
 			mainGroup = 0A62099A2734603D00A88D71;
 			packageReferences = (
-				0A5AAAA8276AE2E600149719 /* XCRemoteSwiftPackageReference "SDWebImage" */,
-				02D22B122B7EFEE7005898B7 /* XCRemoteSwiftPackageReference "JGProgressHUD" */,
-				02D22B1A2B875F2E005898B7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				02D22B312B8769F4005898B7 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
-				02D22B342B876AC3005898B7 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				02B94C2F2BB85573000CE84D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				02B94C3A2BB85598000CE84D /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				02B94C3D2BB855E2000CE84D /* XCRemoteSwiftPackageReference "JGProgressHUD" */,
+				02B94C402BB856C8000CE84D /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
+				02B94C432BB85718000CE84D /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			productRefGroup = 0A6209A42734603E00A88D71 /* Products */;
 			projectDirPath = "";
@@ -1010,6 +999,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		BD3BD6C0CD5D6921836D80AB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PocketTubeTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		026532162B8F18F800E9B585 /* Sources */ = {
@@ -1326,7 +1340,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1381,7 +1395,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1408,6 +1422,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1418,6 +1433,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1441,6 +1457,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1452,6 +1469,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1500,108 +1518,88 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		02D22B122B7EFEE7005898B7 /* XCRemoteSwiftPackageReference "JGProgressHUD" */ = {
+		02B94C2F2BB85573000CE84D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/JonasGessner/JGProgressHUD";
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.2.0;
-			};
-		};
-		02D22B1A2B875F2E005898B7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
+				kind = upToNextMinorVersion;
 				minimumVersion = 10.21.0;
 			};
 		};
-		02D22B312B8769F4005898B7 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/facebook/facebook-ios-sdk.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 14.1.0;
-			};
-		};
-		02D22B342B876AC3005898B7 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.0.0;
-			};
-		};
-		0A5AAAA8276AE2E600149719 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+		02B94C3A2BB85598000CE84D /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
 			requirement = {
-				branch = master;
-				kind = branch;
+				kind = upToNextMinorVersion;
+				minimumVersion = 5.19.1;
+			};
+		};
+		02B94C3D2BB855E2000CE84D /* XCRemoteSwiftPackageReference "JGProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/JonasGessner/JGProgressHUD";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 2.2.0;
+			};
+		};
+		02B94C402BB856C8000CE84D /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 14.1.0;
+			};
+		};
+		02B94C432BB85718000CE84D /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 7.1.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		02D22B132B7EFEE7005898B7 /* JGProgressHUD */ = {
+		02B94C322BB85573000CE84D /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 02D22B122B7EFEE7005898B7 /* XCRemoteSwiftPackageReference "JGProgressHUD" */;
-			productName = JGProgressHUD;
-		};
-		02D22B1B2B875F2E005898B7 /* FirebaseAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 02D22B1A2B875F2E005898B7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 02B94C2F2BB85573000CE84D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
 		};
-		02D22B1D2B875F2E005898B7 /* FirebaseAuthCombine-Community */ = {
+		02B94C342BB85573000CE84D /* FirebaseDatabase */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 02D22B1A2B875F2E005898B7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = "FirebaseAuthCombine-Community";
-		};
-		02D22B1F2B875F2E005898B7 /* FirebaseDatabase */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 02D22B1A2B875F2E005898B7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 02B94C2F2BB85573000CE84D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseDatabase;
 		};
-		02D22B212B875F2E005898B7 /* FirebaseDatabaseSwift */ = {
+		02B94C362BB85573000CE84D /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 02D22B1A2B875F2E005898B7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseDatabaseSwift;
-		};
-		02D22B232B875F2E005898B7 /* FirebaseFirestore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 02D22B1A2B875F2E005898B7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 02B94C2F2BB85573000CE84D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
 		};
-		02D22B252B875F2E005898B7 /* FirebaseFirestoreSwift */ = {
+		02B94C382BB85573000CE84D /* FirebaseStorage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 02D22B1A2B875F2E005898B7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseFirestoreSwift;
-		};
-		02D22B272B875F2E005898B7 /* FirebaseStorage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 02D22B1A2B875F2E005898B7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 02B94C2F2BB85573000CE84D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
 		};
-		02D22B322B8769F4005898B7 /* FacebookLogin */ = {
+		02B94C3B2BB85598000CE84D /* SDWebImage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 02D22B312B8769F4005898B7 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
-			productName = FacebookLogin;
-		};
-		02D22B352B876AC4005898B7 /* GoogleSignIn */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 02D22B342B876AC3005898B7 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
-			productName = GoogleSignIn;
-		};
-		0A5AAAA9276AE2E600149719 /* SDWebImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 0A5AAAA8276AE2E600149719 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			package = 02B94C3A2BB85598000CE84D /* XCRemoteSwiftPackageReference "SDWebImage" */;
 			productName = SDWebImage;
 		};
-		0A5AAAAB276AE2E600149719 /* SDWebImageMapKit */ = {
+		02B94C3E2BB855E2000CE84D /* JGProgressHUD */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 0A5AAAA8276AE2E600149719 /* XCRemoteSwiftPackageReference "SDWebImage" */;
-			productName = SDWebImageMapKit;
+			package = 02B94C3D2BB855E2000CE84D /* XCRemoteSwiftPackageReference "JGProgressHUD" */;
+			productName = JGProgressHUD;
+		};
+		02B94C412BB856C8000CE84D /* FacebookLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02B94C402BB856C8000CE84D /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookLogin;
+		};
+		02B94C442BB85718000CE84D /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02B94C432BB85718000CE84D /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -48,7 +48,7 @@ class TableViewCell: UITableViewCell {
         DispatchQueue.main.async { [weak self] in
             self?.collectionView.reloadData()
         }
-    }    
+    }
     
     private func favoriteMediaAt(indexPath: IndexPath) {
         guard let uid = Auth.auth().currentUser?.uid,

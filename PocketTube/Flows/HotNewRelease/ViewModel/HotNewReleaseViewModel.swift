@@ -132,7 +132,7 @@ struct HotNewReleaseViewModelPopularItem: HotNewReleaseViewModelItem {
     }
     
     var rowCount: Int {
-        return 20
+        return medias.count
     }
     
     var medias: [Media]
@@ -156,7 +156,7 @@ struct HotNewReleaseViewModelUpcomingItem: HotNewReleaseViewModelItem {
     }
     
     var rowCount: Int {
-        return 20
+        return medias.count
     }
     
     var medias: [Media]

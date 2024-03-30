@@ -40,11 +40,11 @@ class HotNewReleaseViewController: UIViewController, HotNewReleaseView {
         setupTableView()
         
         naviBarConfigView.naviBarDelegate = self
-                
+                        
         viewModel.isLoading = { [unowned self] isLoading in
             DispatchQueue.main.async {
                 if isLoading {
-                    self.spinner.show(in: self.view)
+                    self.spinner.show(in: view)
                 } else {
                     self.spinner.dismiss()
                 }
@@ -134,7 +134,7 @@ extension HotNewReleaseViewController: HotNewReleaseViewModelDelegate {
     }
     
     func hotNewReleaseViewModel(didReceiveError error: Error) {
-        viewModel.delegate?.hotNewReleaseViewModel(didReceiveError: error)
+        self.showUIAlert(message: error.localizedDescription)
     }
 }
 

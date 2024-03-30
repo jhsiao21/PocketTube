@@ -172,7 +172,7 @@ extension APIManager : APIManagerProtocol {
     
     
     func fetchUpcomingMovies(completion: @escaping (Result<[Media], Error>) -> Void) {
-        guard let url = URL(string: "\(Constants.TmdbBaseURL)/3/movie/upcoming?api_key=\(Constants.TmdbAPI_KEY)&language=zh-TW&page=1") else {return}
+        guard let url = URL(string: "\(Constants.TmdbBaseURL)/3/movie/upcoming?api_key=\(Constants.TmdbAPI_KEY)&language=zh-TW&page=1&region=TW") else {return}
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard let data = data, error == nil else {
                 return
@@ -191,7 +191,7 @@ extension APIManager : APIManagerProtocol {
     }
     
     func fetchPopularMovies(completion: @escaping (Result<[Media], Error>) -> Void) {
-        guard let url = URL(string: "\(Constants.TmdbBaseURL)/3/movie/popular?api_key=\(Constants.TmdbAPI_KEY)&language=zh-TW&page=1") else {return}
+        guard let url = URL(string: "\(Constants.TmdbBaseURL)/3/movie/popular?api_key=\(Constants.TmdbAPI_KEY)&language=zh-TW&page=1&region=TW") else {return}
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard let data = data, error == nil else {
                 return
@@ -270,7 +270,7 @@ extension APIManager : APIManagerProtocol {
     func searchMedia(with query: String, completion: @escaping (Result<[Media], Error>) -> Void) {
         
         guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {return}
-        guard let url = URL(string: "\(Constants.TmdbBaseURL)/3/search/movie?api_key=\(Constants.TmdbAPI_KEY)&query=\(query)") else {
+        guard let url = URL(string: "\(Constants.TmdbBaseURL)/3/search/movie?api_key=\(Constants.TmdbAPI_KEY)&query=\(query)&include_adult=true&language=zh-TW&region=TW&page=1") else {
             return
         }
         
@@ -553,9 +553,9 @@ struct Constants {
     
     static let MandarinTVsURL = "\(TmdbBaseURL)/3/discover/tv?api_key=\(TmdbAPI_KEY)&include_adult=false&include_video=false&language=zh-TW&page=1&sort_by=popularity.desc&with_original_language=zh"
     
-    static let NowPlayingMoviesUrl = "\(TmdbBaseURL)/3/movie/now_playing?api_key=\(TmdbAPI_KEY)&language=zh-TW&page=1"
+    static let NowPlayingMoviesUrl = "\(TmdbBaseURL)/3/movie/now_playing?api_key=\(TmdbAPI_KEY)&language=zh-TW&page=1&region=TW"
     
-    static let OnTheAirTVsURL = "\(TmdbBaseURL)/3/tv/on_the_air?api_key=\(TmdbAPI_KEY)&language=zh-TW&page=1&timezone=Asia%2FTaipei"
+    static let OnTheAirTVsURL = "\(TmdbBaseURL)/3/tv/on_the_air?api_key=\(TmdbAPI_KEY)&language=zh-TW&page=1&timezone=Asia/Taipei"
     
     static let TrendingMoviesUrl = "\(TmdbBaseURL)/3/trending/movie/day?api_key=\(TmdbAPI_KEY)&language=zh-TW&page=1"
     
