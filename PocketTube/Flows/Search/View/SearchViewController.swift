@@ -49,10 +49,6 @@ final class SearchViewController: UIViewController, SearchView {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        searchController.isActive = true
-        DispatchQueue.main.async {
-            self.searchController.searchBar.becomeFirstResponder()
-        }
     }
     
     private func style() {
