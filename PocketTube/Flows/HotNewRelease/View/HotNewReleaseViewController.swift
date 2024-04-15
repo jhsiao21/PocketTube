@@ -85,7 +85,7 @@ class HotNewReleaseViewController: UIViewController, HotNewReleaseView {
             tableView.topAnchor.constraint(equalToSystemSpacingBelow: hotNewReleaseHeaderView.bottomAnchor, multiplier: 4),
             tableView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: tableView.trailingAnchor, multiplier: 0.5),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
         ])
     }
     
@@ -242,8 +242,8 @@ extension HotNewReleaseViewController: UITableViewDelegate, UITableViewDataSourc
             label.centerYAnchor.constraint(equalTo: icon.centerYAnchor)
         ])
         
-        print("section: \(section)")
-        hotNewReleaseHeaderView.linkToSelectionBtn(sectionIdx: section)
+//        print("section: \(section)")
+//        hotNewReleaseHeaderView.linkToSelectionBtn(btnIdx: section)
         return headerView
     }
     
@@ -306,5 +306,18 @@ extension HotNewReleaseViewController : NaviBarDelegate {
     
     func userIconBtnTap() {
         onUserIconButtonTap?()
+    }
+}
+
+//MARK: - UIScrollViewDelegate
+extension HotNewReleaseViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let visibleCells = tableView.visibleCells
+        for cell in visibleCells {
+            if let indexPath = tableView.indexPath(for: cell) {
+                print("This cell is in section \(indexPath.section)")
+                hotNewReleaseHeaderView.linkToSelectionBtn(btnIdx: indexPath.section)
+            }
+        }
     }
 }

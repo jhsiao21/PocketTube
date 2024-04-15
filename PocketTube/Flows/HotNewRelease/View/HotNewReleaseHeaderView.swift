@@ -4,7 +4,10 @@ protocol LinkedBtnTappedDelegate: AnyObject {
     func buttonIsPressed(tag: Int)
 }
 
-class HotNewReleaseHeaderView: UIView, UIScrollViewDelegate {
+class HotNewReleaseHeaderView: UIView {
+    
+    let buttonWidth: CGFloat = 150
+    let buttonSpacing: CGFloat = 10
     
     weak var linkedBtnTappedDelegate: LinkedBtnTappedDelegate?
         
@@ -186,7 +189,6 @@ class HotNewReleaseHeaderView: UIView, UIScrollViewDelegate {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        scrollView.delegate = self
         layout()
         selectButton(0)
     }
@@ -218,20 +220,19 @@ class HotNewReleaseHeaderView: UIView, UIScrollViewDelegate {
         selectButton(sender.tag)
         linkedBtnTappedDelegate?.buttonIsPressed(tag: sender.tag)
         
-        if sender.tag == 0 {
-            scrollView.contentOffset = CGPoint(
-                x: 0, y: 0)
-        }
-        else if sender.tag == 3 {
-            print(bounds.width)
-            scrollView.contentOffset = CGPoint(
-                x: bounds.width - top10MoviesButton.frame.width, y: 0)
-        }
-        else {
-            scrollView.contentOffset = CGPoint(x: Int(50 * Double(sender.tag + 1)), y: 0)
-        }
-        print("x:\(scrollView.contentOffset.x)")
-        print("sender.tag: \(sender.tag)")
+        let offset = sender.tag > 1 ? sender.tag : 0
+        
+        // 按鈕偏移量
+        let contentOffsetX = CGFloat(offset) * (buttonWidth + buttonSpacing)
+        
+        // scrollView的最大可移動偏移量
+        let maxOffsetX = scrollView.contentSize.width - scrollView.bounds.width
+        
+        // 實際偏移量
+        // 如果點選的按鈕對應的偏移量超過了最大偏移量，就使用最大偏移量maxOffsetX，否則使用contentOffsetX
+        let actualOffsetX = min(contentOffsetX, maxOffsetX)
+        
+        scrollView.setContentOffset(CGPoint(x: actualOffsetX, y: 0), animated: true)
         
     }
     
@@ -249,21 +250,24 @@ class HotNewReleaseHeaderView: UIView, UIScrollViewDelegate {
         }
     }
     
-    func linkToSelectionBtn(sectionIdx: Int) {
-        selectButton(sectionIdx)
-        if sectionIdx == 0 {
-            scrollView.contentOffset = CGPoint(
-                x: 0, y: 0)
-        }
-        else if sectionIdx == 3 {
-            scrollView.contentOffset = CGPoint(
-                x: bounds.width - top10MoviesButton.frame.width, y: 0)
-        }
-        else {
-            scrollView.contentOffset = CGPoint(x: Int(50 * Double(sectionIdx + 1)), y: 0)
-        }
+    func linkToSelectionBtn(btnIdx: Int) {
+        print("btnIdx:\(btnIdx)")
         
-        print("x:\(scrollView.contentOffset.x)")
+        selectButton(btnIdx)
+        
+        let offset = btnIdx > 1 ? btnIdx : 0
+        
+        // 按鈕偏移量
+        let contentOffsetX = CGFloat(offset) * (buttonWidth + buttonSpacing)
+        
+        // scrollView的最大可移動偏移量
+        let maxOffsetX = scrollView.contentSize.width - scrollView.bounds.width
+        
+        // 實際偏移量
+        // 如果點選的按鈕對應的偏移量超過了最大偏移量，就使用最大偏移量maxOffsetX，否則使用contentOffsetX
+        let actualOffsetX = min(contentOffsetX, maxOffsetX)
+        
+        scrollView.setContentOffset(CGPoint(x: actualOffsetX, y: 0), animated: true)
     }
         
     required init?(coder: NSCoder) {

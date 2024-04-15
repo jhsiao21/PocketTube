@@ -486,7 +486,6 @@
 		02AAB5092B2D4A6C0056CE7E /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				02D8F1272BB1ADCA003948D6 /* ViewModel */,
 				02AAB50F2B2D4B690056CE7E /* View */,
 				02D22B612B8AEADD005898B7 /* Protocol */,
 				02D22B4B2B88482B005898B7 /* Model */,
@@ -720,13 +719,6 @@
 				02D22B642B8B706C005898B7 /* ShowAlertDelegate.swift */,
 			);
 			path = Protocol;
-			sourceTree = "<group>";
-		};
-		02D8F1272BB1ADCA003948D6 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		02E6DB5F2BAB2BF1005EBE3E /* ApplicationCoordinatorTests */ = {
